@@ -7,6 +7,22 @@ export default function Home() {
       <div className="mb-16">
         <h1 className="text-4xl font-serif font-bold mb-2 text-ink">Yash Bonde</h1>
         <p className="text-base text-muted mb-6">AI Engineer, Product Consultant. Full Time Nerd.</p>
+
+        <div className="bg-muted/20 border border-muted/30 rounded-lg p-6 mb-8">
+          <h2 className="text-lg font-serif font-semibold text-ink mb-3">🚧 Under Development</h2>
+          <p className="text-base text-ink mb-4">This website is currently under development. Please check out my current portfolio:</p>
+          <ClickZoom>
+            <a
+              className="inline-block text-primary font-medium text-base hover:scale-105"
+              href="https://magenta-reassurance-165266.framer.app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Current Portfolio →
+            </a>
+          </ClickZoom>
+        </div>
+
         <p className="text-base text-ink mb-2">I love helping businesses implement AI in their product and services. Research to build largest knowledge corpus of Sanskrit and AI.</p>
         <p className="text-base text-ink">CVE Lead at Ema. Prev. Head of Research at Tune AI</p>
 
