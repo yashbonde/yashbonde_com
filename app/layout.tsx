@@ -34,11 +34,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Brawler:wght@400;700&family=Eczar:wght@400..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet" />
-      </head>
       <body className={`${brawler.variable} ${eczar.variable} ${robotoMono.variable} antialiased`}>
         <div className="min-h-screen bg-paper">
           <div className="max-w-5xl mx-auto px-12 py-14">
