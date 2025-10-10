@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
 
   // Compression
   compress: true,
+
+  // Ensure proper routing for Vercel deployment
+  trailingSlash: false,
+
+  // Enable static optimization
+  staticPageGenerationTimeout: 1000,
+
+  // Ensure proper build output
+  distDir: '.next',
 };
 
 export default nextConfig;
