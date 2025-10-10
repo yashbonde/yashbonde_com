@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@import "katex/dist/katex.min.css";
+
+:root {
+  /* Book-inspired color palette */
+  --paper: #f7f7f7;
+  --ink: #1a1a1a;
+  --muted: #6b7280;
+  --accent: #d97706;
+  --primary: #2563eb;
+  --secondary: #059669;
+
+  /* Font variables */
+  --font-brawler: 'Brawler', serif;
+  --font-eczar: 'Eczar', serif;
+  --font-roboto-mono: 'Roboto Mono', monospace;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+
+  --font-serif: var(--font-brawler);
+  --font-devanagari: var(--font-eczar);
+  --font-mono: var(--font-roboto-mono);
+  --font-sans: var(--font-brawler);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-brawler);
+  font-size: 15px;
+  /* slightly smaller overall scale */
+  line-height: 1.7;
+}
+
+/* Book-inspired typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-brawler);
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin-bottom: 1.25rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+/* Code styling */
+code,
+pre {
+  font-family: var(--font-roboto-mono);
+  font-size: 0.9rem;
+}
+
+/* Devanagari text */
+.devanagari {
+  font-family: var(--font-eczar);
+}
+
+/* Smooth transitions for hover effects */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Links/buttons: no underline, subtle zoom on hover */
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  transform: scale(1.03);
+}
+
+/* Hover animations: no shadows anywhere */
+.hover-lift:hover,
+.hover-scale:hover,
+.hover-glow:hover {
+  box-shadow: none;
+  transform: scale(1.03);
+}
+
+/* Click zoom utility (JS toggles .zooming briefly; debounced in component) */
+.zoom-on-click {
+  display: inline-block;
+}
+
+.zoom-on-click.zooming {
+  transform: scale(1.06);
+}
+
+/* Prose styling for blog posts */
+.prose {
+  color: var(--ink);
+  max-width: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: var(--ink);
+  font-family: var(--font-brawler);
+  font-weight: 700;
+}
+
+.prose p {
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.prose a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.prose a:hover {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.prose code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: var(--font-roboto-mono);
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose blockquote {
+  border-left: 4px solid var(--accent);
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.prose ul,
+.prose ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.prose li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Remove all borders and focus on hover animations */
+* {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Focus states for accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--primary) !important;
+  outline-offset: 2px;
+}
