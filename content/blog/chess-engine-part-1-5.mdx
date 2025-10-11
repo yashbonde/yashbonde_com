@@ -5,7 +5,7 @@ date: "2020-11-23"
 tags: ["Chess", "Transformer", "Reinforcement Learning", "Research"]
 ---
 
-This is first in a series of blogs covering this project. **TL;DR** see this [Github repo](https://github.com/yashbonde/chess_lm). Also for all you who do not understand the Indian number system just read this [wiki](https://en.wikipedia.org/wiki/Indian_numbering_system). This is a follow up to my [previous work](./chess-lm.htmlx) where I train a language model on $25Cr$ or $225.1Mn$ moves and pose some questions.
+This is first in a series of blogs covering this project. **TL;DR** see this [Github repo](https://github.com/yashbonde/chess_lm). Also for all you who do not understand the Indian number system just read this [wiki](https://en.wikipedia.org/wiki/Indian_numbering_system). This is a follow up to my [previous work](./chess-engine-part-1) where I train a language model on $25Cr$ or $225.1Mn$ moves and pose some questions.
 
 If you have any freelancing work, contact me on my [LinkedIn](https://www.linkedin.com/in/yash-bonde/).
 
@@ -51,7 +51,7 @@ What are the lesson learnt, those with images are given below the bullet points:
 
 ![This has to be the best representation of results. What this shows is that for each variable shown, if the other two are optimal then the test loss is very predictable and follows smooth curves. Thus in order to train an efficient model we need to grow all three in tandem. This is the engineering challenge!](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-7.png)
 
-![This is another important graph. On the right you see that datasize can also become a bottleneck (😓 this sounds familiar), ie. when you have a small dataset even larger models can suffer same loss. When this happens no amount of compute or model size increase can help you and you start to move away from efficient frontier. On the right is the For reference: L(N,D) = \Big( (\frac{N_C}{N})^{\frac{\alpha_N}{\alpha_D}} + \frac{D_C}{D} \Big)^{\alpha_D} and on right, X-axis is N^{0.737}/D.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-8.png)
+![This is another important graph. On the right you see that datasize can also become a bottleneck (😓 this sounds familiar), ie. when you have a small dataset even larger models can suffer same loss. When this happens no amount of compute or model size increase can help you and you start to move away from efficient frontier. On the right is the For reference: L(N,D) = Big( (N_C/N)^(alpha_N/alpha_D) + D_C/D )^alpha_D and on right, X-axis is N^0.737/D.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-8.png)
 
 ### So what is the problem?
 
