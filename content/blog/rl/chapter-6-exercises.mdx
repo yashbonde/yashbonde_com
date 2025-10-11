@@ -1,0 +1,86 @@
+---
+title: "RL Chapter 6 Exercises"
+subtitle: "Some solutions might be off. Notes from Barto Sutton."
+date: "2020-04-27"
+tags: ["Reinforcement Learning", "Notes"]
+---
+
+**NOTE: This part requires some basic understanding of calculus.**
+
+These are just my solutions of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. Complete notes can be found [here](./chap6.html). If there are any problems with the solutions or you have some ideas ping me at `bonde.yash97@gmail.com`.
+
+## 6.1 Changing Value function
+
+We are given the TD update equation as
+
+$$V(S_t) \leftarrow V(S_t) + \alpha [ R_{t+1} + \gamma V(S_{t+1}) - V(S_t) ]$$
+
+and we can right it with subscript $t$ as an array as
+
+$$V_{t+1}(S_t) = V_t(S_t) + \alpha [ R_{t+1} + \gamma V_t(S_{t+1}) - V_t(S_t) ]$$
+
+and we write the error that is applied on state $S_{t+1}$ as
+
+$$V_{t+1}(S_t) - V_t(S_t) = u_t = \alpha [ R_{t+1} + \gamma V_t(S_{t+1}) - V_t(S_t)]$$
+
+we also know that
+
+$$G_t - V_t(S_t) = \delta_t + \gamma(G_{t+1} - V_t(S_{t+1}))$$
+
+and after update with discounted error $(\gamma u_{t+1})$ because the first mathematical operation we apply is on state $S_{t+1}$ ie. $(\pm\gamma V_t(S_{t+1}))$, we get the equation as
+
+$$=  \delta_t + \gamma(G_{t+1} - V_t(S_{t+1})) + \gamma u_{t+1}$$
+
+$$=  \delta_t + \gamma(\delta_{t+1} + \gamma(G_{t+2} - V_t(S_{t+2})) + \gamma u_{t+2}) + \gamma u_{t+1}$$
+
+So after expanding and compressing we get the equation
+
+$$= \sum_{k=t}^{T-1}\gamma^{k-t}(\delta_k + \gamma u_{k+1})$$
+
+So the additional error added is $\sum_{k=t}^{T-1}\gamma^{k-t+1}u_{k+1}$
+
+## 6.2 TD vs. MC
+
+I think a lot of problem that require an estimation for long sequences where we need the estimation as the task continues would benefit from the TD learning system. Eg. we all love to eat and often have tendency to overeat, if we decide to go to a buffet and our priorities is to eat diversity of food while enjoying the good ones more. This is a perfect setup where TD learning would be beneficial.
+
+## 6.3 Analysis of random walks
+
+We know that for the first step only $V(A)$ was changed which means the random walk landed on $A$ and from there it went to the terminal state on left, other wise the $V(E)$ would have changed. Again, because walk ended on terminal state on left of $A$ only $V(A)$ changed. We can calculate the values very easily:
+
+$$V(A)_{t+1} = V(A)_t + \alpha (R + \gamma V(Term) - V(A)_t)$$
+
+Now we have $V(Term) = 0$, $R = 0$ and $\alpha = 0.1$, so we get $V(A) = 0.45$. Similarly if it went the other way $V(E) = 5.5$.
+
+## 6.4 Analysis of random walks
+
+It is clear that if there was a wider set of $\alpha$s then TD would be a better algorithm than MC. As seen that we get good performance for TD at $\alpha = 0.05$ and at $\alpha = 0.04$ the MC starts to deteriorate. So even though the TD learning would occur when $\alpha$ is small it would become sub-optimal as it would take more walks per episode to learn.
+
+## 6.5 Analysis of random walks
+
+We can see that increase in $\alpha$ increases the MSE over multiple steps that might happen because the noise is too high. You think like it starts to oscillate around the true value function.
+
+## 6.8 Sarsa Convergence
+
+$$G_t - Q(S_t, A_t) = R_{t+1} + \gamma G_{t+1} - Q(S_t, A_t) + \gamma Q(S_{t+1}, A_{t+1}) -\gamma Q(S_{t+1}, A_{t+1})$$
+
+$$= \delta_t + \gamma (G_{t+1} - Q(S_{t+1}, A_{t+1}))$$
+
+we can now continue to substitute the values and see the expansion as and $Q(S_T, A_T) = 0; G_T = 0$
+
+$$= \delta_t + \gamma\delta_{t+1} + \gamma^2\delta_{t+2} + \gamma^{T-t-1}\delta_{T-1} + \gamma^{T-t}(G_T -Q(S_T, A_T))$$
+
+$$= \delta_t + \gamma\delta_{t+1} + \gamma^2\delta_{t+2} + \gamma^{T-t-1}\delta_{T-1} + \gamma^{T-t}(0 - 0)$$
+
+$$\delta^{TD}_t = \sum_{k=t}^{T-t}\gamma^{k-t}\delta_k$$
+
+## 6.11 Q-learning
+
+There is a subtle difference in the Sarsa and Q-learning, ie. the action taken by Sarsa is the next action taken ($S \leftarrow S'; A \leftarrow A'$) where as in Q-learning the only the state changes ($S \leftarrow S'$) and new action is taken at each step. Thus learning happens independent of whether the action was taken or not!
+
+## 6.12 Q-learning $\approx$ Sarsa $?$
+
+The question is if we make the action selection greedy then are the two algorithms same. The answer is no, consider this case $Q(S,a) = [0.1, 0.09 ... 0.01]$, now considering greedy action selection we get $A = 1$. On observing the followed rewards and new state $R, S'$ we update the value of this state so say that we got a large negative reward then the new values may become $Q(S,a) = [0.009, 0.09 ... 0.01]$.
+
+**Action:** In case of Sarsa we will see that the action is taken as $A \leftarrow A'$ and so the action cannot change, however the value is again updated for Q-learning and this time it will not choose $A = 1$. Thus no the action for the two will not be same.
+
+**Weight Update:** They will be same as we basically have the same variables, thus if both algorithms take action $A$ and get the same $R$ and $S'$ we do get the same weight updates.

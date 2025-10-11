@@ -1,0 +1,196 @@
+---
+title: "Project Arth: Introduction"
+date: "2025-01-15"
+tags: ["Project अर्थ (Artha)"]
+---
+
+ॐ गं गणपतये नमो नम:
+
+The idea began with using the principles of software engineering I've learnt over years applied to रामायण (Ramayana). There was too much noise (later called disinformation / misinformation) on the internet and TV that I gave up and decided to read the source code myself. My grandfather Raghunath Bonde, has been a student and reader of Sanskrit which brought in me the original curiosity. One day surfing the internet I came across a very large collection of digitised books.
+
+This is where we begin, with a library full of ancient books and zero idea of what to do with it.
+
+## The Background
+
+The Göttingen Register of Electronic Texts in Indian Languages (GRETIL) Corpus is one of the world's largest corpus of ancient Indian texts. It contains 1000s of books from the ancient Indic world transliterated into IAST format. Now why Germans have so much interest and over time built the largest Indic corpus is up to anyone's imagination but I think we all know why.
+
+People spend a lifetime studying one book and trying to understand the meaning behind it. I do not understand Sanskrit, I can only read and write it. But I am curious and I want to know what is there in these books and this required computers. And computers are something I could do. I started on this project 7 years ago when I first encountered this corpus. There's a lot of forgotten knowledge in these books ranging from study of stars (astronomy) to study of plants, आयुर्वेद (ayurveda) and I want to bring all this knowledge available at tap to anyone who is curious to find out more about this.
+
+When I started, the best string processing engines we had were regex patterns and BERT was the cool new neural network for classification. Today, all these years later we have the best foundational models available as an API at super cheap costs. I had put this project to rest just like any other software developer with too many things to do and only 24 hours in a day.
+
+It went into cold storage.
+
+## Discovering the objective
+
+The tab for GRETIL was always bookmarked and slyly smirked at me everytime I opened the browser.
+
+I visited this project back last year when the llama-3 models had just dropped.
+
+Llama models were just a start but it could copy paste Devanagari text. Copy pasting text is the first step to show that any neural network can actually consume these tokens. If these tokens can be consumed then these tokens can be made sense of, which is what the LLMs are built to do. RAGs are another technological breakthrough that could solve a key problem, how do you take a large corpus of text and have AI go over it. Today the most popular way of doing this is using the embedding based cosine similarity. Though this approach has its own problems that we'll discuss later, you can get to a reasonable place with it.
+
+Slowly my aim became clear. Build a RAG based AI agent that can help anyone understand this text better.
+
+## The data
+
+I want to cover many things in this series that I will hopefully complete. But before that let's go over the properties in the raw dataset:
+
+All the data is in HTML pages where some links do no work
+
+1. The transliterated corpus was built over many years (probably 100+ years) and does not follow a standard IAST format
+
+2. Each "unit" text can either be a single book or composed over several books (eg. महाभारत, Mahabharat) so for the final version must link everything together
+
+3. Each book is an independent webpage which is sometimes a non-standard corrupt HTML
+
+4. Several books contain different commentaries. Some about the structure of the written IAST text, some about the content themselves. It is all over the place
+
+5. Each book can have its own interpretation of the संधि (sandhi, or word mergings) which makes a standard process really hard
+
+6. Multiple श्लोक (shloka) can be merged as a single long string which means decomposing of those is required
+
+7. The ID of the श्लोक (shloka) is also non-standard sometimes it contains '.' to denote book / chapters sometimes its a monotonically increasing number
+
+8. Corpus is riddled with spelling mistakes which non-speakers could have easily made eg. iti ( इति ) vs. ity (???)
+
+9. In many places the text contains German and other language that the people working on it have inserted for their needs eg. Inhaltsverzeichnis or Table of contents. In the सूत्र (sutra) format there is no structure other than proses.
+
+10. Sometimes there are english explanations between sections
+
+11. In some cases the श्लोक (shloka) is repeated twice in different colours, remember this is HTML afterall. These can be different making identification of the correct one hard
+
+12. Often there are symbols like %, & and other used without any explanation of what these actually mean
+
+13. Again since these are HTML pages, bold and italics can mean different things
+
+14. Marking of page numbers in some cases since part of the corpus is digitised from the books
+
+15. Scanning from books also means there are general OCR issues, not just spellings like in (9) but differences like "i" (इ) and "ī" (ई) which can give very different meanings
+
+16. The corpus also contains books from different eras of India's history from the most ancient वैदिक (Vedic) periods to recent times. This means that Sanskrit also differs over time.
+
+17. Same content might be different eg. वालामिकी रामायण (Valmiki's Ramayana) differs from south Indian version
+
+18. In the subject of literature there are dramas which have their own way of writing given the nature of the content
+
+19. There are several dictionaries in the corpus that can also be used to find meanings. Each dictionary contains different words and follows a different structure. Some contain examples, others contain संधि (sandhi)
+
+20. Use of abbreviations differs across each book, which can mean anything from संधि (sandhi) to referring to another text like महाभारत (Mahabharat)
+
+Just to emphasise the level of complexity I will repeat the point that each book is written differently and has to be processed manually.
+
+Now there are several reasons behind the above problems:
+
+1. They were compiled by 100s of different people from all parts of the world, from Germans to Japanese. This shows how interested people were about this books.
+
+2. There is no IAST standard till date, which the Government of India should take up with some seriousness
+
+3. The folks who digitised the corpus were not native speakers of the language and that clearly have creeped in
+
+Sanskrit is not the only language, in fact there is text from all over south Asia from Afghanistan to Indonesia in 9 other languages, Tibetan, Old Javanese, Manipravalam, Malayalam, Tamil, Hindi, Marathi, Prakrit and Pali. I am primarily focusing on Sanskrit due to the majority of content being written in it.
+
+## Entire structure
+
+Here's the entire table of contents of the corpus.
+
+```
+.
+├── sanskrit
+│   ├── veda
+│   │   ├── samhita
+│   │   │   ├── rigveda
+│   │   │   ├── atharvaveda
+│   │   │   ├── samaveda
+│   │   │   └── black yajurveda
+│   │   ├── brahamana
+│   │   ├── aranyaka
+│   │   ├── upanishad
+│   │   ├── atharvana-upanisads
+│   │   └── vedanga
+│   │       ├── srauta-sutras
+│   │       ├── sulba-sutras
+│   │       ├── grhya-sutras
+│   │       ├── parisistas
+│   │       └── pratisakhyas
+│   ├── itihas
+│   │   ├── ramayana
+│   │   └── mahabharata
+│   ├── puarana
+│   ├── religious literature
+│   │   ├── vaisnava
+│   │   ├── saiva
+│   │   ├── buddhist
+│   │   └── jaina
+│   ├── poetry
+│   │   ├── alamkara
+│   │   ├── natya
+│   │   ├── chandas-prosody
+│   │   ├── kavya
+│   │   ├── drama
+│   │   ├── narrative literature
+│   │   └── historical
+│   ├── subhasita
+│   │   └── poetry
+│   │       ├── alamkara
+│   │       ├── natya
+│   │       ├── chandas-prosody
+│   │       ├── kavya
+│   │       ├── drama
+│   │       ├── narrative literature
+│   │       └── historical
+│   ├── sastra
+│   │   ├── grammar
+│   │   └── lexicography
+│   ├── philosophy
+│   │   ├── general
+│   │   ├── mimansa
+│   │   ├── vedanta
+│   │   ├── dvaita-vedanta
+│   │   ├── visistadvaita-vedanta
+│   │   ├── advaita-2
+│   │   ├── samkhya
+│   │   ├── yoga
+│   │   ├── nyaya
+│   │   ├── vaisesika
+│   │   ├── saiva
+│   │   ├── buddhist
+│   │   ├── other
+│   │   ├── dharmasastra
+│   │   │   ├── sutra
+│   │   │   ├── smrti
+│   │   │   └── nibandha and other
+│   │   ├── arthasastra
+│   │   ├── kamasastra
+│   │   ├── ayurveda, alchemy etc
+│   │   └── astrology, astronomy, mathematics
+│   └── later works
+├── secondary-resources
+│   ├── compilations
+│   ├── dictionaries
+│   └── encyclopaediae
+├── old-javanese
+│   ├── buddhist
+│   ├── didactic
+│   ├── kakavin
+│   └── saiva
+├── new-indo-aryan-languages
+│   ├── hindi
+│   └── marathi
+├── prakrit
+├── dravidian-languages
+│   ├── tamil
+│   ├── malayalam
+│   └── manipravalam
+│       └── vyakhyanas
+└── tibetan
+   └── translations
+```
+
+There are 1035 books in 60 subjects just in Sanskrit, including dictionaries and encyclopaedias. There is no way all this data can be processed automated, actually each item has to be processed with its own logic.
+
+## Conclusion
+
+In the upcoming posts I hope to cover my work in more detail, on all the ways that did not work and things that worked. From training custom models to building agents that can automatically structure all the information.
+
+Humorously, if there's one thing I've learnt in all this work is that there is a reason why all the literature starts by taking God's name and it is because all this is really hard.
+
+ॐ नमः शिवाय

@@ -1,0 +1,121 @@
+---
+title: "Project Arth: UI Design and Implementation"
+date: "2025-01-20"
+tags: ["Project अर्थ (Artha)"]
+---
+
+ॐ गं गणपतये नमो नम:
+
+Project अर्थ (Artha) is a long project and working on such projects causes burnout from lack of results. So the first thing we have to do is have an impact that can keep people engaged. It can be put as marketing, the second thing you must do after having an idea. I've learnt from the mistakes in the startup that what is as important as working is telling about that work.
+
+This has to be high impact, interactive, repeatable, always available, easily accessible software. Thinking from first principles this is basically:
+
+1. A good looking website with enough content to keep new and old users engaged
+
+2. This is a read only website and I come from a SaaS background so no need for modules like user management, authentication, payments, etc.
+
+3. A place for developers to put in their LLM API keys (OpenAI, Anthropic, Gemini) and use the chat interface.
+
+4. Eventually there will be a module for accepting one-time donations (never recurring subscriptions) so the project can keep funding improvements for itself. I'll be putting up my capital upfront but there is no reason why not let interested people contribute to it. I'll cover this in more detail below.
+
+Now comes the question of what will be showing on this website. One of the books from the corpus is an encyclopaedia which contains 1000s of entries. I'm yet to complete the indexing of this document, wait for more updates. Here's a few examples of the raw entry:
+
+```
+ADRIKĀ A nymph (devastrī). There is a story in Devībhāgavata about her being cursed by a Brahmin and turned into a fish.
+
+AGASTYA
+1) Genealogy. Descended from Viṣṇu in this order Brahmā-Marīci-Kaśyapa-Sūrya-Agastya.
+2) Birth. A story occurs in Uttara-Rāma-Carita about the birth of Agastya. …
+
+AMARĀVATĪ It is the city of Indra, the King of the Devas. Its location is described in Devī Bhāgavata as follows: "Brahmā's world extends over 10,000 yojanas on the Mahāmeru mountain. There are eight cities-each 2,500 square yojanas in extent--of the Aṣṭadikpālakas in eight parts of this Brahmapurī. Thus there are nine cities on the top of the Mahā Meru. They are the following:--
+
+In the centre is Brahmā's city, Manovatī.
+
+To the east of Manovatī, Indra's city, Amarāvatī.
+```
+
+And many more.
+
+### Acknowledge
+
+This is based on "Mani, Vettam: Puranic Encyclopaedia. A comprehensive dictionary with special reference to the Epic and Puranic literature. Delhi : 1975" which is shared under CC-3.0 license. Thus I can share the buildup on this work, however I'll be using CC-4.0 as recommended on their website.
+
+### UI Requirements
+
+Let's talk a bit about this UI for अर्थ (Artha), specifically what is the user story. Note that this is a very basic MVP grade UI something that I can build with an AI or hiring a full stack engineer:
+
+1. When anyone comes onto the page there will be a search bar. Below the search bar is a "Did you know" section much like Wikipedia, this will be updated everyday by randomly picking from the database.
+
+2. User's can type in a search bar which has an auto-complete to help users by giving more options in the dropdown. This will increase the search space for the user to keep in line with the aim of "fueling curiosity"
+
+3. Once a topic from the search bar / link from "Did you know" is clicked it will open the "Article Page". This article page will contain a beautiful rendered markdown of the topic. The search bar becomes sticky at the top becoming part of the nav bar.
+
+4. Users will read through the article and scroll to the bottom to find "Before" and "After" buttons to take up and down in the index.
+
+There will be an "AI" button next to the search bar which when clicked will open a modal for chat based interface where users can put in their API key and chat with the LLM.
+
+How do we build this system? There are three options here, first is to code it myself and use AI to fill in the blanks, much like how I code at my company right now. The other is where AI is the primary and going to take care of everything from setting up right to building the features. And the third option is hiring a person who can take care of building and deploying the software end to end. Now ideally I'd like to have the third option where I can collaborate with someone technical and only focus on what I want to focus on.
+
+However given the stage I'm at it would be best to just proceed with option-2 where I'll use an AI to build features and maintain the codebase while I'll take care of deployment and everything else. My core expertise is in building products with AI agentic systems and I can write pretty decent backend systems in Python and Go. Yet what we need for this is a Next.js application. This will allow it to connect to databases since this is a backend application but also have UI elements since this is basically a JS framework.
+
+## Wireframe & Mockups
+
+I need to design a wireframe for this UI. Remember it has to be flexible enough that if we want to extend the functionality tomorrow there should be enough free real estate for that.
+
+![Project Arth Wireframe](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/04.png)
+
+I used Excalidraw to make a few mockups. The AI today has become so insane, I just used Tune Chat Artifacts to make mockup designs from this! 🤯 Never have I ever seen this speed of progress!
+
+### Landing page
+
+It's simple and minimal. There is "Artha AI ✨" in the top right with a search bar and quick links below it. The search bar has auto-complete to increase the search space for the user and make the experience more seamless. From the data on Bing and Google we know that the auto-complete should work under 30ms, which is an overkill for this project. But we should make sure to keep the time down as much as possible.
+
+![Landing Page Demo](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/landing.gif)
+
+### Article Page
+
+In the article page, the search bar moves to the top. There are Read more links after the article that takes it up and down the encyclopaedia. There is also the "Artha AI ✨" in the top right. The article is a beautifully rendered markdown, later it can also be connected to the larger corpus using hyperlinks.
+
+![Article Page Demo](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/entry.gif)
+
+### Artha AI Page
+
+Agents are the SaaS of the future and the best part is that the majority of the cost of goods can be put against the user themselves. It provides a great natural language interface to using the computer. For this I've added a page for "Artha AI" where users can have a chat conversation with the Agent. We will take in the API key from the developer so they can chose the model that they / their company is already paying for.
+
+![Chat Interface Demo](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/chat.gif)
+
+We won't be storing the API keys, only sending it to the backend to do the actual call. We can also hide the complexity of choosing the model (gpt-4o or gemini-2.0-pro, etc.). Under the T&C of usage we should store the conversations for analytics purposes, this will allow us to improve the entire experience more. In future once the donations are also added this can also be made free so the token pricing for LLM providers can be done. More on that later.
+
+Now that we have a mockup that we're confident with I'll cover other aspects of the website.
+
+## Funding via donations
+
+Initially I'll be putting in all the capital since this is a passion project but that's not how it should always be. Sustainability is the word of the century and it means to build something that is lasting. This project requires small resources, mostly compute since I have no interest in monetising it. I won't keep monetising off the table right now since this is too soon to tell. But in terms of manpower we'd need SWEs, designers and marketers to have the impact I'd want. These folks will be professionals and thus should be rightly paid for their services.
+
+Here's a list of all the places where we'd need to spend capital:
+
+- **Compute resources**: This will be hosting the website, payments for the domain, running AI agent free for everyone, API costs for indexing 1000s of other pending documents, etc. This will be a recurring expense to be paid out every month / week.
+
+- **Developers**: We want to continue improving the experience and scope of the website, this will require SWEs working on all aspects from data collection, full-stack development to improving AI Ex. We'll start off by hiring volunteers on the project and will not be recruiting anyone part time before we really need to.
+
+- **Software tools**: This is any SaaS we'd need to use ex. Google Workspace, database hosting (I'm thinking Supabase, because Postgres ♥️), Creative Suite, etc.
+
+- **Hardware**: There will be requirements for getting computing hardware like laptops or PCs, etc. This is going to be a one-time capex and won't require any upgrades.
+
+- **Designers**: People only care about beautiful things, this is one major learning from my startup experience. Good design goes a long way and we need to create a visual impact. For this we'll need to hire professional designers and thus we must pay their service charges.
+
+- **Marketing**: We must make sure we talk about things more than we build, so having a consistent outreach program is very important.
+
+- **Operations**: We will require a CA to manage the finances once we start accepting donations and that means giving the service charges to that person as well.
+
+To manage capital a Private Limited company will have to be established within India, with a PAN / TAN and a bank account to receive payments. In the beginning I might just accept those in my account, but it's still too early to tell.
+
+## Advisory
+
+This is a tentative plan and not to be taken super seriously. I would like to see this project grow big and so all the things I've mentioned are coming from a company operator perspective.
+
+---
+
+For me the next steps are structuring the encyclopaedia available and building a demo app from it. Till next time.
+
+ॐ नमः शिवाय

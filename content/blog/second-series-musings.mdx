@@ -1,0 +1,53 @@
+---
+title: "Second in the Series of Musings"
+subtitle: "A step in another direction"
+date: "2018-12-29"
+tags: ["Random"]
+---
+
+With my previous [post](https://medium.com/@yashbonde/first-in-the-series-of-musings-b547ad86865f) written well over 4 months ago from the date of this writing I talked about A.I. and it's types and then somehow jabbered into talking about a T-shaped person. Since then I have written about variety of topics such as Transformer "Attention is all you need" network, built it up in python and tensorflow and discussed a bit about the code. Then wrote a couple of vague articles and in the end wrote about my latest project, the Freeciv Learning Environment. But with another bitter-sweet year coming to an end and me wanting to do something new and fresh, something to get me out of this boredom I have been feeling, I took up a long forgotten *(4 year old)* project and decided to code up my own website.
+
+![This looks a bit wierd](https://cdn.shopify.com/s/files/1/0023/8469/1252/products/Hustle-Neon-Sign-1_2000x.jpg?v=1534983377)
+
+## Building My Own Website
+
+For the hosting and handling part I am currently relying on github pages while for the coding part I decided to start from sratch. Read a few blogs, watched a few videos and bam there it is, a small [resume](https://yashbonde.github.io/resume) and then a [landing page](https://yashbonde.github.io) in just a few hours. I always felt like having my own website will allow me to showcase my work in the best way possible and give me a wider skill set. Having interactive websites and using those along with the AI tools and models that I build in python is a really cool idea. **And aren't all great things started as just really cool ideas.**
+
+I learned alot from [this](https://www.youtube.com/watch?v=wq-Q7CDj6ZI) particular video and used this as the template to built my website. I think I will make my own style sheets and share them to make it easy for people to use those.
+
+Now I wanted to show off a few things I have added, though you can say I am inspired from Medium, like `inline_code(*args, **kwargs)` and code blocks like the one shown below: (eventually I want to be able to put syntax highlighted code here):
+
+```python
+def calculate_accuracy(target, pred):
+    ''' 
+    Calculate accuracy for model
+    '''
+    # Getting actual values
+    false_act_ = np.sum([target == self.smooth_thresh_lower])
+    true_act_ = np.sum([target == self.smooth_thresh_upper])
+    
+    # prediction counters
+    pred_pos_ = 0
+    pred_neg_ = 0
+    
+    # predictions, need to perform iteration, boolean logic not working
+    for i,p in enumerate(pred):
+        if self.s_ll <= p <= self.s_lu and target[i] == self.smooth_thresh_lower:
+            pred_neg_ += 1
+        elif self.s_ul <= p <= self.s_uu and target[i] == self.smooth_thresh_upper:
+            pred_pos_ += 1
+                            
+    correct_pred = pred_pos_ + pred_neg_
+    
+    return correct_pred/len(pred), pred_pos_/true_act_, pred_neg_/false_act_
+```
+
+*real code sample from [here](https://github.com/yashbonde/Babylon/blob/master/transformer/network.py)*
+
+Though the truth is that it was super easy to implement, all I had to modify was `&lt;code&gt;` and `&lt;pre&gt;` tags, but well here it is and it looks super cool. Imagine the possibilities here we can have a new method of explaination of code, I have some ideas that I will implement in coming months. And this is why I started this series of web-designing projects so I can work on all forms of weird things that are only in my head right now.
+
+## Where Go From Here
+
+With the end of 2018 and beginning of a completely new chapter in my life, the possibilities are endless. A year ago I started teaching myself Reinforcement Learning, with a relatively narrow view of the world convincing myself that I knew sufficient and can face any challenge thrown at me. It clearly did not turn out that way, but this year taught me many new things and gave me oppurtunities unimagined.
+
+It is probably the first time my experience as designer has helped me to this level. Desining your own website is a really cool thing! Also it's late and I should go to sleep, but it's a waste of time.

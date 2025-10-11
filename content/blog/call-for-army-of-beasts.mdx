@@ -1,0 +1,52 @@
+---
+title: "Call for an Army of Be(a)sts!"
+date: "2018-11-09"
+subtitle: "Pushing for a more democratized AI." 
+tags: ["Freeciv"]
+---
+
+I used to write on Medium before this, these are ports.
+
+Artificial Intelligence will be powered by three domains, a better understanding of natural languages, generative models learning from probabilistic distributions (GANs, VAEs) and main ingredient training by reinforcement learning (RL) algorithms. Let's talk about RL for a minute, it is the way forward because it learns to solve problems, not just posterior mapping that supervised algorithms do. You can throw at it a problem to play chess and it will learn to do that with or without your help, or Go, Dota2, Starcraft or even the stock market!
+
+They do so by interacting with environments, simulations of things you want the agent to do. OpenAI with [gym](http://gym.openai.com/), democratized the domain and pushed the involvement of people and awareness of the idea. The environments are a great example of the power of open-source, it's free, it's powerful and it's backed by a community of developers and users who can solve your problems in an instant. Despite being great it lacks a very important item, a complex strategy game, more complex than chess and other board games. Something that has a rules and regulations and requires immense amounts of creativity.
+
+> Despite being great OpenAI gym lacks a very important item, a complex strategy game, more complex than chess and other board games.
+
+![A screenshot of DeepMind's Starcraft-2 environment](https://miro.medium.com/max/700/1*gT4B-ca05ItYV0rZ-r21EQ.jpeg)
+
+If we look at more open-source projects in this domain of which there are many, there is nothing like this. The [Starcraft-2 environment](https://www.wired.co.uk/article/deepmind-starchart-ai-games) from [DeepMind Safety Research](https://medium.com/u/55e08ddea42e?source=post_page-----f751436671be--------------------------------) and Blizzard is groundbreaking but is still plagued by many issues, not being open source, lack of access to full version and mainly it's size 30 GB! All these issues make its use difficult.
+
+## Let's make one then
+
+I have been personally working on this for sometime, and after lot of feedback and validation from some of the best in industry, finally opening it up. [Freeciv](http://freeciv.org/) is an open-source turn based multiplayer deep strategy game with rules, and it makes it the perfect candidate for using it as an environment. Not just is it fun, it's also one of the oldest games that people still love to play, with initial commit done in 1996 and stale branches going back 21 years! **And we are writing a python binder for it.** You can check it out [here](https://github.com/yashbonde/freeciv-python), we have uploaded the original work done for a [paper](http://groups.csail.mit.edu/rbg/code/civ/) called 'Learning to Win by Reading Manuals in a Monte-Carlo Framework'.
+
+![A screenshot from freeciv 2.4](https://miro.medium.com/max/1200/1*GeZBCNa0dAn4AY4MLlzvMg.png)
+
+> This work is not just important but will be one of the most influential in the hindsight. This project demands not just the good, but deserves the best people.
+
+There is a small team that is working on this hard but we need more to get this project off the ground and really establish. But we need your help to make this happen. A lot of the work needs to be done on writing the code and dynamics of the environment. We are starting off with a simple requirement, to compile the source code and document the process. The end goal is to create an agent which can learn to traverse and play in complex enviroment by itself with minimal help from humans (the only support should be basic instructions).
+
+## Applying deep reinforcement learning here
+
+This environment will provide with a huge opportunity to test the AI because of following reasons, you can also take this as a manifesto for things we need to achieve in this project and contribute:
+
+- **Open ended reward structure**: because of such a diverse game offerings and actions that can be taken, the user will be given raw information and if they want can write their own reward structure, though we will be providing basic rewards. Most of the recent breakthrough models have applied meta-learning style architectures with auto-reward understanding. This environment will push this to next level.
+
+- **Deep hierarchical structure**: the game has so many things that need to be done to play that it will demand of the agent to have a deeper understanding of what should be done at various levels, not just look at the frame and decide what the next action will be.
+
+- **Long term gameplay**: as the game can last many turns, it requires agents to do very long term strategic thought processing. Longer and more diverse than what any environment has to do right now.
+
+- **Information types**: the game not just sends out a raw image but many of those, agent gets a variety of maps (resources, units, holdings) rather than a single image. There are rules and regulations, many strategy guides in text which make your model to be able process different types of information that we as humans take for granted.
+
+- **General Intelligence**: diversity, structure and decisions to be made in the game are so open and vast that your agent [or ensemble] needs to be have a very general thought process. This kind of platform will result in research and agents that will make our understanding and development of AI better.
+
+- **Size**: And the biggest advantage by far is the size, less than 100MB for a fully functional interactive game and source code with API for taps in the game so you can record your actions and use them to train your model later.
+
+- **[bonus] minigames**: to make life easier for a beginner to start working on this, we aim to release a variety of mini-games just like in Starcraft2 environment which will help you test out your model to the simple tasks before proceeding to the main game.
+
+![Let's not be this dumb](https://miro.medium.com/max/700/1*Zt8cFjnkssNJhpYwNDgftQ.png)
+
+All this is what this environment is offering; main difficulty, we need to build and test this thing out. The repo is new and projects will be added to it to guide us and set benchmarks on the project. Link to github repo: [https://github.com/yashbonde/freeciv-python](https://github.com/yashbonde/freeciv-python)
+
+Cheers!

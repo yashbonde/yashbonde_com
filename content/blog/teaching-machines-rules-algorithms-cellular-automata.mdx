@@ -1,0 +1,106 @@
+---
+title: "Teaching Machines Rules and Algorithms"
+subtitle: "Cellular Automata Learning Neural Network"
+date: "2020-04-04"
+tags: ["Neural Networks", "Research"]
+---
+
+🦠 This particular Coronavirus strain [(SARS Cov2)](https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome_coronavirus_2) is the biggest calamity to happen to humanity since World War 2. It has put all of us in our homes without anything interesting to do, so I decided to take time and try out some whacky ideas. But being limited by compute power of a Google Colab I needed to try out something simple, quick and low power, not training some giant neural network based language model for [Covid-19 Kaggle challenge](https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge).
+
+Like always I go on a bit of writing before getting to the point so [TL;DR](#cellular-automata).
+
+## 📦 Software 2.0
+
+Machine learning is good with cases where we have large datasamples and we need to generate algorithms from it, though very important problem it's still has not entered the software industry as much as a developer would want. The few changes that have happened is that now I have to write an API query to Google and they run the networks.
+
+But this is boring and not where it should be, conventional software programming still dominates most of the things we do. I have a theory why that is, the current state of machine learning algorithms have gone from **data ➜ algorithm** but all the other software goes from **algorithm ➜ data** and **we do not have a way to teach network rules**.
+
+![An overview of how the business rules, you can look at the complexity that they have and ignoring the data flow piece there is a possibility to convert this into Neural Engine](https://www.researchgate.net/profile/Rainer_Endl/publication/225116605/figure/fig1/AS:671510029144090@1537111875988/Business-rules-as-integration-layers.png)
+
+The reason I bring up business rules is because that is what I do professionaly, building integrated systems that take in documents at one end and create business metrics at the other end. I had an idea that most of business rules can be converted into giant if/else statements and you just need a smart enough language to load that run those, this can be loosely interpreted as [Flow-based programing](https://jpaulm.github.io/fbp/) where the data flows through and rules can be easily understood and created without writing a JSON for each complex rule.
+
+## 🤖 PoC: The idea of cellular automata
+
+While my readings I came about two practical applications of neural network to perform tasks that are more software oriented. Both of them can be seen in [Differentiable Neural Computers](https://deepmind.com/blog/article/differentiable-neural-computers), one is long term copy pasting the other is shortest path finding on a graph. These are practical examples of a copy-pasting mechanism and [Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm), though still not the perfect solution but better than the rest.
+
+I needed something that was simple enough, and I came across [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) something that is very simple but can generate some amazing patterns. I was not interested in generating the specific grids but more on the simplicity of it's algorithm which has three simple rules
+
+- Any live cell with two or three neighbors survives.
+- Any dead cell with three live neighbors becomes a live cell.
+- All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+
+This was good enough to implement and wrote a 20-min gist:
+
+```python
+# Conway's Game of Life implementation
+# This is a simplified version for demonstration
+def game_of_life_step(grid):
+    new_grid = grid.copy()
+    rows, cols = grid.shape
+    
+    for i in range(rows):
+        for j in range(cols):
+            # Count live neighbors
+            live_neighbors = 0
+            for di in [-1, 0, 1]:
+                for dj in [-1, 0, 1]:
+                    if di == 0 and dj == 0:
+                        continue
+                    ni, nj = i + di, j + dj
+                    if 0 <= ni < rows and 0 <= nj < cols:
+                        live_neighbors += grid[ni, nj]
+            
+            # Apply rules
+            if grid[i, j] == 1:  # Live cell
+                if live_neighbors < 2 or live_neighbors > 3:
+                    new_grid[i, j] = 0  # Dies
+            else:  # Dead cell
+                if live_neighbors == 3:
+                    new_grid[i, j] = 1  # Becomes alive
+    
+    return new_grid
+```
+
+It generates sample like this:
+
+![starting top right go line by line](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_0.png)
+
+## ❄️ Building a Network
+
+All the main code is uploaded on [this colab notebook](https://colab.research.google.com/drive/1-Sw3jxWj4KOrZXBmCuKENUhuVr-hiSfT). In short there are a few ideas that I had
+
+- since I just need to check the surrounding I can have kernel size of $3$
+- as this operation needs to have same output shape as input we need to have autoencoder like structure, so rather than having `Conv-Conv-Deconv-Deconv` structure I have a `Conv-Deconv-Conv-Deconv` structure
+- tensorflow is a nightmare to develop so shifted to pytorch
+- since this is not a classification but more on line of regresstion its good to use MSE or BCE loss functions
+- $\sigma(\cdot)$ activation in final layer and a threshold of $0.5$
+
+![Quick training result left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_1.png)
+
+I got some good results after a quick model training I started getting good results. But there needs to be a good robustness test, so I tested on the following things:
+
+- **Size of grid changes**: though the network is has same output structure as input could changes in grid size affect the performance. It is very surprising to see the results there is no change in the performance of network when trained on fixed grid size but tested on multiple different size
+
+![Surprisingly there is no change on results and in fact it performs better on larger grid sizes](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_2.png)
+
+![And no it is not over-fitting to give just one value; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_3.png)
+
+- **Board Sparsity**: the board was trained on samples that have probability distribution $P(1) = 0.3; P(0) = 0.7$ so could it generalise on boards that had a different distribution
+
+![Though there is decline in performance when 1s occur too frequently its still above 95% mark](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_4.png)
+
+![Edge cases are still tricky, pun intended; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_5.png)
+
+- **Edgecases where nothing changes**: an algorithm trained on boards that have changes, can it generalise the algorithm to cases where nothing can change. For this I got an accuracy of 99% but this is wrong because I am also comparing the negative values in accuracy
+
+![Though it has the correct idea of where to look for it does not generate the proper result; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_6.png)
+
+## 🤔 Some extensions and limitations
+
+There are some very clear limitations for using this like lack of specificity i.e. we cannot get the exact output always because neural networks are still function approximators and not exact code. But I think this is solvable because we humans can store large set of rules in our neural networks and so we should be able to theoratically store this in computer.
+
+Even in this case we still have trained our network by providing 1000s of sample, but what in situation where do not have such data or generate data by simulation. In most cases we do have the data but sometimes the organisation might have a pre-concieved notion and it may have never happened. Issue that comes with lack of data is that a particular BR might have been put in place as a failsafe. As seen [above](#sparse) sparsity is still an issue, when an algorithm has not seen the samples it is unable to learn it properly.
+
+**Another thought might be that do we even need something like this?** And my argument is that this is needed because then we can change it for good, implementing proper procedures, there will nonetheless issues that come from lack of explainability and approximations but pros will still outweigh the cons. Particularly less critical tedious operations will find benefit from this and in future this might allow for optimisation to take place and god knows we need that to happen.
+
+This is still at naive stage but if you have any comments do reach out to me at bonde.yash97@gmail.com

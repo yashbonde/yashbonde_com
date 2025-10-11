@@ -36,13 +36,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${brawler.variable} ${eczar.variable} ${robotoMono.variable} antialiased`}>
         <div className="min-h-screen bg-paper">
-          <div className="max-w-5xl mx-auto px-12 py-14">
-            <header className="flex items-center justify-end mb-14 text-right">
+          <div className="max-w-3xl mx-auto px-6 py-10">
+            <header className="flex items-center justify-end mb-10 text-right">
               <nav className="flex items-center gap-3 text-sm font-sans">
                 <Link className="transition-transform duration-200 hover:scale-105" href="/">Yash Bonde</Link>
-                <span className="opacity-50">.</span>
+                <span className="w-1 h-1 bg-ink rounded-full"></span>
                 <Link className="transition-transform duration-200 hover:scale-105" href="/blog">Thoughts</Link>
-                <span className="opacity-50">.</span>
+                <span className="w-1 h-1 bg-ink rounded-full"></span>
                 <Link className="transition-transform duration-200 hover:scale-105" href="/about">About</Link>
               </nav>
             </header>

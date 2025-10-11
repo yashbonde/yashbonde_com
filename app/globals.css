@@ -4,11 +4,11 @@
 :root {
   /* Book-inspired color palette */
   --paper: #f7f7f7;
-  --ink: #1a1a1a;
-  --muted: #6b7280;
-  --accent: #d97706;
-  --primary: #2563eb;
-  --secondary: #059669;
+  --ink: #000000;
+  --muted: #000000;
+  --accent: #000000;
+  --primary: #000000;
+  --secondary: #000000;
 
   /* Font variables */
   --font-brawler: 'Brawler', serif;
@@ -34,9 +34,9 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-brawler);
-  font-size: 15px;
-  /* slightly smaller overall scale */
-  line-height: 1.7;
+  font-size: 16px;
+  /* slightly bigger overall scale */
+  line-height: 1.5;
 }
 
 /* Book-inspired typography */
@@ -48,28 +48,28 @@ h5,
 h6 {
   font-family: var(--font-brawler);
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.2;
   margin-bottom: 1rem;
 }
 
 h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin-bottom: 1.25rem;
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 
 /* Code styling */
 code,
 pre {
   font-family: var(--font-roboto-mono);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
 
 /* Devanagari text */
@@ -112,6 +112,8 @@ a:hover {
 .prose {
   color: var(--ink);
   max-width: none;
+  overflow-x: visible;
+  width: 100%;
 }
 
 .prose h1,
@@ -127,43 +129,61 @@ a:hover {
 
 .prose p {
   color: var(--ink);
-  line-height: 1.7;
+  line-height: 1.5;
   margin-bottom: 1.5rem;
 }
 
 .prose a {
-  color: var(--primary);
+  color: var(--ink);
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
 .prose a:hover {
-  color: var(--accent);
+  color: var(--ink);
   transform: translateY(-1px);
 }
 
 .prose code {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: var(--font-roboto-mono);
-  font-size: 0.9em;
+  font-size: 0.95em;
+  color: #495057;
 }
 
 .prose pre {
-  background-color: rgba(0, 0, 0, 0.05);
-  padding: 1rem;
+  background-color: #f8f9fa;
+  border: 1px solid #e9ecef;
+  padding: 1.5rem;
   border-radius: 0.5rem;
   overflow-x: auto;
+  overflow-y: visible;
   margin: 1.5rem 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  white-space: pre;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.prose pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #212529;
+  font-size: 0.9em;
+  line-height: 1.5;
 }
 
 .prose blockquote {
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--ink);
   padding-left: 1rem;
   margin: 1.5rem 0;
   font-style: italic;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .prose ul,
@@ -172,9 +192,25 @@ a:hover {
   padding-left: 1.5rem;
 }
 
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
 .prose li {
   margin: 0.5rem 0;
-  line-height: 1.6;
+  line-height: 1.4;
+}
+
+.prose img {
+  max-width: 42rem;
+  /* max-w-2xl equivalent */
+  margin: 1.5rem auto;
+  display: block;
+  border-radius: 0.5rem;
 }
 
 /* Remove all borders and focus on hover animations */
@@ -186,6 +222,6 @@ a:hover {
 /* Focus states for accessibility */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--primary) !important;
+  outline: 2px solid var(--ink) !important;
   outline-offset: 2px;
 }
