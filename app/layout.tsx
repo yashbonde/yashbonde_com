@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Brawler, Eczar, Roboto_Mono } from "next/font/google";
 import Link from "next/link";
+import DynamicCircle from "../components/DynamicCircle";
 import "./globals.css";
 
 const brawler = Brawler({
@@ -43,9 +44,9 @@ export default function RootLayout({
             <header className="flex items-center justify-end mb-8 text-right">
               <nav className="flex items-center gap-3 text-sm font-sans">
                 <Link className="transition-transform duration-200" href="/">Home</Link>
-                <span className="w-1 h-1 bg-ink rounded-full"></span>
+                <DynamicCircle noise={1} />
                 <Link className="transition-transform duration-200" href="/blog">Journal</Link>
-                <span className="w-1 h-1 bg-ink rounded-full"></span>
+                <DynamicCircle noise={2134} />
                 <Link className="transition-transform duration-200" href="/about">Work</Link>
               </nav>
             </header>

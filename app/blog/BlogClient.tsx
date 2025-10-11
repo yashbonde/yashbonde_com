@@ -191,8 +191,10 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                     <ClickableImage />
                 </div>
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash&apos;s Journal</div>
-                    <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
+                    <div className="text-base text-ink mb-4">My journal because documenting is creating. Essays on AI,
+                        computation, notes for Barto Sutton, and more.
+                    </div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
                         <div className="flex flex-wrap gap-2 font-mono text-xs">
@@ -281,8 +283,10 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
 
                 {/* Text content on the right */}
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink">Yash&apos;s Journal</div>
-                    <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
+                    <div className="text-base text-ink mb-4">My journal because documenting is creating. Essays on AI,
+                        computation, notes for Barto Sutton, and more.
+                    </div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
                         <div className="flex flex-wrap gap-2 font-mono text-xs">

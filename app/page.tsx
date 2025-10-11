@@ -23,7 +23,7 @@ export default function Home() {
             <div className="text-base text-ink mb-6">Developer of <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
               Project अर्थ (Artha)
               <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-            </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Foobar .
+            </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Ema . Tune AI .
             </div>
             <div className="text-sm text-ink">
               <Link href="https://ema.co" target="_blank" rel="noopener noreferrer" className="block mb-1">

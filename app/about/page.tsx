@@ -20,9 +20,9 @@ export default function AboutPage() {
 
                 {/* Text content on the right */}
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Work</div>
-                    <div className="text-base text-ink mb-4">Builder of AI products that drives real business value.
-                        LLM expert, agentic systems, product development, building startups.
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
+                    <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
+                        real business value. LLM trainer, agentic systems, product development, building startups.
                     </div>
                     <div className="text-sm text-ink mb-1">
                         <Link href="#work-experience" className="inline-flex items-center gap-2 ">
