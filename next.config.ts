@@ -9,6 +9,14 @@ const nextConfig: NextConfig = {
   // Image optimization
   images: {
     formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ndotovhaihcfvwintgpc.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/**',
+      },
+    ],
   },
 
   // Compression

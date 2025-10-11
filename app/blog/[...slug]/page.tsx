@@ -20,14 +20,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     if (!post) return notFound();
 
     return (
-        <article className="max-w-2xl mx-auto">
-            <div className="prose max-w-2xl mx-auto">
-                <h1 className="text-3xl font-serif font-bold text-ink text-center">{post.frontMatter.title}</h1>
+        <article>
+            <div className="prose mx-auto">
+                <div className="text-3xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
                 {post.frontMatter.subtitle && (
-                    <p className="text-lg text-center text-ink">{post.frontMatter.subtitle}</p>
+                    <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
                 )}
                 {post.frontMatter.date && (
-                    <p className="text-sm text-center text-ink mb-8">{post.frontMatter.date}</p>
+                    <div className="text-sm font-mono text-center text-ink mb-8">{post.frontMatter.date}</div>
                 )}
             </div>
             <div className="prose max-w-none">

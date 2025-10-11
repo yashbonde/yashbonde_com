@@ -11,14 +11,9 @@ export default function HoverCard({
     className = '',
     animation = 'lift'
 }: HoverCardProps) {
-    const animationClass = {
-        lift: 'hover-lift',
-        scale: 'hover-scale',
-        glow: 'hover-glow'
-    }[animation];
-
+    // Animation classes removed - no hover effects
     return (
-        <div className={`${animationClass} ${className}`}>
+        <div className={`${className}`}>
             {children}
         </div>
     );

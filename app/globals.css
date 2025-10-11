@@ -3,7 +3,7 @@
 
 :root {
   /* Book-inspired color palette */
-  --paper: #f7f7f7;
+  --paper: #ffffff;
   --ink: #000000;
   --muted: #000000;
   --accent: #000000;
@@ -82,13 +82,9 @@ pre {
   transition: all 0.3s ease;
 }
 
-/* Links/buttons: no underline, subtle zoom on hover */
+/* Links/buttons: no underline */
 a {
   text-decoration: none;
-}
-
-a:hover {
-  transform: scale(1.03);
 }
 
 /* Hover animations: no shadows anywhere */
@@ -96,7 +92,6 @@ a:hover {
 .hover-scale:hover,
 .hover-glow:hover {
   box-shadow: none;
-  transform: scale(1.03);
 }
 
 /* Click zoom utility (JS toggles .zooming briefly; debounced in component) */
@@ -105,7 +100,7 @@ a:hover {
 }
 
 .zoom-on-click.zooming {
-  transform: scale(1.06);
+  /* Zoom effect removed */
 }
 
 /* Prose styling for blog posts */

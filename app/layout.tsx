@@ -25,6 +25,9 @@ const robotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: "Yash Bonde",
   description: "Portfolio and blog of Yash Bonde - ML Engineer, Systems Developer",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
@@ -37,13 +40,13 @@ export default function RootLayout({
       <body className={`${brawler.variable} ${eczar.variable} ${robotoMono.variable} antialiased`}>
         <div className="min-h-screen bg-paper">
           <div className="max-w-3xl mx-auto px-6 py-10">
-            <header className="flex items-center justify-end mb-10 text-right">
+            <header className="flex items-center justify-end mb-8 text-right">
               <nav className="flex items-center gap-3 text-sm font-sans">
-                <Link className="transition-transform duration-200 hover:scale-105" href="/">Yash Bonde</Link>
+                <Link className="transition-transform duration-200" href="/">Home</Link>
                 <span className="w-1 h-1 bg-ink rounded-full"></span>
-                <Link className="transition-transform duration-200 hover:scale-105" href="/blog">Thoughts</Link>
+                <Link className="transition-transform duration-200" href="/blog">Journal</Link>
                 <span className="w-1 h-1 bg-ink rounded-full"></span>
-                <Link className="transition-transform duration-200 hover:scale-105" href="/about">About</Link>
+                <Link className="transition-transform duration-200" href="/about">Work</Link>
               </nav>
             </header>
             <main className="flex flex-col gap-8">

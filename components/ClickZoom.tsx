@@ -23,14 +23,11 @@ export default function ClickZoom({
 
         const el = ref.current;
         if (!el) return;
-        el.classList.add("zooming");
-        window.setTimeout(() => {
-            el.classList.remove("zooming");
-        }, 180);
+        // Zoom effect removed - just a click handler now
     }
 
     return (
-        <div ref={ref} onClick={handleClick} className={`zoom-on-click ${className}`}>
+        <div ref={ref} onClick={handleClick} className={`${className}`}>
             {children}
         </div>
     );
