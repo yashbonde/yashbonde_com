@@ -131,7 +131,7 @@ $$h_S = MLP_2 \big( \sum_{s\in S} h_s^{(K)} \big) $$
 
 where $h_s^{(0)} = X_s$. The final algorithm is the NES (Neural Exhaustive Search), given a universe, NES enumerates all subsets of objects and passes each subset through an LSTM followed by a MLP. The results are aggregated with a max-pooling layer and MLP
 $$
-MLP_2 (\max_{\tau \subseteq S} MLP_1 \circ \\
+MLP_2 (\max_{\tau \subseteq S} MLP_1 \circ
 LSTM (X_1, ..., X_{|\tau|}: X_1, ..., X_{|\tau|} \in \tau ))
 $$
 

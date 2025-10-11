@@ -202,20 +202,20 @@ $$q(h,s) = p(h|h,s)[r(h,s,h) + \gamma v_*(h)] + p(l|h,s)[r(h,s,l) + \gamma v_*(l
 $$q(h,w) = p(h|h,w)[r(h,w,h) + \gamma v_*(h)] + p(l|h,w)[r(h,w,l) + \gamma v_*(l)]$$
 
 $$v_*(h) = \max \begin{cases}
-            q(h,s) \\
-            q(h,w) 
+            q(h,s)
+            q(h,w)
             \end{cases}$$
 
 $$v_*(h) = \max \begin{cases}
-            r_s + \gamma\left[ \alpha v_*(h) + (1 - \alpha)v_*(l)\right] \\
+            r_s + \gamma\left[ \alpha v_*(h) + (1 - \alpha)v_*(l)\right]
             r_w + \gamma v_*(h)
             \end{cases}$$
 
 Similarly for value of $low$ state, $v_*(l)$ we have three actions $s$, $w$ and $re$. Using the above method we obtain the value
 
 $$v_*(l) = \max \begin{cases}
-                \beta r_s - 3(1- \beta) + \gamma \left[(1 - \beta)v_*(h) + \beta v_*(l) \right] \\
-                r_w + \gamma v_*(l) \\
+                \beta r_s - 3(1- \beta) + \gamma \left[(1 - \beta)v_*(h) + \beta v_*(l) \right]
+                r_w + \gamma v_*(l)
                 \gamma v_*(h)
                 \end{cases}$$
 
