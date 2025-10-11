@@ -8,8 +8,7 @@ interface HoverCardProps {
 
 export default function HoverCard({
     children,
-    className = '',
-    animation = 'lift'
+    className = ''
 }: HoverCardProps) {
     // Animation classes removed - no hover effects
     return (

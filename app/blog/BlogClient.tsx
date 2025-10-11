@@ -44,7 +44,7 @@ const generateTagColor = (tag: string, randomSeed: number): { bg: string; text: 
 
     // Hover state: generated color
     const hoverColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-    const hoverTextColor = lightness > 45 ? '#000000' : '#ffffff'; // Dark text on light bg, light text on dark bg
+    // const hoverTextColor = lightness > 45 ? '#000000' : '#ffffff'; // Dark text on light bg, light text on dark bg
 
     return {
         bg: bgColor,
@@ -191,7 +191,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                 </div>
                 <div className="flex-1">
                     <div className="text-3xl font-serif font-bold text-ink mb-2">Journal</div>
-                    <div className="text-base text-ink mb-4">Document, don't create</div>
+                    <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
                         <div className="flex flex-wrap gap-2 font-mono text-xs">
@@ -281,7 +281,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                 {/* Text content on the right */}
                 <div className="flex-1">
                     <div className="text-3xl font-serif font-bold text-ink">Journal</div>
-                    <div className="text-base text-ink mb-4">Document, don't create</div>
+                    <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
                         <div className="flex flex-wrap gap-2 font-mono text-xs">
