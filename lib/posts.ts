@@ -9,6 +9,7 @@ export type FrontMatter = {
     subtitle?: string;
     date?: string;
     tags?: string[];
+    readingTime?: number;
     [key: string]: unknown;
 };
 

@@ -12,6 +12,7 @@ type Post = {
         subtitle?: string;
         date?: string;
         tags?: string[];
+        readingTime?: number;
     };
 };
 
@@ -190,7 +191,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                     <ClickableImage />
                 </div>
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Journal</div>
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash&apos;s Journal</div>
                     <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
@@ -280,7 +281,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
 
                 {/* Text content on the right */}
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink">Journal</div>
+                    <div className="text-3xl font-serif font-bold text-ink">Yash&apos;s Journal</div>
                     <div className="text-base text-ink mb-4">Document, don&apos;t create</div>
                     {/* Tags List */}
                     {allTags.length > 0 && (
@@ -370,14 +371,17 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                             {post.frontMatter.date && (
                                 <span className="font-bold text-gray-500">{post.frontMatter.date}</span>
                             )}
+                            {post.frontMatter.readingTime && (
+                                <span className="font-bold text-gray-400">{post.frontMatter.readingTime} min</span>
+                            )}
                             {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
-                                <div className="flex flex-wrap gap-1 font-mono text-xs">
+                                <div className="flex gap-1 font-mono text-xs overflow-x-auto scrollbar-hide flex-1 min-w-0">
                                     {post.frontMatter.tags.map(tag => {
                                         const colors = tagColors[tag];
                                         return (
                                             <button
                                                 key={tag}
-                                                className="px-3 py-1 rounded-full transition-all duration-200 cursor-pointer"
+                                                className="px-3 py-1 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0"
                                                 style={{
                                                     backgroundColor: selectedTag === tag ? colors.hover : colors.bg,
                                                     color: selectedTag === tag ? colors.hoverText : colors.text,

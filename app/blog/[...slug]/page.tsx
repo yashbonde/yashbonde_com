@@ -27,7 +27,12 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
                 )}
                 {post.frontMatter.date && (
-                    <div className="text-sm font-mono text-center text-ink mb-8">{post.frontMatter.date}</div>
+                    <div className="text-sm font-mono text-center text-ink mb-8">
+                        Yash Bonde . {post.frontMatter.date}
+                        {post.frontMatter.readingTime && (
+                            <span> . {post.frontMatter.readingTime} min read</span>
+                        )}
+                    </div>
                 )}
             </div>
             <div className="prose max-w-none">
