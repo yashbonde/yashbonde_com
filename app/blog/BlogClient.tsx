@@ -422,9 +422,6 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                                 {post.frontMatter.title}
                                 <ArrowUpRight className="w-6 h-6 text-ink" />
                             </div>
-                            {post.frontMatter.subtitle && (
-                                <p className="text-sm mt-2">{post.frontMatter.subtitle}</p>
-                            )}
                         </Link>
                     </li>
                 ))}

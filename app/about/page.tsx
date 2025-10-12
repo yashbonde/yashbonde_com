@@ -10,7 +10,7 @@ export default function AboutPage() {
                 {/* Image on the left */}
                 <div className="flex-shrink-0 w-full sm:w-auto">
                     <Image
-                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.jpeg"
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.jpeg"
                         alt="Yash Bonde"
                         width={400}
                         height={250}
@@ -205,34 +205,6 @@ export default function AboutPage() {
                     </ul>
                 </div>
 
-                {/* KS2 Labs */}
-                <div className="mb-8 ">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                        <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">AI Researcher</p>
-                            <p className="text-base text-ink font-medium"><code>KS2 Labs</code></p>
-                        </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
-                            <p>Nov. 2020 — Aug. 2021, Remote, India</p>
-                        </div>
-                    </div>
-                    <p className="text-sm text-ink mb-2">I spent a lot of time in-between jobs working on AI application research.</p>
-                    <div className="ml-4 mb-3">
-                        <ul className="text-sm text-ink space-y-1">
-                            <li>• Research on RL agents that do not need the perfect board state to play superhuman chess. This would demonstrate that NNs have internal representation capacity to solve complicated problems giving only traces of information.
-                                <Link href="https://www.youtube.com/watch?v=Xd0psila1Ug" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
-                                    <span className="font-semibold ml-1">YouTube</span>
-                                    <ArrowUpRight className="w-5 h-5" />
-                                </Link></li>
-                            <li>• New research directions for weather modelling that uses ground based sensor data instead of solely relying on weather satellites, which causes issues like cold-bias and wrong temperature prediction.
-                                <Link href="https://github.com/yashbonde/vaayuvidha" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
-                                    <span className="font-semibold ml-1">GitHub</span>
-                                    <ArrowUpRight className="w-5 h-5" />
-                                </Link></li>
-                        </ul>
-                    </div>
-                </div>
-
                 {/* NPAW */}
                 <div className="mb-8 ">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
@@ -357,6 +329,35 @@ export default function AboutPage() {
                         </Link>
                     </p>
                 </div>
+
+                {/* KS2 Labs */}
+                <div className="mb-8 ">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                        <div className="mb-2 sm:mb-0">
+                            <p className="text-lg font-serif font-semibold position-text">AI Researcher</p>
+                            <p className="text-base text-ink font-medium"><code>KS2 Labs</code></p>
+                        </div>
+                        <div className="text-left sm:text-right text-sm text-ink">
+                            <p>Nov. 2020 — Aug. 2021, Remote, India</p>
+                        </div>
+                    </div>
+                    <p className="text-sm text-ink mb-2">I spent a lot of time in-between jobs working on AI application research.</p>
+                    <div className="ml-4 mb-3">
+                        <ul className="text-sm text-ink space-y-1">
+                            <li>• Research on RL agents that do not need the perfect board state to play superhuman chess. This would demonstrate that NNs have internal representation capacity to solve complicated problems giving only traces of information.
+                                <Link href="https://www.youtube.com/watch?v=Xd0psila1Ug" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
+                                    <span className="font-semibold ml-1">YouTube</span>
+                                    <ArrowUpRight className="w-5 h-5" />
+                                </Link></li>
+                            <li>• New research directions for weather modelling that uses ground based sensor data instead of solely relying on weather satellites, which causes issues like cold-bias and wrong temperature prediction.
+                                <Link href="https://github.com/yashbonde/vaayuvidha" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
+                                    <span className="font-semibold ml-1">GitHub</span>
+                                    <ArrowUpRight className="w-5 h-5" />
+                                </Link></li>
+                        </ul>
+                    </div>
+                </div>
+
 
                 <div className="text-xl font-serif font-bold text-ink mb-2 border-b border-gray-300 pb-2">Open Source Software</div>
 

@@ -10,7 +10,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-6 md:gap-8 mb-6">
           <div className="flex-shrink-0 w-full sm:w-auto">
             <Image
-              src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.jpeg"
+              src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.jpeg"
               alt="Yash Bonde"
               width={400}
               height={250}
@@ -20,10 +20,26 @@ export default function Home() {
           </div>
           <div className="flex-1">
             <div className="text-3xl font-serif font-bold text-ink  mb-2">Yash Bonde</div>
-            <div className="text-base text-ink mb-6">Developer of <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
-              Project अर्थ (Artha)
-              <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-            </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Ema . Tune AI .
+            <div className="text-base text-ink mb-6">Developer of{' '}
+              <Link href="https://artha-pearl.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center ml-1 gap-1"
+                style={{ color: '#FF9933' }}
+              >
+                Project अर्थ (Artha)
+                <ArrowUpRight className="w-5 h-5 font-bold" style={{ color: '#FF9933' }} />
+              </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Ema . Tune AI .
+            </div>
+            <div className="text-base text-ink mb-6">
+              <Link href="/about" target="_blank" rel="noopener noreferrer" className="block mb-1">
+                Read my work profile
+                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
+              </Link>
+              <Link href="/blog" target="_blank" rel="noopener noreferrer" className="block mb-1">
+                My writing
+                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
+              </Link>
             </div>
             <div className="text-sm text-ink">
               <Link href="https://ema.co" target="_blank" rel="noopener noreferrer" className="block mb-1">
