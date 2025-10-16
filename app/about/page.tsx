@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ArrowDown } from "lucide-react";
+import ConciseButton from "@/components/ConciseButton";
 
 export default function AboutPage() {
     return (
@@ -22,25 +23,28 @@ export default function AboutPage() {
                 <div className="flex-1">
                     <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
                     <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
-                        real business value. LLM trainer, agentic systems, product development, building startups.
+                        real business value. AI researcher in neural networks, agentic systems, product development, building startups.
                     </div>
                     <div className="text-sm text-ink mb-1">
-                        <Link href="#work-experience" className="inline-flex items-center gap-2 ">
-                            Experience
-                            <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-                        </Link>
-                    </div>
-                    <div className="text-sm text-ink mb-1">
-                        <Link href="#projects" className="inline-flex items-center gap-2 ">
-                            Projects
-                            <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-                        </Link>
-                    </div>
-                    <div className="text-sm text-ink">
                         <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                             Project अर्थ (Artha)
                             <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
                         </Link>
+                    </div>
+                    <div className="text-sm text-ink mb-1">
+                        <Link href="#work-experience" className="inline-flex items-center gap-2 ">
+                            Experience
+                            <ArrowDown className="w-4 h-4 font-bold text-ink" />
+                        </Link>
+                    </div>
+                    <div className="text-sm text-ink mb-4">
+                        <Link href="#projects" className="inline-flex items-center gap-2 ">
+                            Projects
+                            <ArrowDown className="w-4 h-4 font-bold text-ink" />
+                        </Link>
+                    </div>
+                    <div>
+                        <ConciseButton className="px-3 py-1 rounded-full bg-gray-100 text-gray-800 font-mono text-xs" />
                     </div>
                 </div>
             </div>
@@ -108,30 +112,30 @@ export default function AboutPage() {
                         </ul>
                     </div>
 
-                    <p className="text-sm font-semibold text-ink mb-2">Enterprise Solutions</p>
-                    <p className="text-sm text-ink mb-3">I was also picked up enterprise solutioning. Worked directly with organizer
-                        of Abu Dhabi F1 (<span className="font-bold">Ethara</span>), world&apos;s largest scientific contents product
-                        (<span className="font-bold">Clarivate</span>) and <span className="font-bold">Intel</span>. My responsibilities included:</p>
+                    <p className="text-sm font-semibold text-ink mb-2">AI Research</p>
+                    <p className="text-sm text-ink mb-3">
+                        Led AI solutioning working directly with Abu Dhabi F1 organizer (Ethara), world’s largest scientific contents product
+                        (Clarivate), and Intel. Projects became <span className="font-bold">biggest revenue drivers</span> for Tune AI.</p>
                     <div className="ml-4 mb-3">
                         <ul className="text-sm text-ink space-y-1">
                             <li>• Led two teams totaling <span className="font-bold">8 people</span></li>
-                            <li>• Developed AI Agents for reducing sales TAT from <span className="font-bold">14 days</span> to <span className="font-bold">5 minutes</span> flat</li>
-                            <li>• Architected large data processing pipeline to run inference on <span className="font-bold">100K+ documents/day</span></li>
+                            <li>• Developed AI Agents reducing sales TAT from <span className="font-bold">14 days → 5 minutes</span> by auto generating <span className="font-bold">200+ slide long PPT</span> presentation and is highly personalized for each prospect and potential event, following the design guidelines. Works from inside <span className="font-bold">MS Teams</span> to answer any question via chat interface.</li>
+                            <li>• Architected large data processing pipeline to run inference on <span className="font-bold">100K+ documents/day</span> for extraction task with <span className="font-bold">96% accuracy</span>.</li>
                             <li>• Context engineering systems to ensure <span className="font-bold">100% grounded</span> AI results</li>
-                            <li>• These projects eventually became <span className="font-bold">biggest revenue drivers</span> for Tune AI</li>
-                            <li>• Worked <span className="font-bold">end to end</span> from sales to discovery calls to final delivery</li>
-                            <li>• With Intel we delivered the whitepaper on OpenVino, delivering <span className="font-bold">20x faster Mask-RCNN</span></li>
+                            <li>• Build a novel transformer model to run AlphaGo style <span className="font-bold">Monte Carlo Tree Search</span> based algorithm for autoregressive tasks. It was trained to perform both classification and regression. Implemented by writing custom kernels for <span className="font-bold">Nvidia Triton & vLLM</span>.</li>
+                            <li>• Solutioned <span className="font-bold">LLM training</span> with 375GB+ data</li>
+                            <li>• With <span className="font-bold">Intel</span> we delivered the whitepaper on OpenVino, delivering <span className="font-bold">20x faster Mask-RCNN</span></li>
                         </ul>
                     </div>
 
-                    <p className="text-sm text-ink mb-3">The achievements might be mild by world standards. But for a team of 20 young hackers
+                    <p className="text-sm text-ink mb-3" id="not-imp-0">The achievements might be mild by world standards. But for a team of 20 young hackers
                         this was a wild success after 4+ years of hard work. Truth is, just like any other startup, no one told us any process and we
-                        discovered / built our own, all the way 0 to 1. For a 24 year old, this was the <span className="font-bold">Fuck Around, Find Out (FAFO)</span> learning phase of life.
+                        discovered / built our own, all the way 0 to 1. For a 24 year old, this was the FAFO learning phase of life.
                         I worked on everything I could get my hands on.
                     </p>
 
-                    <p className="text-sm font-semibold text-ink mb-2">Product developement for features in Tune and NimbleBox:</p>
-                    <div className="ml-4 mb-3">
+                    <p className="text-sm font-semibold text-ink mb-2" id="not-imp-0">Product developement for features in Tune and NimbleBox:</p>
+                    <div className="ml-4 mb-3" id="not-imp-0">
                         <ul className="text-sm text-ink space-y-1">
                             <li>• <span className="font-semibold">Blob</span> : Client facing agent and configurable assistant in Studio</li>
                             <li>• <span className="font-semibold">ChainFury</span> : Backend tool for chain of thought prompting</li>
@@ -147,13 +151,13 @@ export default function AboutPage() {
                         </ul>
                     </div>
 
-                    <p className="text-sm font-semibold text-ink mb-2">Things I&apos;ll remember:</p>
+                    <p className="text-sm font-semibold text-ink mb-2" id="not-imp-0">Things I&apos;ll remember:</p>
                     <div className="ml-4 mb-3">
                         <ul className="text-sm text-ink space-y-1">
-                            <li>• Built an nbox.Operator python toolkit that could be used to deploy code as a job/service on CPU/GPU.
-                                This was eventually perfected by Modal.</li>
+                            <li>• Built an nbox.Operator python toolkit that could be used to deploy code as a job/service on CPU/GPU. This was eventually perfected by Modal.</li>
                             <li>• We shipped a version of NimbleBox with album style cover image for each Project.</li>
                             <li>• The joy of people when they discovered something about the product.</li>
+                            <li>• Travelled to US twice and spoke to Jeff Dean about our work.</li>
                             <li>• Pleasure of no shame after loosing fear of rejection in sales.</li>
                         </ul>
                     </div>
@@ -161,47 +165,19 @@ export default function AboutPage() {
                     <p className="text-sm text-ink mb-2">Other than the points mentioned above, in the startup, I&apos;ve helped with sales, design, branding, customer success, etc.</p>
                 </div>
 
-                {/* Hack MIT */}
-                <div className="mb-8 ">
+                {/* Hack MIT & PennApps */}
+                <div className="mb-8" id="not-imp-0">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">Mentor & Judge</p>
-                            <p className="text-base text-ink font-medium">
-                                <Link href="https://hackmit.org" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
-                                    <code>Hack MIT 2024</code>
-                                    <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-                                </Link>
-                            </p>
+                            <p className="text-lg font-serif font-semibold position-text">Mentor & Judge - Hack MIT 2024 & PennApps XXV</p>
                         </div>
                         <div className="text-left sm:text-right text-sm text-ink">
-                            <p>September 2024, MIT, Cambridge</p>
+                            <p>September 2024, MIT, Cambridge & University of Pennsylvania, Pennsylvania</p>
                         </div>
                     </div>
                     <ul className="text-sm text-ink space-y-1 mb-2">
                         <li>• Gave a technical workshop on Tune&apos;s AI research</li>
                         <li>• Mentored teams building AI products for first responders, fashion designing, etc</li>
-                    </ul>
-                </div>
-
-                {/* PennApps */}
-                <div className="mb-8 ">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                        <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">Mentor & Judge</p>
-                            <p className="text-base text-ink font-medium">
-                                <Link href="https://pennapps.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
-                                    <code>PennApps XXV</code>
-                                    <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
-                                </Link>
-                            </p>
-                        </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
-                            <p>September 2024, University of Pennsylvania, Pennsylvania</p>
-                        </div>
-                    </div>
-                    <ul className="text-sm text-ink space-y-1 mb-2">
-                        <li>• Gave a technical workshop on Tune Studio</li>
-                        <li>• Mentored teams building AI products in education, etc</li>
                     </ul>
                 </div>
 
@@ -216,7 +192,7 @@ export default function AboutPage() {
                             <p>Dec. 2020 — March 2021, Remote</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink">GenAI with GPT-2. R&D for latest in chatbot technology to ease up sifting through extremely large datapoints. Advanced voice based Business Intelligence toolkit, control and ask using voice only!</p>
+                    <p className="text-sm text-ink">Research and develop a Grafana plugin agent that converts user input in natural langauge to charts. The novel solution used a decision tree to parse the query parameters based on prompting. Deployed <span className="font-bold">model sharded GPT-2 1Bn</span> on <span className="font-bold">2 Nvidia-3090 GPUs</span> to maximise the context length for each input query.</p>
                 </div>
 
                 {/* Shipmnts */}
@@ -244,7 +220,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Kaaenaat */}
-                <div className="mb-8 ">
+                <div className="mb-8" id="not-imp-0">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Summer Intern</p>
@@ -261,7 +237,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Connecticus */}
-                <div className="mb-8 ">
+                <div className="mb-8" id="not-imp-0">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Machine Learning Intern</p>
@@ -280,7 +256,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* MasterSoft */}
-                <div className="mb-8 ">
+                <div className="mb-8" id="not-imp-0">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Summer Intern</p>
@@ -307,9 +283,8 @@ export default function AboutPage() {
                 <div className="mb-6 ">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">Project अर्थ (Artha)</p>
-                            <p className="text-base text-ink font-medium">
-                                <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                            <p className="text-lg font-serif font-semibold position-text">Project अर्थ (Artha)
+                                <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="ml-2 inline-flex items-center gap-2 ">
                                     <code>website</code>
                                     <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
                                 </Link>
@@ -335,7 +310,6 @@ export default function AboutPage() {
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">AI Researcher</p>
-                            <p className="text-base text-ink font-medium"><code>KS2 Labs</code></p>
                         </div>
                         <div className="text-left sm:text-right text-sm text-ink">
                             <p>Nov. 2020 — Aug. 2021, Remote, India</p>
@@ -362,7 +336,7 @@ export default function AboutPage() {
                 <div className="text-xl font-serif font-bold text-ink mb-2 border-b border-gray-300 pb-2">Open Source Software</div>
 
                 {/* TuneAPI */}
-                <div className="mb-4 ">
+                <div className="mb-4">
                     <Link href="https://github.com/yashbonde/tuneapi/tree/main" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">tuneapi</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -371,7 +345,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Vriksham */}
-                <div className="mb-4 ">
+                <div className="mb-4">
                     <Link href="https://github.com/yashbonde/vriksham" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">vriksham</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -380,7 +354,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Astea */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/astea" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">astea</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -389,7 +363,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* ChainFury */}
-                <div className="mb-4 ">
+                <div className="mb-4">
                     <Link href="https://github.com/NimbleBoxAI/ChainFury" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">ChainFury</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -398,7 +372,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* nbox */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/NimbleBoxAI/nbox" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">nbox</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -407,7 +381,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* yQL */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/yQL" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">yQL</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -416,7 +390,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* general-perceivers */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/general-perceivers" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">general-perceivers</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -425,7 +399,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* chess_lm */}
-                <div className="mb-4 ">
+                <div className="mb-4">
                     <Link href="https://github.com/yashbonde/chess_lm" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">chess_lm</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -434,7 +408,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* dall-e-baby */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/dall-e-baby" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">dall-e-baby</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -443,7 +417,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* spyql */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/spyql" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">spyql</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -452,7 +426,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* vaayuvidha */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/vaayuvidha" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">vaayuvidha</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -461,7 +435,7 @@ export default function AboutPage() {
                 </div>
 
                 {/* Freeciv */}
-                <div className="mb-4 ">
+                <div className="mb-4" id="not-imp-0">
                     <Link href="https://github.com/yashbonde/freeciv-python" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                         <code className="text-lg font-semibold text-ink">freeciv-python</code>
                         <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
@@ -484,8 +458,13 @@ export default function AboutPage() {
                             <p>May 2015 — May 2019, Raipur</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
-                    <p className="text-sm text-ink">Was part of a team that organised <span className="font-bold">E-Summit 2016, 2017 and 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
+                    <p className="text-sm text-ink mb-1">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
+                    <p className="text-sm text-ink mb-1">Was part of a team that organised <span className="font-bold">E-Summit 2016, 2017 and 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
+                    <p className="text-sm text-ink">Worked on building AI powered Indian sign language detector for Texas Instrument's challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
+                        <Link href="https://github.com/krsubham48/Babylon" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                            <span className="font-semibold ml-1">GitHub</span>
+                            <ArrowUpRight className="w-5 h-5 font-bold text-ink" />
+                        </Link></p>
                 </div>
             </div>
         </section>

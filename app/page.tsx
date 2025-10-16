@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, File } from "lucide-react";
 
 export default function Home() {
   return (
@@ -39,6 +39,10 @@ export default function Home() {
               <Link href="/blog" target="_blank" rel="noopener noreferrer" className="block mb-1">
                 My writing
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
+              </Link>
+              <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer" className="block mb-1">
+                Resume
+                <File className="w-4 h-4 font-bold text-ink inline ml-2" />
               </Link>
             </div>
             <div className="text-sm text-ink">
