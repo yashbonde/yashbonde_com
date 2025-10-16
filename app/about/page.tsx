@@ -460,7 +460,7 @@ export default function AboutPage() {
                     </div>
                     <p className="text-sm text-ink mb-1">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
                     <p className="text-sm text-ink mb-1">Was part of a team that organised <span className="font-bold">E-Summit 2016, 2017 and 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
-                    <p className="text-sm text-ink">Worked on building AI powered Indian sign language detector for Texas Instrument's challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
+                    <p className="text-sm text-ink">Worked on building AI powered Indian sign language detector for Texas Instruments&apos; challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
                         <Link href="https://github.com/krsubham48/Babylon" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                             <span className="font-semibold ml-1">GitHub</span>
                             <ArrowUpRight className="w-5 h-5 font-bold text-ink" />
