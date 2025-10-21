@@ -2,21 +2,50 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, ArrowDown } from "lucide-react";
 import ConciseButton from "@/components/ConciseButton";
+import ClickableImage from "@/components/ClickableImage";
 
 export default function AboutPage() {
     return (
         <section>
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-8 mb-10">
+            {/* Mobile Layout: Image full width, text below */}
+            <div className="flex flex-col sm:hidden mb-10">
+                <div className="mb-6 w-full">
+                    <ClickableImage />
+                </div>
+                <div className="flex-1">
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
+                    <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
+                        real business value. AI researcher in neural networks, agentic systems, product development, building startups.
+                    </div>
+                    <div className="text-sm text-ink mb-1">
+                        <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                            Project अर्थ (Artha)
+                            <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
+                        </Link>
+                    </div>
+                    <div className="text-sm text-ink mb-1">
+                        <Link href="#work-experience" className="inline-flex items-center gap-2 ">
+                            Experience
+                            <ArrowDown className="w-4 h-4 font-bold text-ink" />
+                        </Link>
+                    </div>
+                    <div className="text-sm text-ink mb-4">
+                        <Link href="#projects" className="inline-flex items-center gap-2 ">
+                            Projects
+                            <ArrowDown className="w-4 h-4 font-bold text-ink" />
+                        </Link>
+                    </div>
+                    <div>
+                        <ConciseButton className="px-3 py-1 rounded-full bg-gray-100 text-gray-800 font-mono text-xs" />
+                    </div>
+                </div>
+            </div>
+
+            {/* Desktop Layout: Image and text side by side */}
+            <div className="hidden sm:flex sm:flex-row items-start sm:items-end gap-8 mb-10">
                 {/* Image on the left */}
                 <div className="flex-shrink-0 w-full sm:w-auto">
-                    <Image
-                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.jpeg"
-                        alt="Yash Bonde"
-                        width={400}
-                        height={250}
-                        className="rounded-lg object-cover max-w-full h-auto"
-                    />
+                    <ClickableImage />
                 </div>
 
                 {/* Text content on the right */}

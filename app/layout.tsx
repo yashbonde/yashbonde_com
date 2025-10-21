@@ -48,6 +48,8 @@ export default function RootLayout({
                 <Link className="transition-transform duration-200" href="/blog">Journal</Link>
                 <DynamicCircle noise={2134} />
                 <Link className="transition-transform duration-200" href="/about">Work</Link>
+                <DynamicCircle noise={5678} />
+                <Link className="transition-transform duration-200" href="/consultancy">Consultancy</Link>
               </nav>
             </header>
             <main className="flex flex-col gap-8">

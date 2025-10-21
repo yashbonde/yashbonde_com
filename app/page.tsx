@@ -36,6 +36,10 @@ export default function Home() {
                 Read my work profile
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
               </Link>
+              <Link href="/consultancy" target="_blank" rel="noopener noreferrer" className="block mb-1">
+                AI Consultancy Services
+                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
+              </Link>
               <Link href="/blog" target="_blank" rel="noopener noreferrer" className="block mb-1">
                 My writing
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
