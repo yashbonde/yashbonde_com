@@ -174,7 +174,7 @@ export default function ConsultancyPage() {
                             <span className="text-lg font-serif font-semibold text-ink">Large-Scale Document Processing</span>
                         </div>
                         <p className="text-sm text-ink mb-3">
-                            World's largest scientific contents provider
+                            World&apos;s largest scientific contents provider
                         </p>
                         <p className="text-sm text-ink mb-3">
                             Architected data processing pipeline running inference on <span className="font-bold">100K+ documents/day</span> for extraction
@@ -212,7 +212,7 @@ export default function ConsultancyPage() {
             <div id="contact" className="bg-gray-50 rounded-lg p-6 mb-8">
                 <div className="max-w-2xl">
                     <div className="text-2xl font-serif font-semibold text-ink mb-4">
-                        Let's Talk
+                        Let&apos;s Talk
                     </div>
                     <p className="text-sm text-ink mb-6">
                         Discuss your project requirements and explore how AI can drive value for your organization.

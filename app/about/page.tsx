@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRight, ArrowDown } from "lucide-react";
 import ConciseButton from "@/components/ConciseButton";
 import ClickableImage from "@/components/ClickableImage";

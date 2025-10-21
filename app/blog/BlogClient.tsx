@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState, useEffect, useMemo } from "react";
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { ClickableImage } from "@/components";
 
