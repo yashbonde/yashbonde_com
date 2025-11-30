@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Brawler, Eczar, Roboto_Mono } from "next/font/google";
-import Link from "next/link";
-import DynamicCircle from "../components/DynamicCircle";
+import Header from "../components/Header";
 import "./globals.css";
 
 const brawler = Brawler({
@@ -32,33 +31,23 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${brawler.variable} ${eczar.variable} ${robotoMono.variable} antialiased`}>
-        <div className="min-h-screen bg-paper">
-          <div className="max-w-3xl mx-auto px-6 py-10">
-            <header className="flex items-center justify-end mb-8 text-right">
-              <nav className="flex items-center gap-3 text-sm font-sans">
-                <Link className="transition-transform duration-200" href="/">Home</Link>
-                <DynamicCircle noise={1} />
-                <Link className="transition-transform duration-200" href="/blog">Journal</Link>
-                <DynamicCircle noise={2134} />
-                <Link className="transition-transform duration-200" href="/about">Work</Link>
-                <DynamicCircle noise={5678} />
-                <Link className="transition-transform duration-200" href="/consultancy">Consultancy</Link>
-              </nav>
-            </header>
-            <main className="flex flex-col gap-8">
-              {children}
-            </main>
-            {/* Footer intentionally removed */}
-          </div>
-        </div>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={`${brawler.variable} ${eczar.variable} ${robotoMono.variable} antialiased`}>
+                <div className="min-h-screen bg-paper">
+                    <div className="max-w-3xl mx-auto px-6 py-10">
+                        <Header />
+                        <main className="flex flex-col gap-8">
+                            {children}
+                        </main>
+                        {/* Footer intentionally removed */}
+                    </div>
+                </div>
+            </body>
+        </html>
+    );
 }

@@ -130,7 +130,7 @@ a {
 
 .prose a {
   color: var(--ink);
-  text-decoration: none;
+  text-decoration: underline;
   transition: all 0.3s ease;
 }
 

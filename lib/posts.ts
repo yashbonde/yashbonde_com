@@ -10,6 +10,7 @@ export type FrontMatter = {
     date?: string;
     tags?: string[];
     readingTime?: number;
+    disclaimer?: string;
     [key: string]: unknown;
 };
 

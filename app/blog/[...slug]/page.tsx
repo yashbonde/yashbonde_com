@@ -4,6 +4,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
+import TagsDisplay from "@/components/TagsDisplay";
 
 export async function generateStaticParams() {
     const posts = await getAllPosts();
@@ -21,7 +22,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     return (
         <article>
-            <div className="prose mx-auto">
+            <div className="prose mx-auto py-16 px-8">
                 <div className="text-3xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
                 {post.frontMatter.subtitle && (
                     <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
@@ -34,8 +35,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         )}
                     </div>
                 )}
+                {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
+                    <TagsDisplay tags={post.frontMatter.tags} />
+                )}
+                {post.frontMatter.disclaimer && (
+                    <div className="text-sm text-gray-500 text-center italic mb-12">
+                        <div className="font-semibold mb-2">Disclaimer</div>
+                        <div className="prose prose-sm text-gray-500">
+                            <MDXRemote
+                                source={post.frontMatter.disclaimer}
+                                options={{
+                                    mdxOptions: {
+                                        remarkPlugins: [remarkGfm],
+                                    },
+                                }}
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
-            <div className="prose max-w-none">
+            <div className="prose max-w-none py-12 px-8">
                 <MDXRemote
                     source={post.content}
                     options={{
