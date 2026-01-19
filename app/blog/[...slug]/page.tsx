@@ -5,6 +5,7 @@ import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import TagsDisplay from "@/components/TagsDisplay";
+import References from "@/components/References";
 
 export async function generateStaticParams() {
     const posts = await getAllPosts();
@@ -64,6 +65,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                         },
                     }}
                 />
+                {post.frontMatter.references && (
+                    <References references={post.frontMatter.references} />
+                )}
             </div>
         </article>
     );

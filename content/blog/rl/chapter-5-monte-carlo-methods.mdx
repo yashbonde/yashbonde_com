@@ -1,9 +1,39 @@
----
-title: "RL Chapter 5: Monte Carlo Methods"
-subtitle: "Learning from experience. Notes from Barto Sutton."
-date: "2020-04-11"
-tags: ["Reinforcement Learning", "Notes"]
+--- 
+title: 'RL Chapter 5: Monte Carlo Methods'
+subtitle: Learning from experience. Notes from Barto Sutton.
+date: '2020-04-11'
+tags:
+- Reinforcement Learning
+- Notes
 readingTime: 13
+references:
+- title: 'Reinforcement Learning: An Introduction'
+  url: http://incompleteideas.net/book/the-book-2nd.html
+- title: here
+  url: https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU
+- title: Deepmind's Youtube Lecture
+  url: https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s
+- title: slides
+  url: https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing
+- title: often
+  url: https://en.wikipedia.org/wiki/Monte_Carlo_method
+- title: Note the subtle difference in the two
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/FVMC-EVMC.png
+- title: First Visit MC Process
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_1.png
+- title: instead of $v_\pi$ we have $q_\pi$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_2.png
+- title: On policy first-visit MC control (for $\epsilon$-soft policies), estimates
+    $\pi \approx \pi_*$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_4.png
+- title: For example 5.4
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_5.png
+- title: For example 5.5
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_6.png
+- title: Off-policy MC Prediction (policy evaluation) for estimating $Q \approx q_\pi$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_7.png
+- title: Off-policy MC control for estimating $\pi \approx \pi_*$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_8.png
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap5_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and slides for [model free value estimation](./slides/L4_MC-TD.pdf) and [model free control](./slides/L5_Model_Free_control.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).

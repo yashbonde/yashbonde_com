@@ -1,9 +1,72 @@
----
-title: "Chess Engine - (Part 1)"
-subtitle: "Pretraining Network on 18.6 Lakh moves"
-date: "2020-11-21"
-tags: ["Chess", "Transformer", "Reinforcement Learning", "Research"]
+--- 
+title: Chess Engine - (Part 1)
+subtitle: Pretraining Network on 18.6 Lakh moves
+date: '2020-11-21'
+tags:
+- Chess
+- Transformer
+- Research
 readingTime: 11
+references:
+- title: Github repo
+  url: https://github.com/yashbonde/chess_lm
+- title: wiki
+  url: https://en.wikipedia.org/wiki/Indian_numbering_system
+- title: Shipmnts
+  url: https://shipmnts.com/
+- title: LinkedIn
+  url: https://www.linkedin.com/in/yash-bonde/
+- title: vast.ai
+  url: https://vast.ai/
+- title: the bitter lesson
+  url: http://www.incompleteideas.net/IncIdeas/BitterLesson.html
+- title: Hutter Prize
+  url: http://prize.hutter1.net/
+- title: Kolmogorov Complexity
+  url: https://en.wikipedia.org/wiki/Kolmogorov_complexity
+- title: Halting Problem
+  url: https://en.wikipedia.org/wiki/Halting_problem
+- title: AlphaZero
+  url: https://arxiv.org/pdf/1712.01815.pdf
+- title: MuZero
+  url: http://arxiv.org/abs/1911.08265
+- title: emergent behaviour
+  url: https://openai.com/blog/emergent-tool-use/
+- title: AlphaGo
+  url: https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf
+- title: Shipping
+  url: https://blog.griddynamics.com/deep-reinforcement-learning-for-supply-chain-and-price-optimization/
+- title: Training method (left) and network (right) of AlphaGo. Note how is utilises
+    the complete board state and internally only process it.
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-0.png
+- title: video
+  url: https://www.youtube.com/watch?v=acVvkz4MsKc
+- title: transformer
+  url: http://arxiv.org/abs/1706.03762
+- title: pgnmentor.com
+  url: https://www.pgnmentor.com/files.html
+- title: transformers
+  url: https://huggingface.co/transformers/_modules/transformers/modeling_gpt2.html
+- title: GPT-2 model
+  url: https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf
+- title: The board notation is given as above, we can then extend it to fill all the
+    locations in the board. You can then simply say that any move irrespective of
+    the unit has a starting box and a destination box.
+  url: https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/SCD_algebraic_notation.svg/1200px-SCD_algebraic_notation.svg.png
+- title: here
+  url: https://github.com/yashbonde/chess_lm/blob/master/m2id.json
+- title: Sample sequences shuffled. Note 0 means new game just like GPT-2 and not
+    use any special attention matrices. In my experience it does not work well.
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-2.png
+- title: Tensorboard for training 3 models. Grey represents buffer size of 55555,
+    red is larger model ~3× parameters of baseline parameters and buffer size of 1000000.
+    Orange represents fully loaded dataset same arch. as Grey. Though the larger model
+    trains quicker the loss function is rougher and there is a slight benefit. Grey
+    was trained for 3 epochs whereas others were trained for 1 epoch. (there was as
+    bug in IterableDataset which caused number of samples to be lower than fully loaded)
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-3.png
+- title: ELO ratings
+  url: https://en.wikipedia.org/wiki/Elo_rating_system
 ---
 
 This is first in a series of blogs covering this project. **TL;DR** see this [Github repo](https://github.com/yashbonde/chess_lm). Also for all you who do not understand the Indian number system just read this [wiki](https://en.wikipedia.org/wiki/Indian_numbering_system).

@@ -1,9 +1,51 @@
----
-title: "RL Chapter 6: Temporal Difference Learning"
-subtitle: "Learning from Experiences minus the Complete Rollout. Notes from Barto Sutton."
-date: "2020-04-27"
-tags: ["Reinforcement Learning", "Notes"]
+--- 
+title: 'RL Chapter 6: Temporal Difference Learning'
+subtitle: Learning from Experiences minus the Complete Rollout. Notes from Barto Sutton.
+date: '2020-04-27'
+tags:
+- Reinforcement Learning
+- Notes
 readingTime: 11
+references:
+- title: 'Reinforcement Learning: An Introduction'
+  url: http://incompleteideas.net/book/the-book-2nd.html
+- title: here
+  url: https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU
+- title: Deepmind's Youtube Lecture
+  url: https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s
+- title: slides
+  url: https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing
+- title: Tabular TD($0$) for estimating $v_\pi$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_1.png
+- title: If our aim is to predict total time then how MC would compare against TD
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_2.png
+- title: MC vs. TD
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_3.png
+- title: Performance of TD($0$) and constant-$\alpha$ MC under batch training on random
+    walk task
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_4.png
+- title: Transition diagram
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_5.png
+- title: Sarsa (On-policy TD Control) for estimating $Q \approx q_*$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_6.png
+- title: Deepmind
+  url: https://deepmind.com/research/publications/playing-atari-deep-reinforcement-learning
+- title: Learning from Delayed Rewards
+  url: http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf
+- title: Q-Learning (Off-policy TD Control) for estimating $\pi \approx \pi_*$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_7.png
+- title: 'right: cliff environment setup | left: rewards by the two algorithms'
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_8.png
+- title: Interim (dashed) and Asymptotic (solid) are calculated by getting averages
+    from first 10 and 50,000 runs. Solid Circle shows the best performance for interim
+    performance
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_9.png
+- title: Q vs. Double-Q for the given MDP
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_10.png
+- title: Double Q-learning, for estimating $Q_1 \approx Q_2 \approx q_*$
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_11.png
+- title: two state-action pairs make board reach the same "afterposition"
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_12.png
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap6_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and slides for [model free value estimation](./slides/L4_MC-TD.pdf) and [model free control](./slides/L5_Model_Free_control.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).

@@ -4,6 +4,13 @@ import matter from "gray-matter";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "blog");
 
+export type Reference = {
+    title: string;
+    url?: string;
+    author?: string;
+    year?: string | number;
+};
+
 export type FrontMatter = {
     title: string;
     subtitle?: string;
@@ -11,6 +18,7 @@ export type FrontMatter = {
     tags?: string[];
     readingTime?: number;
     disclaimer?: string;
+    references?: Reference[];
     [key: string]: unknown;
 };
 

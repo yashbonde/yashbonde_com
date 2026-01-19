@@ -1,9 +1,38 @@
----
-title: "RL Chapter 4: Dynamic Programming"
-subtitle: "Solving Finite MDP. Notes from Barto Sutton."
-date: "2019-08-25"
-tags: ["Reinforcement Learning", "Notes"]
+--- 
+title: 'RL Chapter 4: Dynamic Programming'
+subtitle: Solving Finite MDP. Notes from Barto Sutton.
+date: '2019-08-25'
+tags:
+- Reinforcement Learning
+- Notes
 readingTime: 8
+references:
+- title: 'Reinforcement Learning: An Introduction'
+  url: http://incompleteideas.net/book/the-book-2nd.html
+- title: here
+  url: https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU
+- title: Deepmind's Youtube Lecture
+  url: https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s
+- title: slides
+  url: https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing
+- title: scheduling algorithms
+  url: https://www.geeksforgeeks.org/weighted-job-scheduling/
+- title: sequence alignment
+  url: https://web.stanford.edu/class/cs262/presentations/lecture2.pdf
+- title: shortest path
+  url: https://en.wikipedia.org/wiki/Shortest_path_problem
+- title: graphical problems
+  url: https://en.wikipedia.org/wiki/Viterbi_algorithm
+- title: $E$ is evaluation and $I$ is improvement
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap4_1.png
+- title: poisson probability distribution
+  url: https://en.wikipedia.org/wiki/Poisson_distribution
+- title: Policy Iteration Algorithm
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/policy_iteration.png
+- title: Value Iteration Algorithm
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/value_iteration.png
+- title: Generalised Policy Iteration
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/generalised_PI2.png
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap4_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and [slides](./slides/L3_DP.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).

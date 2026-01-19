@@ -1,9 +1,50 @@
----
-title: "Chess Engine - (Part 1.5)"
-subtitle: "On scaling laws for Language Models"
-date: "2020-11-23"
-tags: ["Chess", "Transformer", "Reinforcement Learning", "Research"]
+--- 
+title: Chess Engine - (Part 1.5)
+subtitle: On scaling laws for Language Models
+date: '2020-11-23'
+tags:
+- Chess
+- Transformer
+- Research
 readingTime: 6
+references:
+- title: Github repo
+  url: https://github.com/yashbonde/chess_lm
+- title: wiki
+  url: https://en.wikipedia.org/wiki/Indian_numbering_system
+- title: LinkedIn
+  url: https://www.linkedin.com/in/yash-bonde/
+- title: Power Law
+  url: https://en.wikipedia.org/wiki/Power_law
+- title: Pareto Distribution
+  url: https://en.wikipedia.org/wiki/Pareto_distribution
+- title: (Left) you have normal power law distribution and (Right) shows that scaling
+    x-axis to log gives a linear graph. Which helps when working exponentially increasing/decreasing
+    values. y = f(x) = 5.6 x^{-0.095} \forall x \in [0,1000)
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-4.png
+- title: ArXiv
+  url: http://arxiv.org/abs/2001.08361
+- title: nats
+  url: https://en.wikipedia.org/wiki/Nat_(unit
+- title: (left) It means that for a given compute size there is an optimal model size
+    (where the loss is lowest, on the line) and for the same amout of compute both
+    the larger and the smaller models can give the same results (test loss). Thus
+    we should find the optimal model for this compute size. (right) at same steps,
+    larger models give lower loss and on increasing the steps there is decrease in
+    loss for the same model.
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-6.png
+- title: This has to be the best representation of results. What this shows is that
+    for each variable shown, if the other two are optimal then the test loss is very
+    predictable and follows smooth curves. Thus in order to train an efficient model
+    we need to grow all three in tandem. This is the engineering challenge!
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-7.png
+- title: 'This is another important graph. On the right you see that datasize can
+    also become a bottleneck (😓 this sounds familiar), ie. when you have a small dataset
+    even larger models can suffer same loss. When this happens no amount of compute
+    or model size increase can help you and you start to move away from efficient
+    frontier. On the right is the For reference: L(N,D) = Big( (N_C/N)^(alpha_N/alpha_D)
+    + D_C/D )^alpha_D and on right, X-axis is N^0.737/D.'
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-8.png
 ---
 
 This is first in a series of blogs covering this project. **TL;DR** see this [Github repo](https://github.com/yashbonde/chess_lm). Also for all you who do not understand the Indian number system just read this [wiki](https://en.wikipedia.org/wiki/Indian_numbering_system). This is a follow up to my [previous work](./chess-engine-part-1) where I train a language model on $25Cr$ or $225.1Mn$ moves and pose some questions.

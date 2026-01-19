@@ -1,9 +1,27 @@
----
-title: "Let's build 'Attention is all you need' — 1/2"
-subtitle: "On why RNNs suck!"
-date: "2018-08-27"
-tags: ["Transformer", "Neural Networks", "Notes"]
+--- 
+title: Let's build 'Attention is all you need' — 1/2
+subtitle: On why RNNs suck!
+date: '2018-08-27'
+tags:
+- Transformer
+- Neural Networks
+- Notes
 readingTime: 10
+references:
+- title: RNN Diagram
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/1.webp
+- title: Transformer Network Architecture
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/2.webp
+- title: Attention Mechanism
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/3.webp
+- title: Multi-Head Attention
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/4.webp
+- title: Positional Encoding Example
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/5.webp
+- title: Positional Encoding
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/6.webp
+- title: Selection of columns
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/vo/7.webp
 ---
 
 Have you ever been with someone who speaks alot, and even if you pay close attention, you miss out on some of the details. Well computers are absolutely horrible at that, they can't remember anything. Even the state-of-the-art machines out their can't remember things beyond a few steps. This kind of information that depends on time i.e. sequential, is called temporal knowledge. And solving temporal problems has created solutions no one thought were possible, think of the practically global language translator Google Translate.
