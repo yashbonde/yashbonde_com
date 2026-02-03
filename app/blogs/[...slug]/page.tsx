@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import React from "react";
-import { getPostBySlug, getAllPosts } from "@/lib/posts";
+import { getPostBySlug, getAllPosts, extractFirstImage } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import TagsDisplay from "@/components/TagsDisplay";
 import References from "@/components/References";
 import ReferenceHover from "@/components/ReferenceHover";
+import type { Metadata } from "next";
 
 export async function generateStaticParams() {
     const posts = await getAllPosts();
@@ -15,6 +16,53 @@ export async function generateStaticParams() {
         const slugSegments = p.slug.split('/');
         return { slug: slugSegments };
     });
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+    const { slug } = await params;
+    const slugString = slug.join('/');
+    const post = await getPostBySlug(slugString);
+
+    if (!post) {
+        return {
+            title: 'Post Not Found',
+        };
+    }
+
+    const firstImage = extractFirstImage(post.content);
+    const title = post.frontMatter.title;
+    const description = post.frontMatter.subtitle || title;
+    const url = `https://yashbonde.com/blogs/${slugString}`;
+
+    return {
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            url,
+            siteName: 'Yash Bonde',
+            type: 'article',
+            publishedTime: post.frontMatter.date,
+            authors: ['Yash Bonde'],
+            ...(firstImage && {
+                images: [
+                    {
+                        url: firstImage.startsWith('http') ? firstImage : `https://yashbonde.com${firstImage}`,
+                        alt: title,
+                    }
+                ],
+            }),
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            ...(firstImage && {
+                images: [firstImage.startsWith('http') ? firstImage : `https://yashbonde.com${firstImage}`],
+            }),
+        },
+    };
 }
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string[] }> }) {
@@ -132,37 +180,39 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
     return (
         <article>
-            <div className="prose mx-auto py-16 px-8 max-w-3xl">
-                <div className="text-4xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
-                {post.frontMatter.subtitle && (
-                    <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
-                )}
-                {post.frontMatter.date && (
-                    <div className="text-sm font-mono text-center text-ink mb-8">
-                        Yash Bonde . {post.frontMatter.date}
-                        {post.frontMatter.readingTime && (
-                            <span> . {post.frontMatter.readingTime} min read</span>
-                        )}
-                    </div>
-                )}
-                {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
-                    <TagsDisplay tags={post.frontMatter.tags} />
-                )}
-                {post.frontMatter.disclaimer && (
-                    <div className="text-sm text-gray-500 text-center italic mb-12">
-                        <div className="font-semibold mb-2">Disclaimer</div>
-                        <div className="prose prose-sm text-gray-500">
-                            <MDXRemote
-                                source={post.frontMatter.disclaimer}
-                                options={{
-                                    mdxOptions: {
-                                        remarkPlugins: [remarkGfm],
-                                    },
-                                }}
-                            />
+            <div className="prose py-16 px-8">
+                <div className="mx-auto" style={{ maxWidth: '48rem', width: '100%' }}>
+                    <div className="text-4xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
+                    {post.frontMatter.subtitle && (
+                        <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
+                    )}
+                    {post.frontMatter.date && (
+                        <div className="text-sm font-mono text-center text-ink mb-8">
+                            Yash Bonde . {post.frontMatter.date}
+                            {post.frontMatter.readingTime && (
+                                <span> . {post.frontMatter.readingTime} min read</span>
+                            )}
                         </div>
-                    </div>
-                )}
+                    )}
+                    {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
+                        <TagsDisplay tags={post.frontMatter.tags} />
+                    )}
+                    {post.frontMatter.disclaimer && (
+                        <div className="text-sm text-gray-500 text-center italic mb-12">
+                            <div className="font-semibold mb-2">Disclaimer</div>
+                            <div className="prose prose-sm text-gray-500">
+                                <MDXRemote
+                                    source={post.frontMatter.disclaimer}
+                                    options={{
+                                        mdxOptions: {
+                                            remarkPlugins: [remarkGfm],
+                                        },
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
             <div className="prose px-8">
                 <MDXRemote

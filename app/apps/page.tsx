@@ -27,12 +27,12 @@ export default function AppsPage() {
                                     <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
                                 </Link>
                             </div>
-                            <div className="text-sm text-ink">
+                            <div className="text-ink">
                                 <span className="font-semibold">[Active]</span>
                             </div>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-3">
+                    <p className="text-ink mb-3">
                         Interactive maze generator using recursive backtracking algorithm. Customize size, density, line width, and complexity to create unique mazes. Download as SVG.
                     </p>
                     <div className="flex flex-wrap gap-2">

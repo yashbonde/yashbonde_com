@@ -15,18 +15,18 @@ export default function AboutPage() {
                     <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
                         real business value. AI researcher in neural networks, agentic systems, product development, building startups.
                     </div>
-                    <div className="text-sm text-link mb-1">
+                    <div className="text-link mb-1">
                         <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                             Project अर्थ (Artha)
                         </Link>
                     </div>
-                    <div className="text-sm text-link mb-1">
+                    <div className="text-link mb-1">
                         <Link href="#work-experience" className="inline-flex items-center gap-2 ">
                             Experience
                             <ArrowDown className="w-4 h-4 font-bold text-link" />
                         </Link>
                     </div>
-                    <div className="text-sm text-link mb-4">
+                    <div className="text-link mb-4">
                         <Link href="#projects" className="inline-flex items-center gap-2 ">
                             Projects
                             <ArrowDown className="w-4 h-4 font-bold text-link" />
@@ -45,25 +45,13 @@ export default function AboutPage() {
                 {/* Text content on the right */}
                 <div className="flex-1">
                     <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
-                    <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
-                        real business value. AI researcher in neural networks, agentic systems, product development, building startups.
+                    <div className="text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
+                        real business value. Deployed and scaled agentic systems, led product development, and built startups.<br /><br />
+                        Currently focusing on AI research in neural networks and automata theory.
+                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>.
                     </div>
-                    <div className="text-sm text-link mb-1">
-                        <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
-                            Project अर्थ (Artha)
-                        </Link>
-                    </div>
-                    <div className="text-sm text-link mb-1">
-                        <Link href="#work-experience" className="inline-flex items-center gap-2 ">
-                            Experience
-                            <ArrowDown className="w-4 h-4 font-bold text-link" />
-                        </Link>
-                    </div>
-                    <div className="text-sm text-link mb-4">
-                        <Link href="#projects" className="inline-flex items-center gap-2 ">
-                            Projects
-                            <ArrowDown className="w-4 h-4 font-bold text-link" />
-                        </Link>
+                    <div>
+
                     </div>
                 </div>
             </div>
@@ -82,12 +70,12 @@ export default function AboutPage() {
                                 </Link>
                             </p>
                         </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
+                        <div className="text-left sm:text-right text-ink">
                             <p>March - Dec. 2025, Bangalore</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-3">Tune AI was acquihired by Ema Unlimited in March, 2025.</p>
-                    <ul className="text-sm text-ink space-y-1 mb-2">
+                    <p className="text-ink mb-3">Tune AI was acquihired by Ema Unlimited in March, 2025.</p>
+                    <ul className="text-ink space-y-1 mb-2">
                         <li className="flex gap-2 text-justify">
                             <span>•</span>
                             <span>Leading post sales implementation for several F50 clients. End to end lifecycle from discovery to delivery.</span>
@@ -97,7 +85,7 @@ export default function AboutPage() {
                             <span>Built 2+ internal tools. Reduced effort by multiple hours/week/employee.</span>
                         </li>
                     </ul>
-                    <p className="text-sm text-ink mb-3">After moving to Post Sales team, I realised the challenges of project management.
+                    <p className="text-ink mb-3">After moving to Post Sales team, I realised the challenges of project management.
                         Led building CVE-One AI for post sales team to automate project management. Used by multiple teams to track updates
                         for a project.</p>
                 </div>
@@ -113,20 +101,20 @@ export default function AboutPage() {
                                 </Link>
                             </p>
                         </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
+                        <div className="text-left sm:text-right text-ink">
                             <p>Dec. 2020 — Feb. 2025, Chennai, Bangalore & San Francisco</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-3">GenAI for Enterprises</p>
-                    <p className="text-sm text-ink mb-3">At Tune I have seen every part of the startup journey from ideation to discovering PMF to failing
+                    <p className="text-ink mb-3">GenAI for Enterprises</p>
+                    <p className="text-ink mb-3">At Tune I have seen every part of the startup journey from ideation to discovering PMF to failing
                         in monetization to eventually landing contracts with some of the best organisations in their market.
                         Led AI solutioning working directly with Abu Dhabi F1 organizer (Ethara), world’s largest scientific contents product
                         (Clarivate), and Intel. Projects became <span className="font-bold">biggest revenue drivers</span> for Tune AI.
                         Backed by: Accel, Together Fund, Techstars, Venture Catalysts, Cornerstone Venture Partners, Chennai Angels, and Astarc Ventures.</p>
 
-                    <p className="text-sm font-semibold text-ink mb-2">Key Achievements</p>
+                    <p className="font-semibold text-ink mb-2">Key Achievements</p>
                     <div className="ml-4 mb-3">
-                        <ul className="text-sm text-ink space-y-1">
+                        <ul className="text-ink space-y-1">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>Successfully delivered multiple enterprise projects from ideation to production combined revenue of <span className="font-bold">$140K+</span></span>
@@ -154,9 +142,9 @@ export default function AboutPage() {
                         </ul>
                     </div>
 
-                    <p className="text-sm font-semibold text-ink mb-2">Product developement for features in Tune and NimbleBox:</p>
+                    <p className="font-semibold text-ink mb-2">Product developement for features in Tune and NimbleBox:</p>
                     <div className="ml-4 mb-3">
-                        <ul className="text-sm text-ink space-y-1">
+                        <ul className="text-ink space-y-1">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span><span className="font-semibold">Blob</span> : Client facing agent and configurable assistant in Studio. Full framework for building agents and interface over API.</span>
@@ -188,11 +176,11 @@ export default function AboutPage() {
                             <p className="text-lg font-serif font-semibold position-text">AI Consultant</p>
                             <p className="text-base text-ink font-medium"><code>NPAW, Spain</code></p>
                         </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
+                        <div className="text-left sm:text-right text-ink">
                             <p>Dec. 2020 — March 2021, Remote</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink">Research and develop a Grafana plugin agent that converts user input in natural langauge to charts. The novel solution used a decision tree to parse the query parameters based on prompting. Deployed <span className="font-bold">model sharded GPT-2 1Bn</span> on <span className="font-bold">2 Nvidia-3090 GPUs</span> to maximise the context length for each input query.</p>
+                    <p className="text-ink">Research and develop a Grafana plugin agent that converts user input in natural langauge to charts. The novel solution used a decision tree to parse the query parameters based on prompting. Deployed <span className="font-bold">model sharded GPT-2 1Bn</span> on <span className="font-bold">2 Nvidia-3090 GPUs</span> to maximise the context length for each input query.</p>
                 </div>
 
                 {/* Shipmnts */}
@@ -206,11 +194,11 @@ export default function AboutPage() {
                                 </Link>
                             </p>
                         </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
+                        <div className="text-left sm:text-right text-ink">
                             <p>July 2019 — Nov. 2020, Ahmedabad</p>
                         </div>
                     </div>
-                    <ul className="text-sm text-ink space-y-1">
+                    <ul className="text-ink space-y-1">
                         <li className="flex gap-2 text-justify">
                             <span>•</span>
                             <span>Built ML solution to convert unstructured business data like documents (scanned, digitised) to structured knowledge using supervised and unsupervised machine learning algorithms</span>
@@ -231,19 +219,19 @@ export default function AboutPage() {
                 </div>
 
                 {/* Internships Section */}
-                <div className="mb-12">
-                    <span className="text-lg font-serif font-bold border-b border-black pb-2 mb-6">Internships</span>
+                <div className="mb-8">
+                    <span className="text-lg font-serif font-bold mb-6">Internships</span>
 
                     <div className="space-y-8">
                         {/* Kaaenaat */}
-                        <ul className="text-sm text-ink space-y-2 mb-2">
+                        <ul className="text-ink space-y-2 mb-2">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>(Kaaenaat, Bangalore, April 2018 — Oct. 2018) Upgraded <strong>Kount</strong> via live traffic analysis (Dynamic Trajectory Clustering and Anomaly Detection) on <strong>embedded devices</strong> for edge applications; developed an in-house application for high-speed Image Segmentation.</span>
                             </li>
                         </ul>
                         {/* Connecticus */}
-                        <ul className="text-sm text-ink space-y-2 mb-2">
+                        <ul className="text-ink space-y-2 mb-2">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>(<Link href="https://connecticus.in/" target="_blank" rel="noopener noreferrer" className="hover:underline inline-flex items-center gap-1">
@@ -253,7 +241,7 @@ export default function AboutPage() {
                         </ul>
 
                         {/* MasterSoft */}
-                        <ul className="text-sm text-ink space-y-2 mb-2">
+                        <ul className="text-ink space-y-2 mb-2">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>(<Link href="https://www.mastersoft.ai/" target="_blank" rel="noopener noreferrer" className="hover:underline inline-flex items-center gap-1">
@@ -264,28 +252,23 @@ export default function AboutPage() {
 
                     </div>
                 </div>
-            </div>
-
-            {/* Projects */}
-            <div id="projects" className="mb-8">
-                <h2 className="text-xl font-serif font-bold text-ink mb-4 border-b border-gray-300">Personal Endeavours</h2>
 
                 {/* Project Artha */}
-                <div className="mb-6 ">
+                <div className="mb-8 ">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">
+                                Developer, {" "}
                                 <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">
                                     Project अर्थ (Artha)
                                 </Link>
                             </p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-2">Building world&apos;s largest digital enclyclopaedia for ancient Indian literature. This is my personal project
-                        Spend time reading, curating and digitising books, editing and compiling the digital Encyclopaedia.
-                        <Link href="https://github.com/yashbonde/artha" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
-                            <span className="font-semibold ml-1">yashbonde/artha</span>.
-                        </Link>
+                    <p className="text-ink mb-2">Building world&apos;s largest digital enclyclopaedia for ancient Indian literature. Spend time reading, curating and digitising books, editing and
+                        compiling the digital Encyclopaedia. Indexed <strong>6,363+</strong> articles, <strong>3+</strong> books, <strong>103,211+</strong> shlokas with unique ids. Read <Link href="https://github.com/yashbonde/artha" target="_blank" rel="noopener noreferrer" className="text-ink hover:text-ink transition-colors">
+                            <span className="font-semibold">code</span>
+                        </Link> and contribute.
                     </p>
                 </div>
 
@@ -296,9 +279,9 @@ export default function AboutPage() {
                             <p className="text-lg font-serif font-semibold position-text">AI Researcher</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-2">I spent a lot of time in-between jobs working on AI application research.</p>
+                    <p className="text-ink mb-2">I spent a lot of time in-between jobs working on AI application research.</p>
                     <div className="ml-4 mb-3">
-                        <ul className="text-sm text-ink space-y-1">
+                        <ul className="text-ink space-y-1">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>Research on RL agents that do not need the perfect board state to play superhuman chess. This would demonstrate that NNs have internal representation capacity to solve complicated problems giving only traces of information.
@@ -318,23 +301,26 @@ export default function AboutPage() {
                 </div>
             </div>
 
+            <div id="projects" className="mb-8">
+            </div>
+
             {/* Education */}
             <div id="education">
-                <h2 className="text-xl font-serif font-bold text-ink mb-4 border-b border-gray-300">Education</h2>
+                <span className="text-2xl font-serif font-bold text-ink mb-8">Education</span>
 
                 <div className="mb-6">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">B. Tech. in Electronics and Telecommunication</p>
-                            <p className="text-base text-ink font-medium"><code>National Institute of Technology Raipur</code></p>
+                            <p className="text-base text-ink font-medium"><code>National Institute of Technology Raipur (NIT Raipur)</code></p>
                         </div>
-                        <div className="text-left sm:text-right text-sm text-ink">
+                        <div className="text-left sm:text-right text-ink">
                             <p>May 2015 — May 2019, Raipur</p>
                         </div>
                     </div>
-                    <p className="text-sm text-ink mb-1">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
-                    <p className="text-sm text-ink mb-1">Was part of a team that organised <span className="font-bold">E-Summit 2016, 2017 and 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
-                    <p className="text-sm text-ink">Worked on building AI powered Indian sign language detector for Texas Instruments&apos; challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
+                    <p className="text-ink mb-1">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
+                    <p className="text-ink mb-1">Was part of a team that organised <span className="font-bold">E-Summit 2016 - 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
+                    <p className="text-ink">Worked on building AI powered Indian sign language detector for Texas Instruments&apos; challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
                         <Link href="https://github.com/krsubham48/Babylon" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
                             <span className="font-semibold ml-1">GitHub</span>
                         </Link></p>

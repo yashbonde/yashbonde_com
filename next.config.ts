@@ -30,6 +30,16 @@ const nextConfig: NextConfig = {
 
   // Ensure proper build output
   distDir: '.next',
+
+  async redirects() {
+    return [
+      {
+        source: '/blog',
+        destination: '/',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

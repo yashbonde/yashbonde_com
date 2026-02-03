@@ -97,4 +97,20 @@ export async function getPostBySlug(slug: string): Promise<
     return null;
 }
 
+export function extractFirstImage(content: string): string | null {
+    // Try markdown image syntax: ![alt](url)
+    const mdImageMatch = content.match(/!\[.*?\]\((.*?)\)/);
+    if (mdImageMatch && mdImageMatch[1]) {
+        return mdImageMatch[1];
+    }
+
+    // Try HTML img tag: <img src="url" />
+    const htmlImageMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (htmlImageMatch && htmlImageMatch[1]) {
+        return htmlImageMatch[1];
+    }
+
+    return null;
+}
+
 

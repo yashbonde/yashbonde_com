@@ -1,8 +1,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, File } from "lucide-react";
+import { getAllPosts, getAllTags } from "@/lib/posts";
+import LandingBlogList from "@/components/LandingBlogList";
 
-export default function Home() {
+export default async function Home() {
+  const [posts, tags] = await Promise.all([
+    getAllPosts(),
+    getAllTags()
+  ]);
+
   return (
     <section className="max-w-3xl mx-auto">
       {/* Letter Header */}
@@ -36,20 +43,12 @@ export default function Home() {
                 Read my work profile
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
               </Link>
-              <Link href="/consultancy" className="block mb-1">
-                AI Consultancy Services
-                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
-              </Link>
-              <Link href="/blog" className="block mb-1">
-                My writing
-                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
-              </Link>
               <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer" className="block mb-1">
                 Resume
                 <File className="w-4 h-4 font-bold text-ink inline ml-2" />
               </Link>
             </div>
-            <div className="text-sm text-ink">
+            <div className="text-ink">
               <Link href="https://ema.co" target="_blank" rel="noopener noreferrer" className="block mb-1">
                 CVE Lead at Ema
                 <ArrowUpRight className="w-4 h-4 font-bold text-ink inline ml-2" />
@@ -71,6 +70,7 @@ export default function Home() {
         </div>
       </div>
 
+      <LandingBlogList initialPosts={posts} initialTags={tags} />
     </section>
   );
 }
