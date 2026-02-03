@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { ArrowDown } from "lucide-react";
-import ClickableImage from "@/components/ClickableImage";
+import Image from "next/image";
+import { ArrowDown, File } from "lucide-react";
+import ClickableImage from "@/components/ClickableImage"; // kept for reference
 
 export default function AboutPage() {
     return (
@@ -8,12 +9,29 @@ export default function AboutPage() {
             {/* Mobile Layout: Image full width, text below */}
             <div className="flex flex-col sm:hidden mb-10">
                 <div className="mb-6 w-full">
-                    <ClickableImage />
+                    <Image
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.jpeg"
+                        alt="Yash Bonde"
+                        width={400}
+                        height={250}
+                        className="object-cover max-w-full h-auto"
+                        priority
+                    />
                 </div>
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
-                    <div className="text-base text-ink mb-4">My work experience as builder of AI products that drive
-                        real business value. AI researcher in neural networks, agentic systems, product development, building startups.
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
+                    <div className="text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
+                        real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
+                        startup journey. Open for consulting roles.<br /><br />
+                        Currently focusing on AI research in neural networks and automata theory.
+                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>
+                        {" "}on the side.{" "}
+                        <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer">
+                            Resume</Link>. See code <Link href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer">GitHub</Link>.
+                        Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
+                            LinkedIn</Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
+                            X</Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
+                            YouTube</Link>.
                     </div>
                     <div className="text-link mb-1">
                         <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
@@ -39,19 +57,34 @@ export default function AboutPage() {
             <div className="hidden sm:flex sm:flex-row items-start sm:items-end gap-8 mb-10">
                 {/* Image on the left */}
                 <div className="flex-shrink-0 w-full sm:w-auto">
-                    <ClickableImage />
+                    <Image
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.jpeg"
+                        alt="Yash Bonde"
+                        width={400}
+                        height={250}
+                        className="object-cover max-w-full h-auto"
+                        priority
+                    />
                 </div>
 
                 {/* Text content on the right */}
-                <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash Bonde</div>
+                <div className="flex-1 flex flex-col justify-end">
+                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
                     <div className="text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
-                        real business value. Deployed and scaled agentic systems, led product development, and built startups.<br /><br />
+                        real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
+                        startup journey. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
-                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>.
-                    </div>
-                    <div>
-
+                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>
+                        {" "}on the side.{" "}
+                        <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer">
+                            Resume</Link>. See code <Link href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer">GitHub</Link>.
+                        Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
+                            LinkedIn
+                        </Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
+                            X
+                        </Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
+                            YouTube
+                        </Link>.
                     </div>
                 </div>
             </div>

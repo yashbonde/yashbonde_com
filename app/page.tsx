@@ -21,13 +21,13 @@ export default async function Home() {
               alt="Yash Bonde"
               width={400}
               height={250}
-              className="rounded-lg object-cover max-w-full h-auto"
+              className="object-cover max-w-full h-auto"
               priority
             />
           </div>
           <div className="flex-1">
-            <div className="text-3xl font-serif font-bold text-ink  mb-2">Yash Bonde</div>
-            <div className="text-base text-ink mb-6">Developer of{' '}
+            <p className="text-3xl font-serif font-bold text-ink  mb-2">Yash's Notes</p>
+            <p className="text-base text-ink mb-6">AI Researcher. Lived a 0 → 1 Devtool Startup. Product Builder. Developing{' '}
               <Link href="https://artha-pearl.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -35,37 +35,21 @@ export default async function Home() {
                 style={{ color: '#FF9933' }}
               >
                 Project अर्थ (Artha)
-                <ArrowUpRight className="w-5 h-5 font-bold" style={{ color: '#FF9933' }} />
-              </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Ema . Tune AI .
-            </div>
-            <div className="text-base text-ink mb-6">
-              <Link href="/about" className="block mb-1">
-                Read my work profile
-                <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
-              </Link>
-              <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer" className="block mb-1">
-                Resume
-                <File className="w-4 h-4 font-bold text-ink inline ml-2" />
-              </Link>
-            </div>
-            <div className="text-ink">
-              <Link href="https://ema.co" target="_blank" rel="noopener noreferrer" className="block mb-1">
-                CVE Lead at Ema
-                <ArrowUpRight className="w-4 h-4 font-bold text-ink inline ml-2" />
-              </Link>
-              <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer" className="block mb-1">
+              </Link>.
+            </p>
+            <p className="text-base text-ink mb-2">
+              AI Researcher working on neural networks and automata theory.
+              I think we can build an end to end neural computer by 2030.
+              My we<span className="font-semibold">b-log</span> is a bunch of structured thoughts over the years.
+              Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
                 LinkedIn
-                <ArrowUpRight className="w-4 h-4 font-bold text-ink inline ml-2" />
-              </Link>
-              <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer" className="block mb-1">
-                X (Twitter)
-                <ArrowUpRight className="w-4 h-4 font-bold text-ink inline ml-2" />
-              </Link>
-              <Link href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer" className="block">
-                Github
-                <ArrowUpRight className="w-4 h-4 font-bold text-ink inline ml-2" />
-              </Link>
-            </div>
+              </Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
+                X
+              </Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
+                YouTube
+              </Link>.
+            </p>
+
           </div>
         </div>
       </div>

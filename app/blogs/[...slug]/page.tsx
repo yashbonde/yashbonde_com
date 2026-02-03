@@ -74,7 +74,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     const mdxComponents = {
         img: (props: any) => {
             const { className, alt, ...rest } = props;
-            let sizeClass = "size-l"; // default
+            let sizeClass = "size-m"; // default
             let cleanAlt = alt || "";
 
             if (cleanAlt.startsWith("S:")) {
