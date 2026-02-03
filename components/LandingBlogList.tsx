@@ -177,8 +177,8 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
             <ul className="space-y-1">
                 {filteredPosts.map((post, index) => {
                     const year = post.frontMatter.date ? post.frontMatter.date.split('-')[0] : '';
-                    const prevYear = index > 0 && filteredPosts[index - 1].frontMatter.date
-                        ? filteredPosts[index - 1].frontMatter.date.split('-')[0]
+                    const prevYear = index > 0
+                        ? filteredPosts[index - 1].frontMatter.date?.split('-')[0] ?? ''
                         : '';
                     const showYear = year && year !== prevYear;
 
