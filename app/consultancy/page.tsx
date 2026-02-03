@@ -29,7 +29,7 @@ export default function ConsultancyPage() {
                         From enterprise AI strategy to production-ready implementations.
                     </div>
                     <div className="text-sm text-ink mb-4">
-                        <Link href="/about" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                        <Link href="/about" className="inline-flex items-center gap-2 ">
                             View My Work
                             <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
                         </Link>
@@ -69,7 +69,7 @@ export default function ConsultancyPage() {
                         From enterprise AI strategy to production-ready implementations.
                     </div>
                     <div className="text-sm text-ink mb-4">
-                        <Link href="/about" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                        <Link href="/about" className="inline-flex items-center gap-2 ">
                             View My Work
                             <ArrowUpRight className="w-4 h-4 font-bold text-ink" />
                         </Link>

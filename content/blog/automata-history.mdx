@@ -40,7 +40,7 @@ We use mathematics to understand the world as an equation that has variables and
 As programmers we are writing a lot of math, and math is nothing but a series of transformations, called "production rules”, of “symbols”, which are subdivided as “terminal” and “non-terminal”. Loosely ***terminal symbols*** are items that the user can see as they are the outputs, whereas ***non-terminal symbols*** are the intermediate steps / states (“made-up things”). Based on the possible allowed symbol(s) \- symbol(s) transformations we get a ***grammar***. This grammar gives birth to different ***languages***. We generally define non-terminal symbols in capitals like $A$, terminal symbols as $a$ and string of terminals and/or non-terminals as $\alpha$.
 
 ![Terminal and non-terminal symbols](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/terminal_non-terminal.png)
- 
+
 ***Figure:** This is an example of how to get string “ББББ” from the given start symbol “Ψ” by applying the given production rules. Use this diagram to understand what terminal and non-terminal symbols mean and how production rules can be applied to generate sequences. Image from [here](https://commons.wikimedia.org/wiki/File:Terminal_and_non-terminal_symbols_example_number_two.png)*
 
 When classifying abstract machines, one of the most simple distinctions is done on the number of operations it is permitted to perform. This limits the complexity of rules that can be executed on those machines. [Noam Chomsky](https://en.wikipedia.org/wiki/Noam_Chomsky) classified them on the basis of their capabilities that helped frame this entire subject, it is called “[Chomsky’s Hierarchy](https://en.wikipedia.org/wiki/Chomsky_hierarchy)” or “Automata Hierarchy” in ["Three models for the description of language"](https://chomsky.info/wp-content/uploads/195609-.pdf). Everything that a lower order machine can do can also be done by a higher order machine.
@@ -51,9 +51,6 @@ When classifying abstract machines, one of the most simple distinctions is done 
 | **Type-2** | Context-free | Non-deterministic pushdown | $A \to \alpha$ | Programming languages and HTML or XML (+ everything Type-3) |
 | **Type-1** | Context-sensitive | Linear-bounded non-deterministic Turing machine | $\alpha A \beta \to \alpha \gamma \beta$ | Natural Language (+ everything Type-2) |
 | **Type-0** | Recursively enumerable | Turing machine | $\gamma \to \alpha$ ($\gamma$ non-empty) | Mathematics and all of logic (+ everything Type-1) |
-
-
-<br/>
 
 ***Type 3 grammar (Regular)*** → These systems do not have any memory and thus can only tell if a certain pattern is being followed or not e.g. regex can find patterns but cannot tell how many times a pattern appears. The machines that can run this language are known as Finite-state Automata:
 

@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import React from "react";
 import { getPostBySlug, getAllPosts } from "@/lib/posts";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeKatex from "rehype-katex";
@@ -6,6 +7,7 @@ import remarkMath from "remark-math";
 import remarkGfm from "remark-gfm";
 import TagsDisplay from "@/components/TagsDisplay";
 import References from "@/components/References";
+import ReferenceHover from "@/components/ReferenceHover";
 
 export async function generateStaticParams() {
     const posts = await getAllPosts();
@@ -21,10 +23,117 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     const post = await getPostBySlug(slugString);
     if (!post) return notFound();
 
+    const mdxComponents = {
+        img: (props: any) => {
+            const { className, alt, ...rest } = props;
+            let sizeClass = "size-l"; // default
+            let cleanAlt = alt || "";
+
+            if (cleanAlt.startsWith("S:")) {
+                sizeClass = "size-s";
+                cleanAlt = cleanAlt.replace(/^S:\s*/, "");
+            } else if (cleanAlt.startsWith("M:")) {
+                sizeClass = "size-m";
+                cleanAlt = cleanAlt.replace(/^M:\s*/, "");
+            } else if (cleanAlt.startsWith("L:")) {
+                sizeClass = "size-l";
+                cleanAlt = cleanAlt.replace(/^L:\s*/, "");
+            } else if (cleanAlt.startsWith("XL:")) {
+                sizeClass = "size-xl";
+                cleanAlt = cleanAlt.replace(/^XL:\s*/, "");
+            } else if (className?.includes("size-s")) sizeClass = "size-s";
+            else if (className?.includes("size-m")) sizeClass = "size-m";
+            else if (className?.includes("size-l")) sizeClass = "size-l";
+            else if (className?.includes("size-xl")) sizeClass = "size-xl";
+
+            return (
+                <span className={`block my-8 ${sizeClass}`}>
+                    <img {...rest} alt={cleanAlt} className="w-full rounded-lg" />
+                </span>
+            );
+        },
+        table: (props: any) => {
+            const { className, children, ...rest } = props;
+            let sizeClass = "size-l"; // default
+
+            // Try to detect size from a marker in the first cell of the header
+            try {
+                // children[0] is thead, children[1] is tbody
+                const thead = React.Children.toArray(children).find((c: any) => c.type === 'thead') as any;
+                if (thead) {
+                    const tr = React.Children.toArray(thead.props.children).find((c: any) => c.type === 'tr') as any;
+                    if (tr) {
+                        const firstCell = React.Children.toArray(tr.props.children)[0] as any;
+                        if (firstCell && firstCell.props.children) {
+                            const content = firstCell.props.children;
+                            if (typeof content === 'string') {
+                                if (content.startsWith("S:")) sizeClass = "size-s";
+                                else if (content.startsWith("M:")) sizeClass = "size-m";
+                                else if (content.startsWith("L:")) sizeClass = "size-l";
+                                else if (content.startsWith("XL:")) sizeClass = "size-xl";
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                // Fallback to className if markers fail
+            }
+
+            if (className?.includes("size-s")) sizeClass = "size-s";
+            if (className?.includes("size-m")) sizeClass = "size-m";
+            if (className?.includes("size-xl")) sizeClass = "size-xl";
+
+            return (
+                <div className={`table-wrapper ${sizeClass} overflow-x-auto`}>
+                    <table {...rest} className="w-full">
+                        {children}
+                    </table>
+                </div>
+            );
+        },
+        // Custom component for sized sections if needed
+        SizedSection: ({ size = 'l', children }: { size: string, children: React.ReactNode }) => {
+            return <div className={`size-${size}`}>{children}</div>
+        },
+        // Handle unwrapping images and sized elements from paragraphs
+        p: (props: any) => {
+            const childrenArray = React.Children.toArray(props.children);
+            const hasSizedChild = childrenArray.some((child: any) => {
+                if (!child || typeof child !== 'object') return false;
+
+                const childProps = child.props || {};
+                const className = childProps.className || "";
+                const isSized = className.includes('size-') ||
+                    (typeof child.type === 'string' && (child.type === 'img' || child.type === 'table')) ||
+                    (child.type?.name === 'img');
+                return isSized;
+            });
+
+            if (hasSizedChild) {
+                return <div className="w-full my-4">{props.children}</div>;
+            }
+            return <p {...props} className="mx-auto" style={{ maxWidth: '48rem', width: '100%' }} />;
+        },
+        a: (props: any) => {
+            const { href, children, ...rest } = props;
+            const isExternal = href?.startsWith('http') || href?.startsWith('//');
+            return (
+                <a
+                    href={href}
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    {...rest}
+                >
+                    {children}
+                </a>
+            );
+        }
+    };
+
     return (
         <article>
-            <div className="prose mx-auto py-16 px-8">
-                <div className="text-3xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
+            <div className="prose mx-auto py-16 px-8 max-w-3xl">
+                <div className="text-4xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
                 {post.frontMatter.subtitle && (
                     <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
                 )}
@@ -55,9 +164,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     </div>
                 )}
             </div>
-            <div className="prose max-w-none py-12 px-8">
+            <div className="prose px-8">
                 <MDXRemote
                     source={post.content}
+                    components={mdxComponents}
                     options={{
                         mdxOptions: {
                             remarkPlugins: [remarkGfm, remarkMath],
@@ -66,7 +176,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     }}
                 />
                 {post.frontMatter.references && (
-                    <References references={post.frontMatter.references} />
+                    <>
+                        <References references={post.frontMatter.references} />
+                        <ReferenceHover references={post.frontMatter.references} />
+                    </>
                 )}
             </div>
         </article>

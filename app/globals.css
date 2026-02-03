@@ -4,36 +4,39 @@
 :root {
   /* Book-inspired color palette */
   --paper: #ffffff;
+  --canvas: #f7f7f7;
+  /* Slightly darker shade for very wide screens */
   --ink: #000000;
   --muted: #000000;
   --accent: #000000;
+  --link: #0056b3;
+  --link-hover: #002e4f;
   --primary: #000000;
   --secondary: #000000;
-
-  /* Font variables */
-  --font-brawler: 'Brawler', serif;
-  --font-eczar: 'Eczar', serif;
-  --font-roboto-mono: 'Roboto Mono', monospace;
 }
 
 @theme inline {
   --color-paper: var(--paper);
+  --color-canvas: var(--canvas);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-accent: var(--accent);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
 
-  --font-serif: var(--font-brawler);
+  --font-inter: var(--font-inter);
+  --font-serif: var(--font-inter);
   --font-devanagari: var(--font-eczar);
   --font-mono: var(--font-roboto-mono);
-  --font-sans: var(--font-brawler);
+  --font-sans: var(--font-source-sans);
 }
 
 body {
-  background: var(--paper);
+  background: var(--canvas);
   color: var(--ink);
-  font-family: var(--font-brawler);
+  font-family: var(--font-source-sans);
   font-size: 16px;
   /* slightly bigger overall scale */
   line-height: 1.5;
@@ -46,7 +49,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-brawler);
+  font-family: var(--font-inter);
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -84,7 +87,13 @@ pre {
 
 /* Links/buttons: no underline */
 a {
-  text-decoration: none;
+  color: var(--link);
+  transition: color 0.3s ease;
+}
+
+a:hover,
+a:hover * {
+  color: var(--link-hover) !important;
 }
 
 /* Hover animations: no shadows anywhere */
@@ -109,6 +118,80 @@ a {
   max-width: none;
   overflow-x: visible;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6,
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre,
+.prose iframe {
+  max-width: 48rem;
+  /* 768px - size-m default */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Allow paragraphs containing images or sized elements to expand */
+.prose p:has(img),
+.prose p:has(table),
+.prose p:has(.size-s),
+.prose p:has(.size-m),
+.prose p:has(.size-l),
+.prose p:has(.size-xl) {
+  max-width: none;
+}
+
+.prose .size-s {
+  max-width: 32rem;
+  /* 512px */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose .size-m {
+  max-width: 48rem;
+  /* 768px */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose .size-l {
+  max-width: 64rem;
+  /* 1024px */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose .size-xl {
+  max-width: 80rem;
+  /* 1280px */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Default styles for images and tables - let wrappers control max-width */
+.prose img,
+.prose table,
+.prose .table-wrapper {
+  max-width: 100%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
 }
 
 .prose h1,
@@ -118,25 +201,26 @@ a {
 .prose h5,
 .prose h6 {
   color: var(--ink);
-  font-family: var(--font-brawler);
+  font-family: var(--font-inter);
   font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .prose p {
   color: var(--ink);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
+  line-height: 1.45;
+  margin-bottom: 1rem;
 }
 
 .prose a {
-  color: var(--ink);
-  text-decoration: underline;
+  color: var(--link);
   transition: all 0.3s ease;
 }
 
 .prose a:hover {
-  color: var(--ink);
-  transform: translateY(-1px);
+  color: var(--link-hover);
+  /* transform: translateY(-1px); */
 }
 
 .prose code {
@@ -156,11 +240,9 @@ a {
   border-radius: 0.5rem;
   overflow-x: auto;
   overflow-y: visible;
-  margin: 1.5rem 0;
+  margin: 1.5rem auto;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   white-space: pre;
-  max-width: 100%;
-  width: 100%;
   box-sizing: border-box;
 }
 
@@ -175,16 +257,16 @@ a {
 
 .prose blockquote {
   border-left: 4px solid var(--ink);
-  padding-left: 1rem;
-  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+  margin: 1.5rem auto;
   font-style: italic;
   color: var(--ink);
 }
 
 .prose ul,
 .prose ol {
-  margin: 1.5rem 0;
   padding-left: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .prose ul {
@@ -196,34 +278,48 @@ a {
 }
 
 .prose li {
-  margin: 0.5rem 0;
-  line-height: 1.4;
+  margin: 0.25rem 0;
+  line-height: 1.45;
 }
 
 .prose img {
-  max-width: 100%;
-  width: 100%;
   height: auto;
-  margin: 1.5rem auto;
   display: block;
   border-radius: 0.5rem;
   object-fit: cover;
 }
 
+.prose table {
+  border-collapse: collapse;
+  margin: 2rem auto;
+  font-size: 0.85rem;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #e9ecef !important;
+  /* Force border for tables */
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.prose th {
+  background-color: #f8f9fa;
+  font-weight: 700;
+}
+
 .prose iframe {
-  max-width: 100%;
-  width: 100%;
   aspect-ratio: 16/9;
-  margin: 1.5rem auto;
   display: block;
   border-radius: 0.5rem;
 }
 
-/* Remove all borders and focus on hover animations */
-* {
+/* Remove all borders EXCEPT for tables - commented out to allow specific borders to work
+*:not(th):not(td) {
   border: none !important;
   outline: none !important;
 }
+*/
 
 /* Focus states for accessibility */
 a:focus-visible,

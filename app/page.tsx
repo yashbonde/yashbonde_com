@@ -4,7 +4,7 @@ import { ArrowUpRight, File } from "lucide-react";
 
 export default function Home() {
   return (
-    <section>
+    <section className="max-w-3xl mx-auto">
       {/* Letter Header */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-6 md:gap-8 mb-6">
@@ -32,15 +32,15 @@ export default function Home() {
               </Link> . AI Researcher . 0 → 1 Startup . Product Builder . Burger Advocate . Ema . Tune AI .
             </div>
             <div className="text-base text-ink mb-6">
-              <Link href="/about" target="_blank" rel="noopener noreferrer" className="block mb-1">
+              <Link href="/about" className="block mb-1">
                 Read my work profile
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
               </Link>
-              <Link href="/consultancy" target="_blank" rel="noopener noreferrer" className="block mb-1">
+              <Link href="/consultancy" className="block mb-1">
                 AI Consultancy Services
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
               </Link>
-              <Link href="/blog" target="_blank" rel="noopener noreferrer" className="block mb-1">
+              <Link href="/blog" className="block mb-1">
                 My writing
                 <ArrowUpRight className="w-5 h-5 font-bold text-ink inline ml-2" />
               </Link>

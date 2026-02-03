@@ -22,7 +22,7 @@ type BlogClientProps = {
 };
 
 // Color generation algorithm with random seed
-const generateTagColor = (tag: string, randomSeed: number): { bg: string; text: string; hover: string; hoverText: string } => {
+const generateTagColor = (tag: string, randomSeed: number) => {
     // Create a simple hash from the tag string
     let hash = 0;
     for (let i = 0; i < tag.length; i++) {
@@ -45,12 +45,13 @@ const generateTagColor = (tag: string, randomSeed: number): { bg: string; text: 
 
     // Hover state: generated color
     const hoverColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-    // const hoverTextColor = lightness > 45 ? '#000000' : '#ffffff'; // Dark text on light bg, light text on dark bg
+    const hoverColorWithAlpha = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.25)`;
 
     return {
         bg: bgColor,
         text: textColor,
         hover: hoverColor,
+        hoverAlpha: hoverColorWithAlpha,
         hoverText: '#ffffff'
     };
 };
@@ -67,7 +68,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
 
     // Generate consistent colors for all tags with random seed
     const tagColors = useMemo(() => {
-        const colors: Record<string, { bg: string; text: string; hover: string; hoverText: string }> = {};
+        const colors: Record<string, { bg: string; text: string; hover: string; hoverAlpha: string; hoverText: string }> = {};
         allTags.forEach(tag => {
             colors[tag] = generateTagColor(tag, randomSeed);
         });
@@ -117,7 +118,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
     };
 
     return (
-        <section>
+        <section className="max-w-3xl mx-auto">
             {/* Mobile Layout: Image full width, text below */}
             <div className="flex flex-col sm:hidden mb-10">
                 <div className="mb-6 w-full">
@@ -143,7 +144,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                                             color: selectedTag === tag ? colors.hoverText : colors.text,
                                             opacity: selectedTag === tag ? 1 : 0.8,
                                             transform: selectedTag === tag ? 'scale(1)' : 'scale(1)',
-                                            boxShadow: selectedTag === tag ? `0 2px 8px ${colors.hover}40` : 'none'
+                                            boxShadow: selectedTag === tag ? `0 2px 8px ${colors.hoverAlpha}` : 'none'
                                         }}
                                         onMouseEnter={(e) => {
                                             if (selectedTag !== tag) {
@@ -181,7 +182,7 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
                                                 color: selectedYear === year ? colors.hoverText : colors.text,
                                                 opacity: selectedYear === year ? 1 : 0.8,
                                                 transform: selectedYear === year ? 'scale(1)' : 'scale(1)',
-                                                boxShadow: selectedYear === year ? `0 2px 8px ${colors.hover}40` : 'none'
+                                                boxShadow: selectedYear === year ? `0 2px 8px ${colors.hoverAlpha}` : 'none'
                                             }}
                                             onMouseEnter={(e) => {
                                                 if (selectedYear !== year) {
@@ -300,61 +301,16 @@ export default function BlogClient({ initialPosts, initialTags }: BlogClientProp
 
 
             {/* Posts List */}
-            <ul className="space-y-6">
+            <ul className="space-y-1">
                 {filteredPosts.map((post) => (
                     <li key={post.slug}>
-                        <span className="flex flex-row items-center text-sm font-mono gap-2 mb-2">
-                            <span className="font-bold">#{posts.length - posts.findIndex(p => p.slug === post.slug)}</span>
-                            {post.frontMatter.date && (
-                                <span className="font-bold text-gray-500">{post.frontMatter.date}</span>
-                            )}
-                            {post.frontMatter.readingTime && (
-                                <span className="font-bold text-gray-400">{post.frontMatter.readingTime} min</span>
-                            )}
-                            {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
-                                <div className="flex gap-1 font-mono text-xs overflow-x-auto scrollbar-hide flex-1 min-w-0">
-                                    {post.frontMatter.tags.map(tag => {
-                                        const colors = tagColors[tag];
-                                        return (
-                                            <button
-                                                key={tag}
-                                                className="px-3 py-1 rounded-full transition-all duration-200 cursor-pointer whitespace-nowrap flex-shrink-0"
-                                                style={{
-                                                    backgroundColor: selectedTag === tag ? colors.hover : colors.bg,
-                                                    color: selectedTag === tag ? colors.hoverText : colors.text,
-                                                    opacity: selectedTag === tag ? 1 : 0.8,
-                                                    transform: selectedTag === tag ? 'scale(1)' : 'scale(1)',
-                                                    boxShadow: selectedTag === tag ? `0 2px 8px ${colors.hover}40` : 'none'
-                                                }}
-                                                onClick={() => handleTagClick(tag)}
-                                                onMouseEnter={(e) => {
-                                                    if (selectedTag !== tag) {
-                                                        e.currentTarget.style.backgroundColor = colors.hover;
-                                                        e.currentTarget.style.color = colors.hoverText;
-                                                    }
-                                                }}
-                                                onMouseLeave={(e) => {
-                                                    if (selectedTag !== tag) {
-                                                        e.currentTarget.style.backgroundColor = colors.bg;
-                                                        e.currentTarget.style.color = colors.text;
-                                                    }
-                                                }}
-                                            >
-                                                {tag}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-                        </span>
                         <Link
                             href={`/blog/${post.slug}`}
-                            className="text-ink inline-block "
                         >
-                            <div className="text-ink inline-flex items-center gap-2">
-                                {post.frontMatter.title}
-                                <ArrowUpRight className="w-6 h-6 text-ink" />
-                            </div>
+                            <span className="text-link">{post.frontMatter.title} </span>
+                            {post.frontMatter.date && (
+                                <span className="text-gray-500">({post.frontMatter.date})</span>
+                            )}
                         </Link>
                     </li>
                 ))}
