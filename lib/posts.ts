@@ -2,7 +2,10 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 
-const POSTS_DIR = path.join(process.cwd(), "content", "blog");
+const CONTENT_DIRS = [
+    path.join(process.cwd(), "content", "blog"),
+    path.join(process.cwd(), "content", "external"),
+];
 
 export type Reference = {
     title: string;
@@ -16,14 +19,22 @@ export type FrontMatter = {
     subtitle?: string;
     date?: string;
     tags?: string[];
-    readingTime?: number;
     disclaimer?: string;
-    references?: Reference[];
+    ogImage?: string;
+    references: Reference[];
     [key: string]: unknown;
 };
 
+export type Post = {
+    slug: string;
+    url?: string; // Optional external URL
+    frontMatter: FrontMatter;
+};
+
 export async function ensureContentDirs(): Promise<void> {
-    await fs.mkdir(POSTS_DIR, { recursive: true });
+    for (const dir of CONTENT_DIRS) {
+        await fs.mkdir(dir, { recursive: true });
+    }
 }
 
 async function getAllFilesRecursively(dir: string): Promise<string[]> {
@@ -43,26 +54,50 @@ async function getAllFilesRecursively(dir: string): Promise<string[]> {
     return files;
 }
 
-export async function getAllPosts(): Promise<
-    { slug: string; frontMatter: FrontMatter }[]
-> {
+async function getAllFilesFromDir(dir: string): Promise<string[]> {
+    try {
+        return await getAllFilesRecursively(dir);
+    } catch {
+        return [];
+    }
+}
+
+export async function getAllPosts(): Promise<Post[]> {
     await ensureContentDirs();
-    const files = await getAllFilesRecursively(POSTS_DIR);
+
+    const dirResults = await Promise.all(CONTENT_DIRS.map(async (dir) => {
+        const files = await getAllFilesFromDir(dir);
+        return files.map(f => ({ path: f, baseDir: dir }));
+    }));
+
     const posts = await Promise.all(
-        files.map(async (filePath) => {
-            const relativePath = path.relative(POSTS_DIR, filePath);
+        dirResults.flat().map(async ({ path: filePath, baseDir }) => {
+            const relativePath = path.relative(baseDir, filePath);
             const slug = relativePath.replace(/\.(md|mdx)$/i, "");
             const raw = await fs.readFile(filePath, "utf8");
             const { data } = matter(raw);
-            return { slug, frontMatter: data as FrontMatter };
+            const frontMatter = {
+                ...data,
+                references: data.references || [],
+                tags: data.tags || [],
+            } as FrontMatter;
+            return {
+                slug,
+                url: frontMatter.url as string | undefined,
+                frontMatter
+            };
         })
     );
     posts.sort((a, b) => (b.frontMatter.date || "").localeCompare(a.frontMatter.date || ""));
     return posts;
 }
 
+export async function getCombinedPosts(): Promise<Post[]> {
+    return getAllPosts();
+}
+
 export async function getAllTags(): Promise<string[]> {
-    const posts = await getAllPosts();
+    const posts = await getCombinedPosts();
     const allTags = posts.flatMap(post => post.frontMatter.tags || []);
     return [...new Set(allTags)].sort();
 }
@@ -81,17 +116,24 @@ export async function getPostBySlug(slug: string): Promise<
     | null
 > {
     await ensureContentDirs();
-    const candidates = [
-        path.join(POSTS_DIR, `${slug}.mdx`),
-        path.join(POSTS_DIR, `${slug}.md`),
-    ];
-    for (const filePath of candidates) {
-        try {
-            const raw = await fs.readFile(filePath, "utf8");
-            const { data, content } = matter(raw);
-            return { slug, frontMatter: data as FrontMatter, content };
-        } catch {
-            // try next
+    for (const dir of CONTENT_DIRS) {
+        const candidates = [
+            path.join(dir, `${slug}.mdx`),
+            path.join(dir, `${slug}.md`),
+        ];
+        for (const filePath of candidates) {
+            try {
+                const raw = await fs.readFile(filePath, "utf8");
+                const { data, content } = matter(raw);
+                const frontMatter = {
+                    ...data,
+                    references: data.references || [],
+                    tags: data.tags || [],
+                } as FrontMatter;
+                return { slug, frontMatter, content };
+            } catch {
+                // try next
+            }
         }
     }
     return null;

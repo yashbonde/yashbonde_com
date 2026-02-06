@@ -5,7 +5,6 @@ date: '2020-11-21'
 tags:
 - Neural Networks
 - Research
-readingTime: 11
 references:
 - title: Github repo
   url: https://github.com/yashbonde/chess_lm
@@ -97,7 +96,7 @@ The way to include KC in the chess problem is to say what is the shortest descri
 
 Current neural chess engines, specifically [AlphaZero](https://arxiv.org/pdf/1712.01815.pdf) / [MuZero](http://arxiv.org/abs/1911.08265), primarily are search engines that travel over a tree to identify best bets over a certain fixed future (depth value $k$). It plays with itself and tries to assign expecation for each and every board configuration given a past. The task of neural network is now to become value function. However, it is super hard to code and build such system from scratch and it does not include the millions of games already played.
 
-Now there is a reason why you would not want to have any prior (previously played games), because this can help with something called [emergent behaviour](https://openai.com/blog/emergent-tool-use/). This emergent behaviour can help in solving problems and getting solutions that previously were not thought, from AlphaGo's Move-37 to finding bug in code (driving on a box). However $>70\%$ of the problems in this world are already very efficient and what needs to be done is speed up the process, which requires massive use of prior.
+Now there is a reason why you would not want to have any prior (previously played games), because this can help with something called [emergent behaviour](https://openai.com/blog/emergent-tool-use/). This emergent behaviour can help in solving problems and getting solutions that previously were not thought, from AlphaGo's Move-37 to finding bug in code (driving on a box). However > 70% of the problems in this world are already very efficient and what needs to be done is speed up the process, which requires massive use of prior.
 
 Muzero and AlphaZero showed how we can utilise self play and [AlphaGo](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf) showed how we can use priors, thus this project is closer to AlphaGo than AZ. Now if there already exists AlphaGo (extend to AlphaGo for Chess) why do we even need this? All these algorithms and other supervised methods utilise board state. But most of the problems in this world, we may not be able to generate a perfect board state to feed into the model. Consider another RL problem like [Shipping](https://blog.griddynamics.com/deep-reinforcement-learning-for-supply-chain-and-price-optimization/) where creating a perfect board state is impossible.
 

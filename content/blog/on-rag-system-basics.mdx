@@ -3,7 +3,6 @@ title: On RAG system basics
 date: '2025-02-22'
 tags:
 - Agent Engineering
-readingTime: 10
 references:
 - title: Economic Survey of India Report
   url: https://www.indiabudget.gov.in/economicsurvey/doc/eschapter/echap09.pdf
@@ -109,7 +108,5 @@ If there was a hierarchical storage, the agent could have traversed over the sea
 ![Hierarchical Storage Benefits](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/03.png)
 
 One clear drawback to this approach because it implies that there is an index already present before querying. What happens when there is a document thrown at realtime? For this we can always fallback to an embedding based system which will actually work better since the search space of a document is smaller than all 2.6Mn documents.
-
----
 
 I now want to conclude this because I've been writing non-stop for 3 hours and I should get home. I will follow up more on the journey of building the IDP platform that can scale to processing 1 Mn+ documents/day and to RAG on those.

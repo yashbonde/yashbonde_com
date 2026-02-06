@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, File } from "lucide-react";
-import { getAllPosts, getAllTags } from "@/lib/posts";
+import { getCombinedPosts, getAllTags } from "@/lib/posts";
 import LandingBlogList from "@/components/LandingBlogList";
 
 export default async function Home() {
   const [posts, tags] = await Promise.all([
-    getAllPosts(),
+    getCombinedPosts(),
     getAllTags()
   ]);
 
@@ -31,16 +31,14 @@ export default async function Home() {
               <Link href="https://artha-pearl.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center ml-1 gap-1"
-                style={{ color: '#FF9933' }}
               >
                 Project अर्थ (Artha)
               </Link>.
             </p>
             <p className="text-base text-ink mb-2">
-              AI Researcher working on neural networks and automata theory.
+              Working on neural networks and automata theory.
               I think we can build an end to end neural computer by 2030.
-              My we<span className="font-semibold">b-log</span> is a bunch of structured thoughts over the years.
+              My we<span className="font-semibold">b-log</span> is a bunch of structured thoughts, code commits or tweets over the years.
               Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
@@ -55,6 +53,21 @@ export default async function Home() {
       </div>
 
       <LandingBlogList initialPosts={posts} initialTags={tags} />
+
+      <div className="mt-8 border-t border-gray-200 pt-8 mx-auto" style={{ maxWidth: '48rem', width: '100%' }}>
+        <p className="text-gray-500 italic text-sm">
+          The opinions expressed herein are solely those of the author in their individual capacity and do not necessarily reflect the official policy or position of any current or former employer, client, or affiliated organization.
+          {" "}
+          <a
+            href={`https://github.com/yashbonde/yashbonde_com`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:link-hover transition-colors"
+          >
+            See source
+          </a>.
+        </p>
+      </div>
     </section>
   );
 }

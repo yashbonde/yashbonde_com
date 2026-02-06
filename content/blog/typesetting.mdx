@@ -4,7 +4,6 @@ subtitle: Good design brings good life. A showcase of our editorial system.
 date: '2018-08-14'
 tags:
 - Notes
-readingTime: 10
 references:
 - title: The Human Representation of Thought
   url: http://worrydream.com/TheHumanRepresentationOfThought/
@@ -35,22 +34,36 @@ Images can be sized according to the importance of the visual. We support four p
 #### Small (S: 32rem / 512px)
 Perfect for icons, small diagrams, or portraits that shouldn't overwhelm the text.
 
-![S: Small Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/terminal_non-terminal.png)
+![S: Small Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/gandhi-structure.svg)
 
 #### Medium (M: 48rem / 768px)
 The standard width for focused diagrams that align with the text block.
 
-![M: Medium Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/gandhi-structure.svg)
+![M: Medium Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/terminal_non-terminal.png)
 
 #### Large (L: 64rem / 1024px) - Default
 The default for high-quality photos. It breaks the text container slightly for an editorial look.
 
-![L: Large Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/panchayat.jpg)
+![L: Large Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/xkcd-blr.jpeg)
 
 #### Extra Large (XL: 80rem / 1280px)
 For cinematic, high-impact visuals that span the width of the page.
 
-![XL: Extra Large Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/xkcd-blr.jpeg)
+![XL: Extra Large Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/panchayat.jpg)
+
+---
+
+### Image Wrapping
+
+For a more editorial and organic feel, you can wrap text around images using the **Around-Left:** and **Around-Right:** prefixes. This is perfect for portraits or small details that complement a specific paragraph.
+
+![Around-Left: Floating Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/gen_img/0005.jpg)
+
+This paragraph is an example of text wrapping. By using the `Around-Left:` prefix, the image floats to the left and allows this text to flow naturally along its right side. The system ensures that the image remains within the current text bounds (48rem) and maintains a maximum width of 40% to keep the text readable. This creates a sophisticated, magazine-like layout without needing complex HTML or CSS in your MDX files. You can continue writing and the text will wrap until it clears the bottom of the image.
+
+![Around-Right: Floating Image Example](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/terminal_non-terminal.png)
+
+Similarly, `Around-Right:` pushes the image to the right margin. Notice how the spacing between the image and the text is handled automatically by the component. This flexibility allows for a more dynamic "zig-zag" layout when multiple images are used in sequence, making the reading experience more engaging and less monotonous. It's a simple syntax that brings powerful design capabilities to your blog posts.
 
 ---
 
@@ -72,7 +85,7 @@ We can also do inline math, such as $x^2 + y^2 = r^2$, to keep the flow of the c
 
 ### Data and Tables
 
-Tables are essential for comparisons. Like images, they can be sized. You can now use prefix markers in the first header cell (e.g., `| S: Aspect |`) to control the table width.
+Tables are essential for comparisons. Like images, they can be sized.
 
 | Aspect | Industrial Design | Software Design | Typesetting |
 | :--- | :--- | :--- | :--- |

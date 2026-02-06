@@ -1,34 +1,28 @@
 --- 
-title: Automata i.e. Theoretical computers
-date: '2026-01-19'
+title: 'Neural Automata #1: Theoretical computers'
+ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-1.jpeg'
+date: '2026-02-08'
 tags:
 - Notes
 - Automata Theory
-readingTime: 15
 references:
-- title: What is an abstract machine?
+- title: 'What is an abstract machine?'
   url: https://www.easytechjunkie.com/what-is-an-abstract-machine.htm
-- title: Abstract machine hierarchy
-  url: https://en.wikipedia.org/wiki/Abstract_machine#cite_note-1
-- title: Noam Chomsky - Wikipedia
-  url: https://en.wikipedia.org/wiki/Noam_Chomsky
-- title: Three models for the description of language
-  url: https://chomsky.info/wp-content/uploads/195609-.pdf
-  author: Noam Chomsky
-  year: 1956
-- title: this
+- title: 'Abstract machine hierarchy'
   url: https://en.wikipedia.org/wiki/Abstract_machine#cite_note-1:~:text=A%20hierarchy%20of%20abstract%20machines
-- title: Terminal and non-terminal symbols
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/terminal_non-terminal.png
-- title: here
+- title: 'Noam Chomsky - Wikipedia'
+  url: https://en.wikipedia.org/wiki/Noam_Chomsky
+- title: 'Chomsky 1956: this paper classified abstract machines and grammars into 4 types'
+  url: https://chomsky.info/wp-content/uploads/195609-.pdf
+- title: 'Image: Terminal and non-terminal symbols'
   url: https://commons.wikimedia.org/wiki/File:Terminal_and_non-terminal_symbols_example_number_two.png
-- title: Chomsky’s Hierarchy
+- title: 'Automata Hierarchy'
   url: https://en.wikipedia.org/wiki/Chomsky_hierarchy
-- title: python grammar spec
+- title: 'python grammar spec'
   url: https://docs.python.org/3/reference/grammar.html
-- title: unofficial JS grammar
+- title: 'unofficial JS grammar'
   url: https://gist.github.com/Chubek/0ab33e40b01a029a7195326e89646ec5
-- title: it does not work
+- title: 'It is a common n00b mistake trying to parse HTML with regex. It does not work because HTML is a type-2 language while regex is a type-3 grammar.'
   url: https://stackoverflow.com/questions/1732348/regex-match-open-tags-except-xhtml-self-contained-tags
 ---
 
@@ -46,10 +40,12 @@ When classifying abstract machines, one of the most simple distinctions is done 
 
 | Grammar | Languages | Automata *The type of computer that can execute a program written in that language.* | Production rules (constraints) | Examples |
 | :---- | :---- | :---- | :---- | :---- |
-| **Type-3** | Regular | Finite-state | $A \to a$ $A \to aB$ (right regular) or $A \to a$ $A \to Ba$ (left regular) | Regular expression |
+| **Type-3** | Regular | Finite-state | $A \to a$, $A \to aB$ (right regular) or $A \to a$, $A \to Ba$ (left regular) | Regular expression |
 | **Type-2** | Context-free | Non-deterministic pushdown | $A \to \alpha$ | Programming languages and HTML or XML (+ everything Type-3) |
 | **Type-1** | Context-sensitive | Linear-bounded non-deterministic Turing machine | $\alpha A \beta \to \alpha \gamma \beta$ | Natural Language (+ everything Type-2) |
 | **Type-0** | Recursively enumerable | Turing machine | $\gamma \to \alpha$ ($\gamma$ non-empty) | Mathematics and all of logic (+ everything Type-1) |
+
+$a$ = terminal, $A, B$ = non-terminal, $\alpha, \beta, \gamma$ = string of terminals and/or non-terminals
 
 ***Type 3 grammar (Regular)*** → These systems do not have any memory and thus can only tell if a certain pattern is being followed or not e.g. regex can find patterns but cannot tell how many times a pattern appears. The machines that can run this language are known as Finite-state Automata:
 

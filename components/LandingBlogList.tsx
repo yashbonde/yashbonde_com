@@ -5,12 +5,12 @@ import { useState, useEffect, useMemo } from "react";
 
 type Post = {
     slug: string;
+    url?: string;
     frontMatter: {
         title: string;
         subtitle?: string;
         date?: string;
         tags?: string[];
-        readingTime?: number;
     };
 };
 
@@ -51,7 +51,12 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
     const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
     const [filteredPosts, setFilteredPosts] = useState<Post[]>(initialPosts);
 
-    const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const randomSeed = useMemo(() => 42, []); // Use stable seed for hydration consistency
 
     const tagColors = useMemo(() => {
         const colors: Record<string, any> = {};
@@ -183,13 +188,43 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
                     const showYear = year && year !== prevYear;
 
                     return (
-                        <li key={post.slug}>
-                            <Link href={`/blogs/${post.slug}`} className="group">
-                                <span className="text-gray-500 font-mono text-sm" style={{ width: '2.5rem', display: 'inline-block' }}>
-                                    {showYear ? year : ''}
-                                </span>
-                                <span className="text-link group-hover:text-link-hover transition-colors">{post.frontMatter.title}</span>
-                            </Link>
+                        <li key={post.slug} className="flex items-baseline">
+                            <span className="text-gray-500 font-mono text-sm shrink-0" style={{ width: '2.5rem', display: 'inline-block' }}>
+                                {showYear ? year : ''}
+                            </span>
+                            {post.url ? (
+                                <a
+                                    href={post.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group inline-flex items-center gap-1.5"
+                                >
+                                    <svg
+                                        width="12"
+                                        height="12"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="text-link group-hover:text-link-hover transition-colors"
+                                    >
+                                        <path d="M7 17l9.2-9.2M17 17V7H7" />
+                                    </svg>
+                                    <span
+                                        className="text-link group-hover:text-link-hover transition-colors"
+                                        dangerouslySetInnerHTML={{ __html: post.frontMatter.title }}
+                                    />
+                                </a>
+                            ) : (
+                                <Link href={`/blogs/${post.slug}`} className="group">
+                                    <span
+                                        className="text-link group-hover:text-link-hover transition-colors"
+                                        dangerouslySetInnerHTML={{ __html: post.frontMatter.title }}
+                                    />
+                                </Link>
+                            )}
                         </li>
                     );
                 })}

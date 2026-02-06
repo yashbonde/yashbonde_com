@@ -41,7 +41,7 @@ const generateTagColor = (tag: string, randomSeed: number): { bg: string; text: 
 
 export default function TagsDisplay({ tags }: TagsDisplayProps) {
     // Generate a random seed once per component mount
-    const randomSeed = useMemo(() => Math.floor(Math.random() * 1000000), []);
+    const randomSeed = useMemo(() => 42, []); // Use stable seed for hydration consistency
 
     // Generate consistent colors for all tags with random seed
     const tagColors = useMemo(() => {

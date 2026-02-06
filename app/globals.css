@@ -4,7 +4,7 @@
 :root {
   /* Book-inspired color palette */
   --paper: #ffffff;
-  --canvas: #f7f7f7;
+  --canvas: #e7e7e7;
   /* Slightly darker shade for very wide screens */
   --ink: #000000;
   --muted: #000000;
@@ -85,15 +85,19 @@ pre {
   transition: all 0.3s ease;
 }
 
-/* Links/buttons: no underline */
+/* Links/buttons*/
 a {
   color: var(--link);
   transition: color 0.3s ease;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  text-decoration-color: var(--link);
 }
 
 a:hover,
 a:hover * {
   color: var(--link-hover) !important;
+  text-decoration-color: var(--link-hover);
 }
 
 /* Hover animations: no shadows anywhere */
@@ -118,8 +122,7 @@ a:hover * {
   max-width: none;
   overflow-x: visible;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: block;
 }
 
 .prose h1,
@@ -226,10 +229,10 @@ a:hover * {
 .prose code {
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
+  border-radius: 0.1rem;
+  padding: 0.1rem 0.2rem;
   font-family: var(--font-roboto-mono);
-  font-size: 0.95em;
+  font-size: 0.8em;
   color: #495057;
 }
 
@@ -305,7 +308,7 @@ a:hover * {
 
 .prose th {
   background-color: #f8f9fa;
-  font-weight: 700;
+  font-weight: normal;
 }
 
 .prose iframe {
@@ -339,4 +342,12 @@ button:focus-visible {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
   /* Chrome, Safari and Opera */
+}
+
+/* Better spacing for block math */
+.katex-display {
+  margin: 2rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
 }
