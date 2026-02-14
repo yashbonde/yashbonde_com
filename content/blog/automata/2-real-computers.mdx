@@ -1,0 +1,70 @@
+--- 
+title: 'Neural Automata #2: How to build a computer'
+ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-2.jpeg'
+date: '2026-02-14'
+tags:
+- Notes
+- Automata Theory
+- Neural Networks
+references:
+- title: Neural Automata #1
+  url: ./1-automata-history
+- title: Minsky 1967
+  url: https://dl.acm.org/doi/book/10.5555/1095587
+- title: Boole 1847
+  url: https://www.gutenberg.org/ebooks/36884
+- title: Gödel encoding
+  url: https://en.wikipedia.org/wiki/G%C3%B6del_numbering
+- title: Gemini chat to understand how to add numbers in a 2 counter machines
+  url: https://gemini.google.com/share/bbf44028d701
+- title: Von Neumann architecture
+  url: https://en.wikipedia.org/wiki/Von_Neumann_architecture
+- title: Claude Shannon
+  url: https://en.wikipedia.org/wiki/Claude_Shannon
+- title: 'Schneider 2006, Claude Shannon: Biologist, The Founder of Information Theory Used Biology to Formulate the Channel Capacity'
+  url: https://pmc.ncbi.nlm.nih.gov/articles/PMC1538977/
+---
+
+It is $1956$ and we have actual computers, but we don’t yet have a way to use them effectively. You run something, smoke comes out, you fix, recalculate and run again. We don’t have all the fancy abstraction that we have today, developers need to account for the speed at which the drums rotate.
+
+[Previously](./1-automata-history) we covered how we can run mathematical equations on an abstract machine called “automata”. We reached the “edge of the map” for the types of automata we need, but not what implementations. We now have the knowledge that all we need is a Turing Machine, but it is impossible to build.
+
+Our main constraint is memory size, IRL it will be a constant (not $\infty$) but they should be able to do all that a Turing Machine can. We call this Turing-Equivalence or a ***universal computer***. Let’s replace the infinite tape of a TM with a fixed number of uniquely labeled registers, and let’s say it can have any non-negative integers i.e. $R_i \in [0,\infty]$. How this machine works will be covered below, but we can call this the ***register machine***. Since this is an automaton it will come with a set of production rules i.e. the things it can do. The permissible set of operations is known as the ***instruction set***.
+
+Remember it is $1960$, computers are considered calculators, to be a useful language this automaton should be able to do some arithmetic and let me go around the program i.e. control flow. Based on the different ways to program and store it we get three machines.
+
+![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/register-machines.jpeg)
+
+***Counter machine (CM)*** → A register machine that contains a super minimal instruction set, one with only $3$ commands. $INC (r)$ increments value in register by $1$, $DEC (r)$ reduces value by $1$ or stays at $0$ and, $JZ (r, z)$ which is a control statement telling the computer to jump to instruction $Z$ if $r$ is $0$\. As you can see, each operation requires the precise register ID; there is no way to refer to a register i.e. no indirect addressing. One more instruction Halt ($H$) was added in $1967$\.
+
+These are very limited resources, so we are not going to reason how to build a language. Despite its primitive nature, the $2$ register counter machine ($2$CM) is proved to be Turing complete as demonstrated by [Minsky $1967$](https://dl.acm.org/doi/book/10.5555/1095587) using [Gödel encoding](https://en.wikipedia.org/wiki/G%C3%B6del_numbering). Read [this chat](https://gemini.google.com/share/bbf44028d701), to learn how to add $9$+$13$.
+
+The core limiting factor for CM is that it cannot access unbounded memory, since each operand has access to only that register. But that is a theoretical limitation, we can still go ahead and make a chip for CM. The program is stored separately from the data, this is known as Harvard Architecture.
+
+***Random Access Machine (RAM)*** → Not to be confused with Random Access Memory. This machine allows using a value in a register as an address to another register, think pointers in C. It gives rise to data structures such as linked lists, etc and allows for more complex instructions such as addition and multiplication as a single step. However this is still Harvard Architecture.
+
+RAM solves the core problem of CM, by providing infinite memory, but this is fallacy, RAM is a made up theoretical machine to help us understand things better. It has infinite memory, and also each slot can contain a number up to infinity. Why do we use this, say we want to prove merge sort works for $n$ numbers, $n \to \infty$.
+
+***Random Access Stored Program (RASP) Machine*** → Computationally this is as powerful as a RAM i.e. it can’t do anything RAM cannot do. However it stores the program and data in the same place, making it [Von-Neumann architecture](https://en.wikipedia.org/wiki/Von_Neumann_architecture). Since it can modify itself, it acts like the universal TM.
+
+In a TM to get to the $n$-th cell, you must move the head $n$ steps ($O(n)$). In RASP we assume instant access i.e. $O(1)$. In reality though, world is a more complex data structure. Moving things around takes $1 \lt t \lt n$ in a graph. In a ***Pointer machine***, if you have a direct pointer to a node. It sits between CM and RAM. Instead of doing arithmetic on the address space to move around, we imagine the computer walking on a graph (web) of registers.
+
+In the real world READ is expensive as machines keep wearing out. RASP is important because it is the theoretical model that solves READ by providing a single memory. Thus RASP is the architecture of the modern computer. Here’s a table comparing the automata to computers.
+
+<SizedSection size="m">
+| Theoretical Model | Practical Hardware Equivalent |
+| :---- | :---- |
+| **RASP** | **General Purpose CPUs (x86, ARM).** They treat memory as a giant array of numbers where code and data mix freely. |
+| **Pointer Machine** | **Object-Oriented Runtimes (JVM, Python).** While they run on RASP hardware, the "virtual machine" behaves like a pointer machine, managing a "heap" of connected objects. |
+| **Register Machine** | **ASICs & FPGAs.** These often have fixed paths for data to flow between specific registers without a complex "pointer" system or a shared memory pool. |
+</SizedSection>
+
+One pattern emerges, in both Chomsky’s Hierarchy and Register Machines adding better memory strategy helps solve more complex problems.
+
+CSE is a subject where theory often follows discovery and engineering. In the early $20$th century electrical engineers figured out how Boolean Algebra ([Boole $1847$](https://www.gutenberg.org/ebooks/36884)) maps very well to electrical circuits. [Claude Shannon](https://en.wikipedia.org/wiki/Claude_Shannon), computer scientist ([biologist](https://pmc.ncbi.nlm.nih.gov/articles/PMC1538977/) 😀) formalised the theory. It turns out we can’t build computers with $\infty$ characters, but we can with two $0$ and $1$. ENIAC, IBM $360$, Macintosh, mobile phones, SoC, robotics, space datacenter are all a continual trend built on just $1$ type of Universal-TM that can simulate billions of software Universal-TM.
+
+Modern computers are nothing less than a miracle technology.
+
+But this is neither the real nor the only path.
+
+In [\#$3$ Diverse Automata](./3-types-of-automata) we go over many many different types of computers whose ideas helped us get to where we are.

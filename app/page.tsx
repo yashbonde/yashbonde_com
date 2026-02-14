@@ -23,6 +23,7 @@ export default async function Home() {
               height={250}
               className="object-cover max-w-full h-auto"
               priority
+              unoptimized
             />
           </div>
           <div className="flex-1">

@@ -16,6 +16,7 @@ export default function AboutPage() {
                         height={250}
                         className="object-cover max-w-full h-auto"
                         priority
+                        unoptimized
                     />
                 </div>
                 <div className="flex-1">
@@ -64,13 +65,14 @@ export default function AboutPage() {
                         height={250}
                         className="object-cover max-w-full h-auto"
                         priority
+                        unoptimized
                     />
                 </div>
 
                 {/* Text content on the right */}
                 <div className="flex-1 flex flex-col justify-end">
                     <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
-                    <div className="text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
+                    <div className="text-base text-ink mb-4">Builder of AI products that drive
                         real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
                         startup journey. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
@@ -91,6 +93,24 @@ export default function AboutPage() {
 
             {/* Work Experience */}
             <div id="work-experience" className="mb-8">
+
+                {/* Consulting */}
+                <div className="mb-8 ">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                        <div className="mb-2 sm:mb-0">
+                            <p className="text-lg font-serif font-semibold position-text">Consulting, AI Engineering</p>
+                        </div>
+                        <div className="text-left sm:text-right text-ink">
+                            <p>December 2025 —</p>
+                        </div>
+                    </div>
+                    <ul className="text-ink space-y-1 mb-2">
+                        <li className="flex gap-2 text-justify">
+                            <span>•</span>
+                            <span>Building AI products for small enterprises. Autonomous agents for research, development and sales.</span>
+                        </li>
+                    </ul>
+                </div>
 
                 {/* Ema Unlimited */}
                 <div className="mb-8 ">
