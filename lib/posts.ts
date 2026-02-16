@@ -34,14 +34,14 @@ export type Post = {
 // Hardcoded post index — no disk reads needed for listing.
 // When you add a new post, add an entry here.
 const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[] }[] = [
+    // { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    // { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    // { slug: "automata/4-5-code-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    // { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    // { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-10", tags: ["Notes", "Automata Theory", "Neural Networks"] },
     { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Automata Theory"] },
-    { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "automata/4-5-code-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-10", tags: ["Notes", "Automata Theory", "Neural Networks"] },
     { slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Automata Theory"] },
+    { slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Automata Theory"] },
     { slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Automata Theory", "Neural Networks"] },
     { slug: "open-square-prism", url: "https://github.com/yashbonde/open-square-prism", title: "Open<sup>2</sup>Prism: A clone of OpenAI Prism for personal notes", date: "2026-02-04", tags: ["Github"] },
     { slug: "panchayati-raj", title: "Did India's Constitution makers really care about local democracy?", date: "2025-11-30", tags: ["Bharat (India)"] },
