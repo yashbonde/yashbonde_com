@@ -27,95 +27,87 @@ export type FrontMatter = {
 
 export type Post = {
     slug: string;
-    url?: string; // Optional external URL
+    url?: string;
     frontMatter: FrontMatter;
 };
 
-export async function ensureContentDirs(): Promise<void> {
-    for (const dir of CONTENT_DIRS) {
-        await fs.mkdir(dir, { recursive: true });
-    }
-}
+// Hardcoded post index — no disk reads needed for listing.
+// When you add a new post, add an entry here.
+const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[] }[] = [
+    { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Automata Theory"] },
+    { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/4-5-code-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-10", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Automata Theory"] },
+    { slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "open-square-prism", url: "https://github.com/yashbonde/open-square-prism", title: "Open<sup>2</sup>Prism: A clone of OpenAI Prism for personal notes", date: "2026-02-04", tags: ["Github"] },
+    { slug: "panchayati-raj", title: "Did India's Constitution makers really care about local democracy?", date: "2025-11-30", tags: ["Bharat (India)"] },
+    { slug: "software-of-making", title: "The software of making", date: "2025-06-21", tags: ["Shorts"] },
+    { slug: "on-rag-system-basics", title: "On RAG system basics", date: "2025-02-22", tags: ["Agent Engineering"] },
+    { slug: "artha/project-arth-ui-design-and-implementation", title: "Project Arth: UI Design and Implementation", date: "2025-01-20", tags: ["Project Artha"] },
+    { slug: "artha/project-arth-introduction", title: "Project Arth: Introduction", date: "2025-01-15", tags: ["Project Artha"] },
+    { slug: "every-diwali-i-do-something-just-for-my-personal-growth", title: "Third in the series of musings", date: "2024-10-31", tags: ["Shorts"] },
+    { slug: "chess-engine-part-1-5", title: "Chess Engine - (Part 1.5)", date: "2020-11-23", tags: ["Neural Networks", "Research"] },
+    { slug: "chess-engine-part-1", title: "Chess Engine - (Part 1)", date: "2020-11-21", tags: ["Neural Networks", "Research"] },
+    { slug: "reading-list-neural-graph-execution", title: "Reading List on Neural Graph Execution", date: "2020-05-11", tags: ["Neural Networks", "Automata Theory", "Research", "Notes"] },
+    { slug: "rl/chapter-6-exercises", title: "RL Chapter 6: Exercises", date: "2020-04-27", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-6-temporal-difference-learning", title: "RL Chapter 6: Temporal Difference Learning", date: "2020-04-27", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-5-exercises", title: "RL Chapter 5: Exercises", date: "2020-04-11", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-5-monte-carlo-methods", title: "RL Chapter 5: Monte Carlo Methods", date: "2020-04-11", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "teaching-machines-rules-algorithms-cellular-automata", title: "Teaching Machines Rules and Algorithms", date: "2020-04-04", tags: ["Neural Networks", "Automata Theory", "Research"] },
+    { slug: "rl/chapter-4-dynamic-programming", title: "RL Chapter 4: Dynamic Programming", date: "2019-08-25", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-4-exercises", title: "RL Chapter 4: Exercises", date: "2019-08-25", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-3-goals-and-rewards", title: "RL Chapter 3: Goals and Rewards", date: "2019-07-14", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "how-to-read-textbooks-like-pro", title: "How to Read Textbooks like a Pro", date: "2019-05-31", tags: ["Shorts"] },
+    { slug: "rl/chapter-2-additional-topics", title: "RL Chapter 2: Additional Topics", date: "2019-05-19", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-2-exercises", title: "RL Chapter 2: Exercises", date: "2019-05-19", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "rl/chapter-2-multi-armed-bandit", title: "RL Chapter 2: Multi-Armed Bandit", date: "2019-05-19", tags: ["Reinforcement Learning", "Notes"] },
+    { slug: "transfer-learning-rl-generative-models", title: "Transfer Learning in RL using Generative Models", date: "2019-01-23", tags: ["Research"] },
+    { slug: "freeciv-learning-environment-update-2", title: "Freeciv Learning Environment Update #2", date: "2019-01-08", tags: ["Freeciv"] },
+    { slug: "second-series-musings", title: "Second in the Series of Musings", date: "2018-12-29", tags: ["Shorts"] },
+    { slug: "lets-go-over-few-things-freeciv", title: "Let's go over a few things freeciv!", date: "2018-11-19", tags: ["Freeciv"] },
+    { slug: "call-for-army-of-beasts", title: "Call for an Army of Be(a)sts!", date: "2018-11-09", tags: ["Freeciv"] },
+    { slug: "the-mathematical-probability-of-failure", title: "The mathematical probability of failure", date: "2018-10-04", tags: ["Shorts"] },
+    { slug: "lets-build-attention-is-all-you-need-2-2", title: "Let's build 'Attention is all you need' — 2/2", date: "2018-09-21", tags: ["Transformer", "Neural Networks"] },
+    { slug: "lets-build-attention-is-all-you-need-1-2", title: "Let's build 'Attention is all you need' — 1/2", date: "2018-08-27", tags: ["Transformer", "Neural Networks", "Notes"] },
+    { slug: "first-series-musings", title: "First in the series of musings", date: "2018-08-15", tags: ["Shorts"] },
+    { slug: "typesetting", title: "Typesetting and the Software of Making", date: "2018-08-14", tags: ["Notes"] },
+];
 
-async function getAllFilesRecursively(dir: string): Promise<string[]> {
-    const files: string[] = [];
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-
-    for (const entry of entries) {
-        const fullPath = path.join(dir, entry.name);
-        if (entry.isDirectory()) {
-            const subFiles = await getAllFilesRecursively(fullPath);
-            files.push(...subFiles);
-        } else if (entry.isFile() && (entry.name.endsWith(".mdx") || entry.name.endsWith(".md"))) {
-            files.push(fullPath);
-        }
-    }
-
-    return files;
-}
-
-async function getAllFilesFromDir(dir: string): Promise<string[]> {
-    try {
-        return await getAllFilesRecursively(dir);
-    } catch {
-        return [];
-    }
-}
-
-export async function getAllPosts(): Promise<Post[]> {
-    await ensureContentDirs();
-
-    const dirResults = await Promise.all(CONTENT_DIRS.map(async (dir) => {
-        const files = await getAllFilesFromDir(dir);
-        return files.map(f => ({ path: f, baseDir: dir }));
+export function getAllPosts(): Post[] {
+    return POST_INDEX.map(p => ({
+        slug: p.slug,
+        url: p.url,
+        frontMatter: {
+            title: p.title,
+            date: p.date,
+            tags: p.tags,
+            references: [],
+        } as FrontMatter,
     }));
-
-    const posts = await Promise.all(
-        dirResults.flat().map(async ({ path: filePath, baseDir }) => {
-            const relativePath = path.relative(baseDir, filePath);
-            const slug = relativePath.replace(/\.(md|mdx)$/i, "");
-            const raw = await fs.readFile(filePath, "utf8");
-            const { data } = matter(raw);
-            const frontMatter = {
-                ...data,
-                references: data.references || [],
-                tags: data.tags || [],
-            } as FrontMatter;
-            return {
-                slug,
-                url: frontMatter.url as string | undefined,
-                frontMatter
-            };
-        })
-    );
-    posts.sort((a, b) => (b.frontMatter.date || "").localeCompare(a.frontMatter.date || ""));
-    return posts;
 }
 
-export async function getCombinedPosts(): Promise<Post[]> {
+export function getCombinedPosts(): Post[] {
     return getAllPosts();
 }
 
-export async function getAllTags(): Promise<string[]> {
-    const posts = await getCombinedPosts();
-    const allTags = posts.flatMap(post => post.frontMatter.tags || []);
+export function getAllTags(): string[] {
+    const allTags = POST_INDEX.flatMap(p => p.tags);
     return [...new Set(allTags)].sort();
 }
 
-export async function getPostsByTag(tag: string): Promise<
-    { slug: string; frontMatter: FrontMatter }[]
-> {
-    const posts = await getAllPosts();
-    return posts.filter(post =>
-        post.frontMatter.tags && post.frontMatter.tags.includes(tag)
-    );
+export function getPostsByTag(tag: string): Post[] {
+    return getAllPosts().filter(p => p.frontMatter.tags?.includes(tag));
 }
 
+// Only this function reads from disk — when rendering a single blog post.
 export async function getPostBySlug(slug: string): Promise<
     | { slug: string; frontMatter: FrontMatter; content: string }
     | null
 > {
-    await ensureContentDirs();
     for (const dir of CONTENT_DIRS) {
         const candidates = [
             path.join(dir, `${slug}.mdx`),
@@ -140,19 +132,13 @@ export async function getPostBySlug(slug: string): Promise<
 }
 
 export function extractFirstImage(content: string): string | null {
-    // Try markdown image syntax: ![alt](url)
     const mdImageMatch = content.match(/!\[.*?\]\((.*?)\)/);
     if (mdImageMatch && mdImageMatch[1]) {
         return mdImageMatch[1];
     }
-
-    // Try HTML img tag: <img src="url" />
     const htmlImageMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
     if (htmlImageMatch && htmlImageMatch[1]) {
         return htmlImageMatch[1];
     }
-
     return null;
 }
-
-

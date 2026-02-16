@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import type { Reference } from '@/lib/posts';
 import { Link2 } from 'lucide-react';
 

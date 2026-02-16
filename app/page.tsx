@@ -1,14 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, File } from "lucide-react";
 import { getCombinedPosts, getAllTags } from "@/lib/posts";
 import LandingBlogList from "@/components/LandingBlogList";
 
-export default async function Home() {
-  const [posts, tags] = await Promise.all([
-    getCombinedPosts(),
-    getAllTags()
-  ]);
+export default function Home() {
+  const posts = getCombinedPosts();
+  const tags = getAllTags();
 
   return (
     <section className="max-w-3xl mx-auto">
@@ -23,7 +20,7 @@ export default async function Home() {
               height={250}
               className="object-cover max-w-full h-auto"
               priority
-              unoptimized
+
             />
           </div>
           <div className="flex-1">

@@ -1,6 +1,5 @@
 import type { Reference } from "@/lib/posts";
 import Link from "next/link";
-import { Link2 } from "lucide-react";
 
 interface ReferencesProps {
     references: Reference[];

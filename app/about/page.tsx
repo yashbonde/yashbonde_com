@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowDown, File } from "lucide-react";
-import ClickableImage from "@/components/ClickableImage"; // kept for reference
+import { ArrowDown } from "lucide-react";
 
 export default function AboutPage() {
     return (
@@ -16,7 +15,7 @@ export default function AboutPage() {
                         height={250}
                         className="object-cover max-w-full h-auto"
                         priority
-                        unoptimized
+
                     />
                 </div>
                 <div className="flex-1">
@@ -65,7 +64,7 @@ export default function AboutPage() {
                         height={250}
                         className="object-cover max-w-full h-auto"
                         priority
-                        unoptimized
+
                     />
                 </div>
 
@@ -73,8 +72,8 @@ export default function AboutPage() {
                 <div className="flex-1 flex flex-col justify-end">
                     <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
                     <div className="text-base text-ink mb-4">Builder of AI products that drive
-                        real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
-                        startup journey. Open for consulting roles.<br /><br />
+                        real business value. Designed, deployed and scaled agentic systems. Lived a 0 → 1 devtool
+                        startup journey, led product development. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
                         Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>
                         {" "}on the side.{" "}

@@ -12,8 +12,10 @@ import ReferenceHover from "@/components/ReferenceHover";
 import CopyButton from "@/components/CopyButton";
 import type { Metadata } from "next";
 
-export async function generateStaticParams() {
-    const posts = await getAllPosts();
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+    const posts = getAllPosts();
     return posts
         .filter((p) => !p.url) // Only generate pages for internal blog posts
         .map((p) => {

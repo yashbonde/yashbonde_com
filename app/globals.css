@@ -26,8 +26,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
 
-  --font-inter: var(--font-inter);
-  --font-serif: var(--font-inter);
+  --font-serif: var(--font-source-sans);
   --font-devanagari: var(--font-eczar);
   --font-mono: var(--font-roboto-mono);
   --font-sans: var(--font-source-sans);
@@ -49,7 +48,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: var(--font-inter);
+  font-family: var(--font-source-sans);
   font-weight: 700;
   line-height: 1.2;
   margin-bottom: 1rem;
@@ -80,10 +79,6 @@ pre {
   font-family: var(--font-eczar);
 }
 
-/* Smooth transitions for hover effects */
-* {
-  transition: all 0.3s ease;
-}
 
 /* Links/buttons*/
 a {
@@ -98,22 +93,6 @@ a:hover,
 a:hover * {
   color: var(--link-hover) !important;
   text-decoration-color: var(--link-hover);
-}
-
-/* Hover animations: no shadows anywhere */
-.hover-lift:hover,
-.hover-scale:hover,
-.hover-glow:hover {
-  box-shadow: none;
-}
-
-/* Click zoom utility (JS toggles .zooming briefly; debounced in component) */
-.zoom-on-click {
-  display: inline-block;
-}
-
-.zoom-on-click.zooming {
-  /* Zoom effect removed */
 }
 
 /* Prose styling for blog posts */
@@ -204,7 +183,7 @@ a:hover * {
 .prose h5,
 .prose h6 {
   color: var(--ink);
-  font-family: var(--font-inter);
+  font-family: var(--font-source-sans);
   font-weight: 700;
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
@@ -218,12 +197,11 @@ a:hover * {
 
 .prose a {
   color: var(--link);
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .prose a:hover {
   color: var(--link-hover);
-  /* transform: translateY(-1px); */
 }
 
 .prose code {
@@ -316,13 +294,6 @@ a:hover * {
   display: block;
   border-radius: 0.5rem;
 }
-
-/* Remove all borders EXCEPT for tables - commented out to allow specific borders to work
-*:not(th):not(td) {
-  border: none !important;
-  outline: none !important;
-}
-*/
 
 /* Focus states for accessibility */
 a:focus-visible,
