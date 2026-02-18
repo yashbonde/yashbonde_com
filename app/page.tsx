@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from "react";
 import { getCombinedPosts, getAllTags } from "@/lib/posts";
 import LandingBlogList from "@/components/LandingBlogList";
 
@@ -33,7 +34,7 @@ export default function Home() {
                 Project अर्थ (Artha)
               </Link>.
             </p>
-            <p className="text-base text-ink mb-2">
+            <p className="text-base text-ink">
               Working on neural networks and automata theory.
               I think we can build an end to end neural computer by 2030.
               My we<span className="font-semibold">b-log</span> is a bunch of structured thoughts, code commits or tweets over the years.
@@ -45,12 +46,18 @@ export default function Home() {
                 YouTube
               </Link>.
             </p>
+            {/* 
+            <p className="text-base text-ink mb-2">
+              Click on the filters below to search things faster!
+            </p> */}
 
           </div>
         </div>
       </div>
 
-      <LandingBlogList initialPosts={posts} initialTags={tags} />
+      <Suspense>
+        <LandingBlogList initialPosts={posts} initialTags={tags} />
+      </Suspense>
 
       <div className="mt-8 border-t border-gray-200 pt-8 mx-auto" style={{ maxWidth: '48rem', width: '100%' }}>
         <p className="text-gray-500 italic text-sm">

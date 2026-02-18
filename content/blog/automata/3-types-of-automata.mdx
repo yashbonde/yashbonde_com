@@ -1,0 +1,68 @@
+--- 
+title: 'Neural Automata #3: The species of computers'
+ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-3.jpeg'
+date: '2026-02-15'
+tags:
+- Notes
+- Neural Automata
+- Neural Networks
+references:
+- title: '3D version of Conway’s game of life'
+  url: https://www.google.com/search?q=3d+cellular+automata&oq=3d+cellular+automata&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEINjE5MWowajSoAgCwAgE&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:c4bc0215,vid:dQJ5aEsP6Fs,st:0
+- title: 'The Wireworld Computer'
+  url: https://www.quinapalus.com/wi-index.html
+- title: 'CAM-8 proposal'
+  url: https://people.csail.mit.edu/nhm/cam8.pdf
+- title: 'Church 1941'
+  url: https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/alonzo-church-the-calculi-of-lambdaconversion-annals-of-mathematics-studies-no-6-lithoprinted-princeton-university-press-princeton-1941-77-pp/B25AA86E102E282A10595C7693D9417A
+- title: 'Comparing functional programming with object oriented programming'
+  url: https://www.tutorialspoint.com/functional_programming/functional_programming_introduction.htm#:~:text=Functional%20Programming%20vs.%20Object%2Doriented%20Programming
+- title: 'SICP was a foundational coursebook for learning to program. It had a lambda symbol on the cover.'
+  url: https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/sicp-reviews.html
+- title: 'Lispers getting trolled'
+  url: https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=55.%20A%20LISP%20programmer%20knows%20the%20value%20of%20everything%2C%20but%20the%20cost%20of%20nothing
+- title: 'Terrence Taos list of proofs done by AI'
+  url: https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/
+---
+
+How do you use a computer?
+
+Previously [\#$2$ Real Computers](./2-real-computers), we discussed how we unified theory with real computers.
+
+For most people today a computer means a laptop to surf the internet and work on slack. Mobile phones are not even considered computers. But they are for all software purposes ”same”.
+
+When we studied theoretical computers we only considered the hierarchy, but there are things that predate it. 
+
+Now moving away from how the computers of today are, let’s go to how computers could be, after all this was but one path that unfolded. [Von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann) and [Ulam](https://en.wikipedia.org/wiki/Stanis%C5%82aw_Ulam) proposed an idea of a self replicating computer, a ***Universal Constructor***. In order to build any computer you need a definition of the state and the transition rules, thus ***Cellular Automata*** was born. The original proposition was a complicated setup, it was [Conway’s Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) that popularised $2$D grid and neighbour rules, though you can also do [$3$D](https://www.google.com/search?q=3d+cellular+automata&oq=3d+cellular+automata&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIGCAEQLhhA0gEINjE5MWowajSoAgCwAgE&sourceid=chrome&ie=UTF-8#fpstate=ive&vld=cid:c4bc0215,vid:dQJ5aEsP6Fs,st:0). This makes CA a Finite State Automata (FSA). There are cool things like [The Wireworld Computer](https://www.quinapalus.com/wi-index.html) but not a lot of commercial or practical applications, though there are examples like [urban design](https://fastercapital.com/topics/the-role-of-cellular-automata-modeling-in-predictive-analysis.html), [VLSI cryptography](https://www.researchgate.net/publication/3043410_Theory_and_Applications_of_Cellular_Automata). It can model complex physical flows in parallel but it cannot do “if-then” code. Norman Margolus [proposed](https://people.csail.mit.edu/nhm/cam8.pdf) a machine called CAM-$8$ and actually [built it](http://www.ai.mit.edu/projects/im/cam8/).
+
+Let’s go back a bit further in time, [Church $1941$](https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/alonzo-church-the-calculi-of-lambdaconversion-annals-of-mathematics-studies-no-6-lithoprinted-princeton-university-press-princeton-1941-77-pp/B25AA86E102E282A10595C7693D9417A) proposed a new way to build a universal computer. There are three basics parts, first is a variable $x$, a function definition defined by $\lambda$ e.g. $x + 1$ can be defined as $\lambda x . x + 1$. Then applying the function on variable $s$ like $f x$. This way one can reuse the functions to build complex operations. Effectively modeling a TM as a series of operations that any human could do with a pen and paper. This is a foundational element of [functional programming](https://www.tutorialspoint.com/functional_programming/functional_programming_introduction.htm#:~:text=Functional%20Programming%20vs.%20Object%2Doriented%20Programming) and $\lambda$ becoming a [respected](https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/sicp-reviews.html) cultural symbol, also [SICP](https://web.mit.edu/6.001/6.037/sicp.pdf).
+
+![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/have-you-read-your-sicp-today.jpeg)
+  
+[LISP](https://en.wikipedia.org/wiki/Lisp_(programming_language)) is a raw implementation of Church’s idea, it provides guarantees that any code written, will execute on a TM. It is an interpreted language and thus requires a ***Virtual Machine*** (VM) to run, a pioneer. Not just that, a program can change itself during runtime thus making it a universal TM. This was a time when programs were precise instructions on how the machine operated. Which means a program can be tuned for the machine, juicing out sweet ROI. For this LSIPers [were trolled](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=55.%20A%20LISP%20programmer%20knows%20the%20value%20of%20everything%2C%20but%20the%20cost%20of%20nothing.) even back in $1982$\. However there were physical machines called [Lisp Machines](https://en.wikipedia.org/wiki/Lisp_machine) that were designed to run LISP.
+
+At this point we have defined most of what is useful, arithmetic and build decision flows. Computers have been getting [faster exponentially](https://en.wikipedia.org/wiki/Moore%27s_law), and that forced a certain standardisation. All languages have a data model even if the cost is hidden from the user. As we started hitting the limit of improvements on transistor size, we pulled another spade which is to use parallel computation instead of sequential computing. The control / master remains with CPUs while these new “GPUs” are tasked with certain things it is good with, like matrix multiplication (`matmul`) (also read [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms#Level_3)). On top of which we built neural networks, more on this later.
+
+Computers are not a modern phenomenon, this is actually [a long arc](https://blog.samaltman.com/the-gentle-singularity#:~:text=We%20are%20climbing%20the%20long%20arc%20of%20exponential%20technological%20progress%3B%20it%20always%20looks%20vertical%20looking%20forward%20and%20flat%20going%20backwards%2C%20but%20it%E2%80%99s%20one%20smooth%20curve.). A very long time ago we built analog-mechanical computers like ones discovered at [***Antikythera***](https://en.wikipedia.org/wiki/Antikythera_mechanism), though an argument can be made that something of equal if not higher caliber would come from Asia as well. Using this machine, we can calculate planetary positions $223$ months in advance. The use of this is debated, one of the sides mentions tracking of [Panhellenic games](https://en.wikipedia.org/wiki/Panhellenic_Games).
+
+***Neural networks*** (NN) are a type of machine learning algorithm inspired by the animal brain. It takes an input signal e.g. camera pixels, passes it through a series of pattern filters to find the most important signal in the noise. This signal is then used to make the best prediction. As of this writing in early $2026$, NN is the hype. Used to [predict molecule shape](https://deepmind.google/science/alphafold/), [understand earth](https://deepmind.google/blog/alphaearth-foundations-helps-map-our-planet-in-unprecedented-detail/) and [kill the internet](https://en.wikipedia.org/wiki/Dead_Internet_theory). We do not understand how they work and that’s half the magic, the other half is how adaptable they are to different tasks. A convolutional network can be used to predict [image labels](https://en.wikipedia.org/wiki/AlexNet) and can also be used to play [superhuman Go](https://discovery.ucl.ac.uk/id/eprint/10045895/1/agz_unformatted_nature.pdf), by merely changing the learning algorithm.
+
+They are however empirically designed systems, not rules based like software $1$.$0$. Just like the $1940$s the LLMs are being built before theory has matured. AI is getting more [powerful](https://terrytao.wordpress.com/2025/11/05/mathematical-exploration-and-discovery-at-scale/) / hyped / [insane](https://3dgen.io/) by the day. We will see more computational tasks moving into the [Software $2$.$0$](https://karpathy.medium.com/software-2-0-a64152b37c35) world (NN). What we see is that CPUs are still being used for all the decision making, but its inputs are much more refined by the increased perception of NNs on GPUs. There’s been a lot of work done on trying to see if neural networks can be turned into full end-to-end computers.
+
+Quantum computers, optical computers, there’s so many. Here’s a table going over some computer types:
+
+| Computer Type | One-Liner Description | History & Origin | Best Task (vs. CPU) | Worst Task (vs. CPU) | Example Physical Implementation |
+| :---- | :---- | :---- | :---- | :---- | :---- |
+| **Cellular Automata** | A grid of parallel cells evolving based on local neighbor rules. | Conceptualized by Ulam and von Neumann ($1940$s) for self-replication studies. | **Fluid Dynamics:** Simulating complex physical flows in parallel. | **Serial Logic:** Executing sequential "if-then" code. | [CAM-$8$ Machine](https://www.google.com/search?q=https://www.cc.gatech.edu/~isbell/classes/reading/papers/margolus-cam8.pdf) |
+| **Lambda Calculus** | A mathematical system computing via function application without using "states." | Developed by Alonzo Church ($1930$s) to explore the foundations of logic. | **Formal Verification:** Mathematically proving code is bug-free. | **Memory Management:** High overhead for basic arithmetic. | [Lisp Machines](https://en.wikipedia.org/wiki/Lisp_machine) |
+| **Quantum Computer** | Uses qubits and superposition to solve probabilistic problems at scale. | Proposed by Richard Feynman ($1981$) to simulate quantum physics. | **Prime Factorization:** Breaking encryption that takes CPUs eons. | **Daily Tasks:** Simple word processing or web browsing. | [IBM Quantum System One](https://www.google.com/search?q=https://www.ibm.com/quantum/system-one) |
+| **Analog Computer** | Computes using continuous physical quantities like voltage or rotation. | Ancient (Antikythera, $150$ BC) to mid-century electronic differential analyzers. | **Real-time Control:** Instant processing of electrical signals. | **High Precision:** Accuracy is limited by physical tolerances. | [THAT Analog Computer](https://the-analog-thing.org/) |
+| **Mechanical Computer** | Uses physical gears and levers to perform discrete logical operations. | Babbage's Difference Engine ($1820$s) and Pascal's calculators ($1640$s). | **Hostile Environments:** Computing in extreme heat or radiation. | **Speed:** Physically limited by the inertia of moving parts. | [Babbage Difference Engine](https://www.computerhistory.org/babbage/) |
+| **Neuromorphic** | Hardware mimicking the brain's "spike" based neural architecture. | Coined by Carver Mead ($1980$s) to create brain-inspired silicon. | **Edge AI:** Efficient, low-power pattern recognition. | **Exact Arithmetic:** Too "fuzzy" for precise accounting. | [Intel Loihi $2$](https://www.intel.com/content/www/us/en/research/neuromorphic-computing.html) |
+| **Optical Computer** | Uses pulses of light (photons) instead of electrons for processing. | Research surged in the $1980$s at Bell Labs to beat the "heat wall." | **Matrix Math:** Instant multiplication for AI workloads via light. | **Miniaturization:** Hard to shrink to the size of a smartphone. | [Lightmatter Envoy](https://www.google.com/search?q=https://lightmatter.co/products/envoy/) |
+| **Dataflow Computer** | Instructions execute only when their data inputs arrive, not by a clock. | Developed by Jack Dennis at MIT ($1970$s) to bypass the CPU bottleneck. | **Big Data Pipelines:** Maximizing throughput for massive data streams. | **Dynamic Branching:** Handling code with unpredictable "if" statements. | [SambaNova DataScale](https://sambanova.ai/products/datascale) |
+| **Neural Network** | A system of interconnected nodes that "computes" by weighting signals to find patterns in data. | Proposed by McCulloch & Pitts ($1943$); first physical model, the Mark I Perceptron, built in $1958$\. LLMs are a type of task specific network. | **Pattern Recognition:** Identifying faces or voices in "noisy," unstructured data. | **Exact Logic:** Performing perfect math (like $99,999 \times 3.14$) without error. | [Apple Neural Engine (ANE)](https://machinelearning.apple.com/research/neural-engine-transformers) |
+
+One more cycle of Exploitation → Exploration is complete. We have built a rough understanding of a lot of ways of computing things, now there are going to be various forms each put together to solve something.
+
+I have covered more in [\#$4$ Neural Automata](./4-literature-review-neural-automata).

@@ -25,9 +25,9 @@ references:
   url: https://pmc.ncbi.nlm.nih.gov/articles/PMC1538977/
 ---
 
-It is $1956$ and we have actual computers, but we don’t yet have a way to use them effectively. You run something, smoke comes out, you fix, recalculate and run again. We don’t have all the fancy abstraction that we have today, developers need to account for the speed at which the drums rotate.
-
 [Previously](./1-automata-history) we covered how we can run mathematical equations on an abstract machine called “automata”. We reached the “edge of the map” for the types of automata we need, but not what implementations. We now have the knowledge that all we need is a Turing Machine, but it is impossible to build.
+
+It is $1956$ and we have actual computers, but we don’t yet have a way to use them effectively. You run something, smoke comes out, you fix, recalculate and run again. We don’t have all the fancy abstraction that we have today, developers need to account for the speed at which the drums rotate.
 
 Our main constraint is memory size, IRL it will be a constant (not $\infty$) but they should be able to do all that a Turing Machine can. We call this Turing-Equivalence or a ***universal computer***. Let’s replace the infinite tape of a TM with a fixed number of uniquely labeled registers, and let’s say it can have any non-negative integers i.e. $R_i \in [0,\infty]$. How this machine works will be covered below, but we can call this the ***register machine***. Since this is an automaton it will come with a set of production rules i.e. the things it can do. The permissible set of operations is known as the ***instruction set***.
 

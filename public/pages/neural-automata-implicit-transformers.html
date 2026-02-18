@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implicit & Tape-Based Memory Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Source Sans 3"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: "Source Sans 3", sans-serif;
+        }
+
+        .font-mono,
+        .font-mono * {
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .mem-el {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            border-width: 1px;
+            border-style: solid;
+            white-space: nowrap;
+        }
+
+        .el-active {
+            background: #ede9fe;
+            border-color: #a78bfa;
+            color: #5b21b6;
+        }
+
+        .el-mid {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+            color: #075985;
+        }
+
+        .el-bot {
+            background: #d1fae5;
+            border-color: #6ee7b7;
+            color: #065f46;
+        }
+
+        .el-new {
+            background: #fef9c3;
+            border-color: #fde047;
+            color: #713f12;
+        }
+
+        .el-dead {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #9ca3af;
+        }
+
+        .prob-bar-bg {
+            background: #e5e7eb;
+            border-radius: 2px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .prob-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        .step-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-divider {
+            border-top: 1px dashed #e5e7eb;
+            margin: 8px 0;
+        }
+
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 1px 4px;
+        }
+
+        .blend-col {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 90px;
+        }
+
+        .blend-header {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-bottom: 2px;
+        }
+
+        .blend-val {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-align: center;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid;
+        }
+
+        .mem-matrix td,
+        .mem-matrix th {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .mem-matrix th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 min-h-screen p-4 font-sans">
+    <div class="max-w-[1800px] mx-auto">
+
+        <!-- Sticky Nav -->
+        <nav class="mb-12 sticky top-4 z-50 px-4 font-sans">
+            <div
+                class="max-w-[1720px] mx-auto bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl p-4 transition-all duration-300">
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3">
+                            <div>
+                                <h1 class="text-xl font-bold text-gray-900 tracking-tight leading-none mb-1">
+                                    Implicit <span class="text-gray-400 font-medium">Memory Models</span>
+                                </h1>
+                                <p class="text-[11px] text-gray-500 font-medium tracking-wide opacity-70">
+                                    Detailed overview of neural networks without a dedicated external memory.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-x-1 gap-y-2">
+                        <div class="flex flex-wrap items-center bg-gray-50/50 p-1 rounded-xl border border-gray-100">
+                            <a href="#implicit"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm transition-all duration-200">Implicit
+                                (RNN/LSTM)</a>
+                            <a href="#transformers"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-purple-600 hover:shadow-sm transition-all duration-200">Transformers</a>
+                            <a href="#tape"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-green-600 hover:shadow-sm transition-all duration-200">Tape-RNN</a>
+                            <a href="#nee"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm transition-all duration-200">Neural
+                                Execution Engine</a>
+                        </div>
+
+                        <div class="flex items-center gap-2 ml-2">
+                            <a href="https://yashbonde.com" target="_blank"
+                                class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:border-blue-200 hover:bg-blue-50 transition-all group">
+                                <span
+                                    class="text-[11px] font-bold text-gray-500 group-hover:text-blue-600">yashbonde.com</span>
+                                <svg class="w-3 h-3 text-gray-400 group-hover:text-blue-500" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="space-y-12">
+
+            <!-- ============================= IMPLICIT MEMORY ============================= -->
+            <section id="implicit" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-gray-500 pl-3">Implicit Memory — RNN,
+                        LSTM, GRU</h2>
+                    <span class="text-xs font-mono text-gray-400">Fixed-size Hidden State · No External Access · O(1)
+                        per step</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <h3 class="text-sm font-bold text-gray-800">Overview</h3>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">The Bottleneck.</strong> Standard RNNs compress all past
+                                history into a single fixed-dimension vector h<sub>t</sub>. This is "implicit" memory —
+                                the model has no way to address specific past events except by what survives the
+                                compression.</p>
+                            <p><strong class="text-gray-800">LSTMs.</strong> Use a dedicated cell state c<sub>t</sub>
+                                and gating mechanisms (Input, Forget, Output) to control the flow of information. While
+                                better at long-range dependencies than vanilla RNNs, they still fail at tasks requiring
+                                structured retrieval (like copying long strings).</p>
+                            <p><strong class="text-gray-800">Chomsky Hierarchy.</strong> RNNs are theoretically
+                                equivalent to Finite State Automata (Regular Languages). LSTMs can emulate counters
+                                (a<sup>n</sup>b<sup>n</sup>), but struggle with full Context-Free or Context-Sensitive
+                                tasks because their memory cannot grow with input size.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass — LSTM</h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">d_h=2 ·
+                                    forget / input / candidate / output gates</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-gray-100 text-gray-600">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">State
+                                        at timestep t — three tensors entering the cell</div>
+                                    <div class="flex gap-3 flex-wrap">
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 uppercase font-bold mb-1">Input
+                                                x<sub>t</sub></div>
+                                            <div class="mem-el el-new w-36 justify-center"><span>[0.3, −0.5]</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 uppercase font-bold mb-1">Prev hidden
+                                                h<sub>t−1</sub></div>
+                                            <div class="mem-el el-mid w-36 justify-center"><span>[0.2, 0.4]</span></div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 uppercase font-bold mb-1">Prev cell
+                                                c<sub>t−1</sub></div>
+                                            <div class="mem-el el-active w-36 justify-center"><span>[0.1, 0.6]</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-2 py-1 text-gray-600">
+                                        z = concat([h<sub>t−1</sub>, x<sub>t</sub>]) = [0.2, 0.4, 0.3, −0.5] &nbsp;← fed
+                                        to all 4 gate networks
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-gray-100 text-gray-600">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Four
+                                        gate activations — three Sigmoid, one Tanh</div>
+                                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                        <div class="bg-red-50 border border-red-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-red-700 uppercase mb-1">Forget
+                                                f<sub>t</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-500 mb-1.5">σ(W<sub>f</sub>·z) =
+                                                σ([0.7, 0.8])</div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">f<sub>t</sub>[0] =
+                                                        <strong class="text-red-600">0.67</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-red-400" style="width:67%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">f<sub>t</sub>[1] =
+                                                        <strong class="text-red-600">0.69</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-red-400" style="width:69%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">how much of c<sub>t−1</sub> to
+                                                keep</div>
+                                        </div>
+                                        <div class="bg-blue-50 border border-blue-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-blue-700 uppercase mb-1">Input
+                                                i<sub>t</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-500 mb-1.5">σ(W<sub>i</sub>·z) =
+                                                σ([0.4, 0.6])</div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">i<sub>t</sub>[0] =
+                                                        <strong class="text-blue-600">0.60</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-blue-400" style="width:60%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">i<sub>t</sub>[1] =
+                                                        <strong class="text-blue-600">0.65</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-blue-400" style="width:65%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">how much new info to write</div>
+                                        </div>
+                                        <div class="bg-purple-50 border border-purple-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-700 uppercase mb-1">Candidate
+                                                c̃<sub>t</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-500 mb-1.5">tanh(W<sub>c</sub>·z)
+                                                = tanh([0.5, −0.3])</div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">c̃<sub>t</sub>[0] =
+                                                        <strong class="text-purple-600">+0.46</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-purple-400" style="width:73%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">c̃<sub>t</sub>[1] =
+                                                        <strong class="text-purple-600">−0.29</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-purple-200" style="width:35%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">candidate new content, ∈ (−1, 1)
+                                            </div>
+                                        </div>
+                                        <div class="bg-green-50 border border-green-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-green-700 uppercase mb-1">Output
+                                                o<sub>t</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-500 mb-1.5">σ(W<sub>o</sub>·z) =
+                                                σ([0.3, 0.5])</div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">o<sub>t</sub>[0] =
+                                                        <strong class="text-green-600">0.57</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-green-400" style="width:57%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">o<sub>t</sub>[1] =
+                                                        <strong class="text-green-600">0.62</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-green-400" style="width:62%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">what fraction of c<sub>t</sub> to
+                                                expose</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-gray-100 text-gray-600">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Cell
+                                        state update — the "conveyor belt" carrying long-range memory</div>
+                                    <div class="flex gap-4 flex-wrap items-center">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>c<sub>t</sub> = f<sub>t</sub> ⊙ c<sub>t−1</sub> + i<sub>t</sub> ⊙
+                                                c̃<sub>t</sub></div>
+                                            <div>c<sub>t</sub>[0] = 0.67·0.1 + 0.60·(+0.46) = 0.067 + 0.276 =
+                                                <strong>0.343</strong>
+                                            </div>
+                                            <div>c<sub>t</sub>[1] = 0.69·0.6 + 0.65·(−0.29) = 0.414 − 0.189 =
+                                                <strong>0.225</strong>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2 items-center">
+                                            <div class="mem-el el-active w-36 justify-center"><span>c<sub>t−1</sub>
+                                                    [0.1, 0.6]</span></div>
+                                            <span class="text-gray-300">→</span>
+                                            <div class="mem-el el-new w-36 justify-center"><span>c<sub>t</sub> [0.343,
+                                                    0.225]</span></div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-blue-50 border border-blue-100 rounded px-2 py-1 text-blue-700">
+                                        If f<sub>t</sub>≈1 and i<sub>t</sub>≈0, c passes through unchanged — the LSTM
+                                        can preserve information over many steps. If f<sub>t</sub>≈0, old memory is
+                                        erased and replaced by the new candidate.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-gray-100 text-gray-600">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Hidden state — gated cell readout exposed to the outside world</div>
+                                    <div class="flex gap-4 flex-wrap items-center">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>h<sub>t</sub> = o<sub>t</sub> ⊙ tanh(c<sub>t</sub>)</div>
+                                            <div>h<sub>t</sub>[0] = 0.57 · tanh(0.343) = 0.57 · 0.329 =
+                                                <strong>0.188</strong>
+                                            </div>
+                                            <div>h<sub>t</sub>[1] = 0.62 · tanh(0.225) = 0.62 · 0.221 =
+                                                <strong>0.137</strong>
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2 items-center">
+                                            <div class="mem-el el-mid w-36 justify-center"><span>h<sub>t−1</sub> [0.2,
+                                                    0.4]</span></div>
+                                            <span class="text-gray-300">→</span>
+                                            <div class="mem-el el-bot w-36 justify-center"><span>h<sub>t</sub> [0.188,
+                                                    0.137]</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">h<sub>t</sub> feeds the prediction
+                                        head AND recurs as input to the next step. c<sub>t</sub> is the internal
+                                        highway; h<sub>t</sub> is the summary exposed to the outside.</div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-gray-100 text-gray-600">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Prediction head — linear readout from h<sub>t</sub> to next-token distribution
+                                    </div>
+                                    <div class="flex gap-3 flex-wrap items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>logits = W<sub>out</sub> · h<sub>t</sub> + b<sub>out</sub>
+                                                &nbsp;&nbsp;W<sub>out</sub> ∈ ℝ<sup>|Σ|×d<sub>h</sub></sup></div>
+                                            <div>logits = [<strong>0.24</strong>, <strong>0.09</strong>,
+                                                <strong>0.16</strong>] &nbsp;&nbsp;(|Σ|=3: a, b, c)
+                                            </div>
+                                            <div>ŷ<sub>t</sub> = softmax(logits) = [<strong>0.359</strong>,
+                                                <strong>0.309</strong>, <strong>0.332</strong>]
+                                            </div>
+                                            <div>loss = −log ŷ<sub>t</sub>[y*] &nbsp;&nbsp;y*=b → L = −log(0.309) =
+                                                <strong>1.174</strong>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1 flex-1 min-w-[160px]">
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5 text-gray-500">
+                                                    <span>a</span><span class="font-mono">0.359</span>
+                                                </div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-400" style="width:35.9%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5"><span
+                                                        class="font-bold text-blue-600">b &nbsp;(true next)</span><span
+                                                        class="font-mono font-bold text-blue-600">0.309</span></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-blue-500" style="width:30.9%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5 text-gray-500">
+                                                    <span>c</span><span class="font-mono">0.332</span>
+                                                </div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-400" style="width:33.2%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 font-mono mt-0.5">sum = 1.000 · same
+                                                W<sub>out</sub> used at every timestep</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1.5 text-orange-700">
+                                        <strong>Bottleneck:</strong> h<sub>t</sub> ∈ ℝ<sup>2</sup> is the only
+                                        information W<sub>out</sub> sees — regardless of whether the sequence has 10 or
+                                        10,000 tokens. Long sequences compete for the same d<sub>h</sub> slots, which is
+                                        why LSTMs fail at tasks requiring exact recall of distant tokens. External
+                                        memory
+                                        (stack, tape, matrix) breaks this ceiling.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= TRANSFORMERS ============================= -->
+            <section id="transformers" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-yellow-500 pl-3">Transformers —
+                        Attention as Memory</h2>
+                    <span class="text-xs font-mono text-gray-400">Fixed Context Window · Key-Value Retrieval · O(N²)
+                        Training</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-yellow-100 bg-yellow-50">
+                            <h3 class="text-sm font-bold text-yellow-800">Overview</h3>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Soft Memory.</strong> Transformers treat the entire context
+                                window as a memory. Each token is a memory slot. Attention is the addressing mechanism.
+                            </p>
+                            <p><strong class="text-gray-800">Static vs Dynamic.</strong> Unlike NTM/DNC, Transformers do
+                                not <em>write</em> to their memory during a forward pass. The "memory" (KV cache) is
+                                just the representations of previous tokens. New information cannot be stored in old
+                                slots.</p>
+                            <p><strong class="text-gray-800">Computational Limits.</strong> While Transformers excel at
+                                Regular and some DCF tasks within their window, they cannot generalize to sequence
+                                lengths beyond what they were trained on (Position Encoding limit), unlike Stack-RNNs or
+                                Tapes which can theoretically grow.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass — Self-Attention</h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">3-token
+                                    sequence · d_k=d_v=4 · query token: "cat" (pos 1) attending to all</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-yellow-100 text-yellow-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Context window as read-only memory — every token is a slot</div>
+                                    <div class="overflow-x-auto">
+                                        <table class="mem-matrix border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th>pos</th>
+                                                    <th>token</th>
+                                                    <th>embedding x (d=4)</th>
+                                                    <th>role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="background:#e0f2fe">
+                                                    <td class="font-bold text-sky-700">0</td>
+                                                    <td>the</td>
+                                                    <td>[0.1, 0.9, 0.2, 0.5]</td>
+                                                    <td class="text-gray-500 text-[9px]">provides K[0], V[0]</td>
+                                                </tr>
+                                                <tr style="background:#fef9c3">
+                                                    <td class="font-bold text-amber-700">1</td>
+                                                    <td><strong>cat</strong></td>
+                                                    <td>[0.7, 0.3, 0.8, 0.4]</td>
+                                                    <td class="text-amber-600 text-[9px] font-bold">← query token this
+                                                        step</td>
+                                                </tr>
+                                                <tr style="background:#d1fae5">
+                                                    <td class="font-bold text-emerald-700">2</td>
+                                                    <td>sat</td>
+                                                    <td>[0.5, 0.6, 0.1, 0.9]</td>
+                                                    <td class="text-gray-500 text-[9px]">provides K[2], V[2]</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">Unlike NTM/DNC, this memory is
+                                        <strong>read-only</strong> during a forward pass — no token can write into
+                                        another's slot. The "memory" is the frozen set of input representations.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-yellow-100 text-yellow-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Project Q · K · V — three learned linear maps, d_k = d_v = 4</div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <div class="bg-amber-50 border border-amber-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-amber-700 uppercase mb-1">Query q
+                                                (from "cat")</div>
+                                            <div class="font-mono text-[9px] text-gray-500">q = x<sub>cat</sub>
+                                                W<sub>Q</sub></div>
+                                            <div class="font-mono text-[10px] text-gray-800 mt-1">[1.0, 0.0, 1.0, 0.0]
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">what "cat" is looking for</div>
+                                        </div>
+                                        <div class="bg-sky-50 border border-sky-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-sky-700 uppercase mb-1">Keys K (all
+                                                tokens)</div>
+                                            <div class="font-mono text-[9px] text-gray-500">k<sub>j</sub> =
+                                                x<sub>j</sub> W<sub>K</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-700 space-y-0.5 mt-1">
+                                                <div>k<sub>the</sub>: [−0.8, 0.3, −0.8, 0.5]</div>
+                                                <div>k<sub>cat</sub>: [1.4, 0.2, 1.4, −0.3]</div>
+                                                <div>k<sub>sat</sub>: [0.6, 0.4, 0.6, 0.7]</div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">what each token offers to match
+                                            </div>
+                                        </div>
+                                        <div class="bg-emerald-50 border border-emerald-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-emerald-700 uppercase mb-1">Values V
+                                                (all tokens)</div>
+                                            <div class="font-mono text-[9px] text-gray-500">v<sub>j</sub> =
+                                                x<sub>j</sub> W<sub>V</sub></div>
+                                            <div class="font-mono text-[9px] text-gray-700 space-y-0.5 mt-1">
+                                                <div>v<sub>the</sub>: [0.2, 0.4, 0.1, 0.5]</div>
+                                                <div>v<sub>cat</sub>: [0.9, 0.3, 0.7, 0.1]</div>
+                                                <div>v<sub>sat</sub>: [0.5, 0.8, 0.2, 0.6]</div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 mt-1">what each token contributes if
+                                                selected</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-yellow-100 text-yellow-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Attention scores — q · k<sub>j</sub> / √d<sub>k</sub>, scaled to prevent softmax
+                                        saturation</div>
+                                    <div
+                                        class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                        <div>score(cat→the) = q·k<sub>the</sub> / √4 = −1.60 / 2.0 =
+                                            <strong>−0.80</strong>
+                                        </div>
+                                        <div>score(cat→cat) = q·k<sub>cat</sub> / √4 = +2.80 / 2.0 =
+                                            <strong>+1.40</strong> &nbsp;← self-attention, highest
+                                        </div>
+                                        <div>score(cat→sat) = q·k<sub>sat</sub> / √4 = +1.20 / 2.0 =
+                                            <strong>+0.60</strong>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">Division by √d<sub>k</sub> prevents
+                                        dot products from growing large and pushing softmax into near-zero gradient
+                                        (saturated) regions as d increases.</div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-yellow-100 text-yellow-700">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Softmax attention weights α — form a probability distribution over all tokens
+                                    </div>
+                                    <div class="space-y-1 max-w-sm mb-1.5">
+                                        <div>
+                                            <div class="text-[10px] mb-0.5 text-gray-500 font-bold text-sky-600">
+                                                α(cat→the): exp(−0.80)/Z = 0.449/6.33 = <strong>0.071</strong></div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-sky-400" style="width:7%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] mb-0.5 text-gray-500 font-bold text-amber-600">
+                                                α(cat→cat): exp(+1.40)/Z = 4.055/6.33 = <strong>0.641</strong> ←
+                                                dominant</div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-amber-400" style="width:64%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] mb-0.5 text-gray-500 font-bold text-emerald-600">
+                                                α(cat→sat): exp(+0.60)/Z = 1.822/6.33 = <strong>0.288</strong></div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-emerald-400" style="width:29%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="font-mono text-[10px] text-gray-400">Z = 0.449 + 4.055 + 1.822 = 6.326
+                                        &nbsp;·&nbsp; α sums to 1.0 by construction</div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5 -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-yellow-100 text-yellow-700">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Output — weighted value sum, then linear readout to next-token logits</div>
+                                    <div
+                                        class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5 mb-3">
+                                        <div>o<sub>cat</sub> = Σ α<sub>j</sub> · v<sub>j</sub></div>
+                                        <div>&nbsp;&nbsp;&nbsp;&nbsp;= 0.071·v<sub>the</sub> + 0.641·v<sub>cat</sub>
+                                            + 0.288·v<sub>sat</sub></div>
+                                        <div>o[0] = 0.071·0.2 + 0.641·0.9 + 0.288·0.5 = <strong>0.735</strong></div>
+                                        <div>o[1] = 0.071·0.4 + 0.641·0.3 + 0.288·0.8 = <strong>0.451</strong></div>
+                                        <div>o[2] = 0.071·0.1 + 0.641·0.7 + 0.288·0.2 = <strong>0.513</strong></div>
+                                        <div>o[3] = 0.071·0.5 + 0.641·0.1 + 0.288·0.6 = <strong>0.272</strong></div>
+                                    </div>
+                                    <div class="border-t border-dashed border-gray-200 my-2"></div>
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Prediction head — W · o + b → softmax → next-token probability</div>
+                                    <div class="flex gap-3 flex-wrap items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>ŷ<sub>t</sub> = softmax(W · o<sub>cat</sub> + b) &nbsp;&nbsp;W ∈
+                                                ℝ<sup>|Σ|×d<sub>v</sub></sup></div>
+                                            <div>logits = [<strong>0.82</strong>, <strong>0.31</strong>,
+                                                <strong>0.55</strong>] &nbsp;&nbsp;(|Σ|=3: the, cat, sat)
+                                            </div>
+                                            <div>ŷ<sub>t</sub> = [<strong>0.423</strong>, <strong>0.254</strong>,
+                                                <strong>0.323</strong>] &nbsp;← prob over next token
+                                            </div>
+                                            <div>loss = −log ŷ<sub>t</sub>[y*] &nbsp;&nbsp;y*=sat → L = −log(0.323) =
+                                                <strong>1.130</strong>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1 flex-1 min-w-[160px]">
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5 text-gray-500">
+                                                    <span>the</span><span class="font-mono">0.423</span>
+                                                </div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-400" style="width:42.3%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5 text-gray-500">
+                                                    <span>cat</span><span class="font-mono">0.254</span>
+                                                </div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-400" style="width:25.4%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="flex justify-between text-[10px] mb-0.5"><span
+                                                        class="font-bold text-yellow-600">sat &nbsp;(true
+                                                        next)</span><span
+                                                        class="font-mono font-bold text-yellow-600">0.323</span></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-yellow-500" style="width:32.3%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="text-[9px] text-gray-400 font-mono mt-0.5">sum = 1.000 · causal
+                                                mask prevents future leakage</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1.5 text-orange-700">
+                                        <strong>Static memory:</strong> no token writes into another's V slot. Each
+                                        position predicts the next token using only attended-to context — memory cannot
+                                        grow with the task unlike stack/tape/NTM models.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= NEE ============================= -->
+            <section id="nee" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-green-500 pl-3">Neural Execution Engine
+                        — Yan et al. (2020)</h2>
+                    <span class="text-xs font-mono text-gray-400">Algorithmic Primitives · Engine Selection · Soft
+                        Modular Execution</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Overview -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-green-100 bg-green-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-green-800">Overview</h3>
+                                <span
+                                    class="text-[10px] font-mono text-green-400 bg-white border border-green-200 px-1 rounded">Yan
+                                    2020</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Core idea.</strong> Learning to execute algorithms by
+                                factoring execution into a small set of <em>primitive engines</em>. Instead of learning
+                                a monolithic function, NEE trains a controller that selects and blends pre-specified
+                                operations — analogous to a CPU dispatching micro-ops from a fixed instruction set.</p>
+                            <p><strong class="text-gray-800">Engines.</strong> Each engine is a lightweight
+                                feedforward net (or learned linear map) that maps the current state to a new state for
+                                its specific operation — ADD, SWAP, INC-POINTER, COPY, etc. The engine set is designed
+                                by the researcher to match the algorithm family. The networks learn <em>how</em> to
+                                execute each primitive; the controller learns <em>which</em> primitive to apply when.
+                            </p>
+                            <p><strong class="text-gray-800">Controller.</strong> An LSTM reads the current state and
+                                emits a probability distribution over engines at each execution step. During the forward
+                                pass, <strong>all engines run in parallel</strong> and their outputs are blended by
+                                these probabilities. Gradient flows through every engine every step — even low-weight
+                                engines receive signal — which stabilises early training.</p>
+                            <p><strong class="text-gray-800">Sharpening toward discrete.</strong> The soft blend
+                                during training makes controller gradients dense. At test time the distribution can be
+                                sharpened (or converted to argmax) to recover an exactly discrete, interpretable program
+                                trace. This soft-to-hard curriculum is what allows NEE to generalise to longer
+                                sequences than seen during training.</p>
+                            <p><strong class="text-gray-800">Task fit.</strong> Best suited to tasks where the
+                                algorithm decomposes into a known fixed primitive set: multi-digit addition and
+                                multiplication, pointer-based sorting, and register-machine computation (Yan 2020). The
+                                number of execution steps T is fixed; algorithms that need more steps require either
+                                increasing T or hierarchically nesting engines within engines.</p>
+                        </div>
+                    </div>
+
+                    <!-- Example: Pointer-Based Arithmetic -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Execution Step: Pointer-Based Arithmetic
+                                </h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">State S =
+                                    [A, B, P] &middot; A,B=Registers, P=Pointer</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1: State -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Initial state — registers and pointer fed to controller</div>
+                                    <div class="flex gap-2 flex-wrap items-center">
+                                        <div class="mem-el el-mid w-24"><span>A = 10.0</span></div>
+                                        <div class="mem-el el-bot w-24"><span>B = 5.0</span></div>
+                                        <div class="mem-el el-dead w-24"><span>P = 0.0</span></div>
+                                        <div class="text-[10px] text-gray-400 italic font-mono"># Goal: Accumulate &amp;
+                                            Move</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2: Parallel Engines -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">All
+                                        engines run in parallel — controller weights each output</div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                        <!-- Engine 1 -->
+                                        <div class="bg-green-50 border border-green-200 p-2 rounded">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-[9px] font-bold text-green-800">Engine 1: ADD</span>
+                                                <span class="text-[10px] font-bold text-green-700">p=0.7</span>
+                                            </div>
+                                            <div class="font-mono text-[10px] text-green-900">
+                                                A' = A + B = 15.0<br>
+                                                [15.0, 5.0, 0.0]
+                                            </div>
+                                        </div>
+                                        <!-- Engine 2 -->
+                                        <div class="bg-gray-50 border border-gray-200 p-2 rounded">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-[9px] font-bold text-gray-600">Engine 2: SWAP</span>
+                                                <span class="text-[10px] font-bold text-gray-500">p=0.2</span>
+                                            </div>
+                                            <div class="font-mono text-[10px] text-gray-700">
+                                                A',B' = B,A<br>
+                                                [5.0, 10.0, 0.0]
+                                            </div>
+                                        </div>
+                                        <!-- Engine 3 -->
+                                        <div class="bg-gray-50 border border-gray-200 p-2 rounded">
+                                            <div class="flex justify-between items-center mb-1">
+                                                <span class="text-[9px] font-bold text-gray-600">Engine 3: INCP</span>
+                                                <span class="text-[10px] font-bold text-gray-500">p=0.1</span>
+                                            </div>
+                                            <div class="font-mono text-[10px] text-gray-700">
+                                                P' = P + 1.0<br>
+                                                [10.0, 5.0, 1.0]
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3: Blend -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Soft
+                                        modular blend — weighted sum of all engine outputs</div>
+                                    <div class="flex items-center gap-4 flex-wrap">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-200 p-2 rounded text-gray-600 leading-relaxed flex-1">
+                                            S<sub>new</sub> = 0.7·[15, 5, 0] + 0.2·[5, 10, 0] + 0.1·[10, 5, 1]<br>
+                                            S<sub>new</sub> = [10.5, 3.5, 0] + [1.0, 2.0, 0] + [1.0, 0.5, 0.1]
+                                        </div>
+                                        <div
+                                            class="bg-green-600 text-white p-3 rounded shadow-sm text-center min-w-[140px]">
+                                            <div class="text-[9px] uppercase font-bold opacity-80 mb-1">Next State
+                                                S<sub>t+1</sub></div>
+                                            <div class="font-mono text-xs font-bold">[12.5, 6.0, 0.1]</div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1.5 text-orange-700">
+                                        <strong>Why this works:</strong> Even if the model isn't 100% sure between ADD
+                                        and
+                                        SWAP, the 12.5 result contains "mostly added" information. As training
+                                        progresses,
+                                        the distribution sharpens toward 1.0 for the correct operation, recovering the
+                                        exact
+                                        discrete algorithm.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <div class="mx-auto max-w-[48rem] w-full text-center">
+                <p class="text-gray-500 italic text-sm mb-6">
+                    The opinions expressed herein are solely those of the author in their individual capacity and do not
+                    necessarily reflect the official policy or position of any current or former employer, client, or
+                    affiliated organization.
+                    <a href="https://github.com/yashbonde/yashbonde_com/issues/new?title=Request%20changes%20in%20neural-automata-implicit-transformers"
+                        target="_blank" rel="noopener noreferrer"
+                        class="text-[#0056b3] underline underline-offset-4 hover:text-[#002e4f] transition-colors">
+                        Suggest changes
+                    </a>.
+                </p>
+                <p class="text-[10px] font-mono text-gray-500 mb-1">This page has been generated by AI, numbers were
+                    verified using a script.</p>
+                <p class="text-[10px] font-mono text-gray-400">neural-automata &middot; implicit-tape-memory &middot;
+                    2026-02-17</p>
+            </div>
+        </footer>
+
+    </div>
+</body>
+
+</html>

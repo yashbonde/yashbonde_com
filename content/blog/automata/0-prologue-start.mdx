@@ -37,14 +37,15 @@ But I knew it was not LLMs, Agentic, AGI but teaching NNs to behave like compute
 
 > So I packed up my bag, decided to leave Hype city. Meet strange computers and find the Grand Old Automata. Learn how to build a new computer. I will travel away, finding the roots of how we got here. Study things in jungly fringes of the field. Understand the neural alchemy from shiny beings. I have left these essays as a **map for future travellers** walking on the path of automata.
 
-- [#$1$ - Automata](./automata-history): This covers the [Chomsky’s Hierarchy](https://en.wikipedia.org/wiki/Chomsky_hierarchy) and machines required to solve them. 
+- [#$1$ - Automata](./1-automata-history): This covers the [Chomsky’s Hierarchy](https://en.wikipedia.org/wiki/Chomsky_hierarchy) and machines required to solve them. 
 - [#$2$ - IRL Automata](./2-real-computers): The four types of [Register Machines](https://en.wikipedia.org/wiki/Register_machine).
-- #$3$ - ???
+- [#$3$ - Diverse Automata](./3-types-of-automata): Computing is not just limited to CPUs.
 - #$4$ - ???
+- #$4A$ - ???
 - #$5$ - ???
 - #$6$ - ???
 
-{/* - [#$3$ - Diverse Automata](./3-types-of-automata): How computing is not just limited to CPUs.
+{/* 
 - [#$4$ - Neural Automata](./4-literature-review-neural-automata): Literature review on ideas combining NN and Automata theory.
 - [#$5$ - I mean, why?](./5-i-mean-why): An understanding of larger world trends.
 - [#$6$ - ANNA](./6-anna-nueral-model): One step at a time. 
@@ -53,11 +54,20 @@ But start with [#$5$](./5-i-mean-why), it explains the trends and our motivation
 
 All are independent essays can be read in any order.
 
-> What do we do when we meet the Grand Old Automata? Will we discover a new type of comptuer? Or will we return empty handed? Always remember what Ilya, the Monk once said:
+I have also created a lot of supplementary material to understand existing work done in this direction.
 
-![](https://pbs.twimg.com/media/G62ZsXZWgAA1Qqk.jpg)
+- [#$1$ - Task Visualizer](/pages/neural-automata-task-visualizer.html): There are about 33 algorithms that if a model generalises to, we can claim to have built a general purpose neural computer i.e. a neural automata. These include simple things like Dyck-n languages, binary arithmetic to complex tasks like Travelling Salesman Problem.  
+- [#$2$ - Stack Memory Models](/pages/neural-automata-stack-memory-models.html): There are some RNN based models that connect to an external stack memory. These are useful to solve many tasks and can be programmed to be simple computers.  
+- [#$3$ - Matrix (Random Access) Memory Models](/pages/neural-automata-matrix-memory.html): Moving a step ahead from Stack, we get to models that can access any part of the memory thus being able to solve complex graph problems.  
+- [#$4$ - Implicit Memory Models](/pages/neural-automata-implicit-transformers.html): These models do not have a dedicated memory like LSTMs or **Transformers**. These are generally not very powerful but there are some up-coming ideas to look out for.
 
 It turns out I briefly touched this subject $6$ years ago in the early part of $2020$. Aah the covid days.
 
 - [Teaching Machines Rules and Algorithms](../teaching-machines-rules-algorithms-cellular-automata)
 - [Reading list on Neural Graph Execution](../reading-list-neural-graph-execution)
+
+> What do we do when we meet the Grand Old Automata? Will we discover a new type of comptuer? Or will we return empty handed? Always remember what Ilya, the Monk once said:
+
+![](https://pbs.twimg.com/media/G62ZsXZWgAA1Qqk.jpg)
+
+Let's start by reading [#$1$](./1-automata-history).

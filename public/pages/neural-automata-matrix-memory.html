@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Memory (Random Access) Models</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap"
+        rel="stylesheet">
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Source Sans 3"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            font-family: "Source Sans 3", sans-serif;
+        }
+
+        .font-mono,
+        .font-mono * {
+            font-family: 'Courier New', Courier, monospace !important;
+        }
+
+        a {
+            color: #0056b3;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #002e4f;
+        }
+
+        nav a,
+        footer a,
+        [class*="bg-"] a,
+        .no-underline {
+            text-decoration: none;
+        }
+
+        nav a:hover,
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Memory row elements */
+        .mem-el {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            border-width: 1px;
+            border-style: solid;
+            white-space: nowrap;
+        }
+
+        .el-active {
+            background: #ede9fe;
+            border-color: #a78bfa;
+            color: #5b21b6;
+        }
+
+        .el-mid {
+            background: #e0f2fe;
+            border-color: #7dd3fc;
+            color: #075985;
+        }
+
+        .el-bot {
+            background: #d1fae5;
+            border-color: #6ee7b7;
+            color: #065f46;
+        }
+
+        .el-new {
+            background: #fef9c3;
+            border-color: #fde047;
+            color: #713f12;
+        }
+
+        .el-dead {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+            color: #9ca3af;
+        }
+
+        .el-erased {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .el-free {
+            background: #fce7f3;
+            border-color: #f9a8d4;
+            color: #831843;
+        }
+
+        /* Probability / attention bar */
+        .prob-bar-bg {
+            background: #e5e7eb;
+            border-radius: 2px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .prob-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        /* Step circle */
+        .step-num {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Dashed step divider */
+        .step-divider {
+            border-top: 1px dashed #e5e7eb;
+            margin: 8px 0;
+        }
+
+        /* Inline code */
+        code {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 3px;
+            padding: 1px 4px;
+        }
+
+        /* Blend column (for write head) */
+        .blend-col {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            min-width: 100px;
+        }
+
+        .blend-header {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+            padding: 2px 4px;
+            border-radius: 3px;
+            margin-bottom: 2px;
+        }
+
+        .blend-val {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-align: center;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid;
+        }
+
+        /* Memory matrix mini-table */
+        .mem-matrix td,
+        .mem-matrix th {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            padding: 2px 6px;
+            border: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        .mem-matrix th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-900 min-h-screen p-4 font-sans">
+    <div class="max-w-[1800px] mx-auto">
+
+        <!-- Sticky Nav -->
+        <nav class="mb-12 sticky top-4 z-50 px-4 font-sans">
+            <div
+                class="max-w-[1720px] mx-auto bg-white/80 backdrop-blur-xl border border-gray-200/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl p-4 transition-all duration-300">
+                <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-3">
+                            <div>
+                                <h1 class="text-xl font-bold text-gray-900 tracking-tight leading-none mb-1">
+                                    Matrix Memory <span class="text-gray-400 font-medium">(Random Access) Models</span>
+                                </h1>
+                                <p class="text-[11px] text-gray-500 font-medium tracking-wide opacity-70">
+                                    Overview of neural networks with dedicated external matrix memory. These models are
+                                    the closest to what we have as computers.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-x-1 gap-y-2">
+                        <div class="flex flex-wrap items-center bg-gray-50/50 p-1 rounded-xl border border-gray-100">
+                            <a href="#ntm"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-blue-600 hover:shadow-sm transition-all duration-200">NTM
+                                (Graves 2014)</a>
+                            <a href="#dnc"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-purple-600 hover:shadow-sm transition-all duration-200">DNC
+                                (Graves 2016)</a>
+                            <a href="#nram"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-green-600 hover:shadow-sm transition-all duration-200">Neural
+                                RAM</a>
+                            <a href="#lie"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-indigo-600 hover:shadow-sm transition-all duration-200">Lie-Access
+                                NTM</a>
+                            <a href="#comparison"
+                                class="px-3 py-1.5 rounded-lg text-[11px] font-semibold text-gray-600 hover:bg-white hover:text-gray-900 hover:shadow-sm transition-all duration-200">Comparison</a>
+                        </div>
+
+                        <div class="flex items-center gap-2 ml-2">
+                            <a href="https://yashbonde.com" target="_blank"
+                                class="flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:border-blue-200 hover:bg-blue-50 transition-all group">
+                                <span
+                                    class="text-[11px] font-bold text-gray-500 group-hover:text-blue-600">yashbonde.com</span>
+                                <svg class="w-3 h-3 text-gray-400 group-hover:text-blue-500" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="space-y-12">
+
+            <!-- ============================= NTM ============================= -->
+            <section id="ntm" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-blue-500 pl-3">Neural Turing Machine —
+                        Graves (2014)</h2>
+                    <span class="text-xs font-mono text-gray-400">N×M Matrix · Content + Location Addressing · Read
+                        &amp; Write Heads</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Overview -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-blue-100 bg-blue-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-blue-800">Overview</h3>
+                                <span
+                                    class="text-[10px] font-mono text-blue-400 bg-white border border-blue-200 px-1 rounded">Graves
+                                    2014</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Core idea.</strong> External memory is a 2D matrix
+                                <em>M</em> of shape N&times;W (N locations, each a W-dimensional row vector). A
+                                controller LSTM emits interface parameters each timestep to position soft attention
+                                heads anywhere over the N rows — no constraint to read/write only the top.
+                            </p>
+                            <p><strong class="text-gray-800">Addressing.</strong> Two-stage: (1) <em>content
+                                    addressing</em> — compute cosine similarity between a key vector and every memory
+                                row, apply softmax → content weights. (2) <em>location addressing</em> — optionally
+                                interpolate with the previous head position, then convolve with a learned shift kernel,
+                                then sharpen. Together they allow both associative lookup and sequential scanning.</p>
+                            <p><strong class="text-gray-800">Reading.</strong> The read head returns
+                                <code>r = M<sup>T</sup>w</code> — a weighted sum of memory rows using the attention
+                                weights <em>w</em>. This is fully differentiable.
+                            </p>
+                            <p><strong class="text-gray-800">Writing.</strong> The write head first erases:
+                                <code>M ← M ⊙ (1 − w·e<sup>T</sup>)</code>, then adds:
+                                <code>M ← M + w·a<sup>T</sup></code>. Erase vector <em>e</em> and add vector <em>a</em>
+                                are both output by the controller.
+                            </p>
+                            <p><strong class="text-gray-800">Multiple heads.</strong> There can be R read heads and W
+                                write heads, each with independent addressing. All reads happen before all writes each
+                                timestep.</p>
+                        </div>
+                    </div>
+
+                    <!-- Forward Pass -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass</h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">N=4
+                                    locations · W=3 dims · single read head + single write head</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1: Memory state -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-blue-100 text-blue-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Memory matrix M — 4 rows × 3 dims</div>
+                                    <div class="overflow-x-auto">
+                                        <table class="mem-matrix border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-gray-500">loc</th>
+                                                    <th class="text-blue-600">d0</th>
+                                                    <th class="text-blue-600">d1</th>
+                                                    <th class="text-blue-600">d2</th>
+                                                    <th class="text-gray-400">content tag</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="background:#ede9fe">
+                                                    <td class="font-bold text-violet-700">M[0]</td>
+                                                    <td>0.8</td>
+                                                    <td>0.2</td>
+                                                    <td>0.5</td>
+                                                    <td class="text-violet-500 text-[10px]">← high attention</td>
+                                                </tr>
+                                                <tr style="background:#e0f2fe">
+                                                    <td class="font-bold text-sky-700">M[1]</td>
+                                                    <td>0.1</td>
+                                                    <td>0.9</td>
+                                                    <td>0.3</td>
+                                                    <td class="text-sky-500 text-[10px]">medium</td>
+                                                </tr>
+                                                <tr style="background:#d1fae5">
+                                                    <td class="font-bold text-emerald-700">M[2]</td>
+                                                    <td>0.6</td>
+                                                    <td>0.4</td>
+                                                    <td>0.7</td>
+                                                    <td class="text-emerald-500 text-[10px]">low</td>
+                                                </tr>
+                                                <tr style="background:#f3f4f6">
+                                                    <td class="font-bold text-gray-500">M[3]</td>
+                                                    <td>0.0</td>
+                                                    <td>0.0</td>
+                                                    <td>0.0</td>
+                                                    <td class="text-gray-400 text-[10px]">empty</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2: Addressing -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-blue-100 text-blue-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Read
+                                        head addressing — content then location</div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <!-- Content addressing -->
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2 space-y-1.5">
+                                            <div class="text-[10px] font-bold text-blue-600 uppercase">Stage A — Content
+                                                addressing</div>
+                                            <div class="font-mono text-[10px] text-gray-700">key k = [0.7, 0.3, 0.5]
+                                                (from controller)</div>
+                                            <div class="space-y-1 mt-1">
+                                                <div>
+                                                    <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                        <span class="text-violet-600 font-bold">M[0] · cos_sim = 0.99 →
+                                                            w<sub>c</sub>[0] = <strong>0.50</strong></span>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-violet-400" style="width:50%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                        <span class="text-sky-600 font-bold">M[1] · cos_sim = 0.56 →
+                                                            w<sub>c</sub>[1] = <strong>0.01</strong></span>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-sky-400" style="width:1%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                        <span class="text-emerald-600 font-bold">M[2] · cos_sim = 0.97 →
+                                                            w<sub>c</sub>[2] = <strong>0.48</strong></span>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-emerald-400" style="width:48%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                        <span class="text-gray-500">M[3] · cos_sim = 0.00 &nbsp;→
+                                                            w<sub>c</sub>[3] = <strong>0.01</strong></span>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-300" style="width:1%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Location addressing -->
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2 space-y-1.5">
+                                            <div class="text-[10px] font-bold text-blue-600 uppercase">Stage B —
+                                                Location addressing</div>
+                                            <div class="font-mono text-[10px] text-gray-700 space-y-0.5">
+                                                <div>interpolate(g=0.8): w<sub>g</sub> = g·w<sub>c</sub> +
+                                                    (1−g)·w<sub>prev</sub></div>
+                                                <div>shift kernel s = [0.1, 0.8, 0.1] (left/stay/right)</div>
+                                                <div>w̃ = convolve(w<sub>g</sub>, s) → redistribute mass</div>
+                                                <div>sharpen(γ=3): w = w̃<sup>γ</sup> / Σw̃<sup>γ</sup></div>
+                                            </div>
+                                            <div class="mt-1 space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] text-gray-500 mb-0.5">Final w[0] = <strong
+                                                            class="text-violet-600">0.60</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-violet-400" style="width:60%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] text-gray-500 mb-0.5">Final w[1] = <strong
+                                                            class="text-sky-600">0.28</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-sky-400" style="width:28%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] text-gray-500 mb-0.5">Final w[2] = <strong
+                                                            class="text-emerald-600">0.10</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-emerald-400" style="width:10%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] text-gray-500 mb-0.5">Final w[3] = <strong
+                                                            class="text-gray-500">0.02</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-300" style="width:2%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1 text-orange-700">
+                                        Content addressing is associative (similarity lookup). Location addressing
+                                        enables sequential scanning. β (key strength) sharpens content similarity before
+                                        softmax.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3: Read -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-blue-100 text-blue-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Read
+                                        — weighted sum r = M<sup>T</sup>w</div>
+                                    <div class="flex items-start gap-4 flex-wrap">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>r = 0.60·M[0] + 0.28·M[1] + 0.10·M[2] + 0.02·M[3]</div>
+                                            <div>r[d0] = 0.60·0.8 + 0.28·0.1 + 0.10·0.6 + 0.02·0.0 = <strong
+                                                    class="text-blue-700">0.568</strong></div>
+                                            <div>r[d1] = 0.60·0.2 + 0.28·0.9 + 0.10·0.4 + 0.02·0.0 = <strong
+                                                    class="text-blue-700">0.412</strong></div>
+                                            <div>r[d2] = 0.60·0.5 + 0.28·0.3 + 0.10·0.7 + 0.02·0.0 = <strong
+                                                    class="text-blue-700">0.454</strong></div>
+                                        </div>
+                                        <div
+                                            class="font-mono text-xs bg-blue-50 border border-blue-100 rounded px-3 py-2 text-blue-800 self-start">
+                                            read vector r = [0.568, 0.412, 0.454]
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4: Controller -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-blue-100 text-blue-700">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Controller — LSTM with read vector</div>
+                                    <div
+                                        class="font-mono text-xs bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                        <div>input = concat([ x<sub>t</sub>, r<sub>1</sub>, r<sub>2</sub>, … ]) — all
+                                            read vectors appended</div>
+                                        <div>h<sub>t</sub>, c<sub>t</sub> = LSTM( input, h<sub>t-1</sub>,
+                                            c<sub>t-1</sub> )</div>
+                                        <div>interface = Linear(h<sub>t</sub>) — emits all head parameters</div>
+                                        <div>output = Linear([ h<sub>t</sub>, r<sub>1</sub>, … ]) — prediction from h +
+                                            reads</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5: Write head -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-blue-100 text-blue-700">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Write
+                                        head — erase then add (separate attention w<sub>w</sub>)</div>
+
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                                        <div class="bg-red-50 border border-red-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-red-600 uppercase mb-1.5">Erase step:
+                                                M ← M ⊙ (1 − w<sub>w</sub> e<sup>T</sup>)</div>
+                                            <div class="font-mono text-[10px] text-gray-700 space-y-0.5">
+                                                <div>erase vector e = [0.9, 0.5, 0.8] (Sigmoid)</div>
+                                                <div>write attn w<sub>w</sub>[0] = 0.70 (focused on M[0])</div>
+                                                <div class="mt-1 text-red-700">M[0] ← M[0] ⊙ (1 − 0.70·e)</div>
+                                                <div class="text-red-700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= [0.8,0.2,0.5]
+                                                    ⊙ [0.37,0.65,0.44]</div>
+                                                <div class="text-red-700 font-bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+                                                    [0.296, 0.130, 0.220] ← partially erased</div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-green-50 border border-green-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-green-700 uppercase mb-1.5">Add step:
+                                                M ← M + w<sub>w</sub> a<sup>T</sup></div>
+                                            <div class="font-mono text-[10px] text-gray-700 space-y-0.5">
+                                                <div>add vector a = [0.5, 0.8, 0.3] (Tanh)</div>
+                                                <div>w<sub>w</sub>[0] = 0.70 (same write attn)</div>
+                                                <div class="mt-1 text-green-700">M[0] ← erased_M[0] + 0.70·a</div>
+                                                <div class="text-green-700">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+                                                    [0.296,0.130,0.220] + [0.35,0.56,0.21]</div>
+                                                <div class="text-green-700 font-bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+                                                    [0.646, 0.690, 0.430] ← new M[0]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="overflow-x-auto">
+                                        <table class="mem-matrix border-collapse">
+                                            <thead>
+                                                <tr>
+                                                    <th>loc</th>
+                                                    <th>d0</th>
+                                                    <th>d1</th>
+                                                    <th>d2</th>
+                                                    <th>w<sub>w</sub></th>
+                                                    <th>status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr style="background:#fef9c3">
+                                                    <td class="font-bold text-amber-700">M[0]</td>
+                                                    <td class="text-amber-700 font-bold">0.646</td>
+                                                    <td class="text-amber-700 font-bold">0.690</td>
+                                                    <td class="text-amber-700 font-bold">0.430</td>
+                                                    <td class="text-amber-600">0.70</td>
+                                                    <td class="text-[10px] text-amber-600">rewritten</td>
+                                                </tr>
+                                                <tr style="background:#e0f2fe">
+                                                    <td class="font-bold text-sky-700">M[1]</td>
+                                                    <td>0.182</td>
+                                                    <td>0.970</td>
+                                                    <td>0.312</td>
+                                                    <td class="text-gray-400">0.20</td>
+                                                    <td class="text-[10px] text-sky-600">lightly touched</td>
+                                                </tr>
+                                                <tr style="background:#d1fae5">
+                                                    <td class="font-bold text-emerald-700">M[2]</td>
+                                                    <td>0.597</td>
+                                                    <td>0.448</td>
+                                                    <td>0.679</td>
+                                                    <td class="text-gray-400">0.08</td>
+                                                    <td class="text-[10px] text-emerald-600">almost unchanged</td>
+                                                </tr>
+                                                <tr style="background:#f3f4f6">
+                                                    <td class="font-bold text-gray-500">M[3]</td>
+                                                    <td>0.010</td>
+                                                    <td>0.016</td>
+                                                    <td>0.006</td>
+                                                    <td class="text-gray-400">0.02</td>
+                                                    <td class="text-[10px] text-gray-400">nearly unchanged</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="mt-2 text-[10px] text-gray-400">
+                                        Erase then add means write is not idempotent: the order matters. Locations with
+                                        w<sub>w</sub>≈0 are untouched. The same 2-stage addressing pipeline applies to
+                                        the write head independently.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= DNC ============================= -->
+            <section id="dnc" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-purple-500 pl-3">Differentiable Neural
+                        Computer — Graves (2016)</h2>
+                    <span class="text-xs font-mono text-gray-400">Usage-based Allocation · Temporal Linkage · Freeness
+                        Tracking · Multiple R/W Heads</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Overview -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-purple-100 bg-purple-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-purple-800">Overview</h3>
+                                <span
+                                    class="text-[10px] font-mono text-purple-400 bg-white border border-purple-200 px-1 rounded">Graves
+                                    2016</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Core idea.</strong> The DNC extends the NTM with three
+                                additional mechanisms: (1) a <em>usage vector</em> u tracking how much each location has
+                                been written to, (2) a <em>temporal link matrix</em> L recording the order in which
+                                locations were written, and (3) a <em>freeness vector</em> f that releases locations
+                                when read-weights dealloc them.</p>
+                            <p><strong class="text-gray-800">Allocation addressing.</strong> Instead of the NTM's shift
+                                convolution, the DNC allocates free locations by sorting them by usage. The least-used
+                                (most free) location gets the highest allocation weight. This prevents memory
+                                fragmentation without needing sequential structure.</p>
+                            <p><strong class="text-gray-800">Write addressing.</strong> A gated blend of content-based
+                                address and allocation address:
+                                <code>w<sub>w</sub> = g<sub>w</sub>·(g<sub>a</sub>·a + (1−g<sub>a</sub>)·w<sub>c</sub>)</code>
+                                where g<sub>w</sub> is write gate and g<sub>a</sub> is allocation gate.
+                            </p>
+                            <p><strong class="text-gray-800">Temporal links.</strong> After each write, the link matrix
+                                L updates: <code>L[i,j]</code> is the degree to which location i was written just after
+                                j. This enables forward and backward traversal through previously written sequences —
+                                the read head can "follow the chain."</p>
+                            <p><strong class="text-gray-800">Read modes.</strong> Each read head blends three
+                                orientations: content-based w<sub>c</sub>, forward link π<sub>f</sub>·Lw<sub>r</sub>,
+                                and backward link π<sub>b</sub>·L<sup>T</sup>w<sub>r</sub>. Soft mode weights π are
+                                output by the controller.</p>
+                            <p><strong class="text-gray-800">Write before read.</strong> Within each timestep the DNC
+                                writes first, then reads. This is intentional: the read vector r<sub>t</sub> is part
+                                of the current output y<sub>t</sub> = W<sub>y</sub>[h<sub>t</sub>; r<sub>t</sub>], so
+                                reading from the already-updated M<sub>t</sub> lets the model store a value and
+                                immediately reflect it in the same step's output. The temporal link L<sub>t</sub> must
+                                also be updated before reading so that forward/backward traversal includes the current
+                                write. The cost: write and read keys are both derived from the same h<sub>t</sub>, so
+                                the model cannot react to the content it just wrote within the same step.</p>
+                        </div>
+                    </div>
+
+                    <!-- Forward pass -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass</h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">N=4
+                                    locations · R=1 read head · W=1 write head · shows allocation + temporal
+                                    linkage</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1: State -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Persistent state — memory, usage, write order, freeness</div>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <!-- Memory + usage -->
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">Memory M
+                                                &amp; usage u</div>
+                                            <div class="overflow-x-auto">
+                                                <table class="mem-matrix border-collapse">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>loc</th>
+                                                            <th>d0</th>
+                                                            <th>d1</th>
+                                                            <th>d2</th>
+                                                            <th>usage u</th>
+                                                            <th>free ψ</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="background:#ede9fe">
+                                                            <td class="font-bold text-violet-700">M[0]</td>
+                                                            <td>0.9</td>
+                                                            <td>0.1</td>
+                                                            <td>0.4</td>
+                                                            <td class="text-violet-600 font-bold">0.95</td>
+                                                            <td class="text-gray-400">0.05</td>
+                                                        </tr>
+                                                        <tr style="background:#e0f2fe">
+                                                            <td class="font-bold text-sky-700">M[1]</td>
+                                                            <td>0.3</td>
+                                                            <td>0.7</td>
+                                                            <td>0.2</td>
+                                                            <td class="text-sky-600 font-bold">0.70</td>
+                                                            <td class="text-gray-400">0.30</td>
+                                                        </tr>
+                                                        <tr style="background:#fce7f3">
+                                                            <td class="font-bold text-pink-700">M[2]</td>
+                                                            <td>0.1</td>
+                                                            <td>0.2</td>
+                                                            <td>0.1</td>
+                                                            <td class="text-pink-500 font-bold">0.20</td>
+                                                            <td class="text-green-600 font-bold">0.80</td>
+                                                        </tr>
+                                                        <tr style="background:#f3f4f6">
+                                                            <td class="font-bold text-gray-500">M[3]</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td class="text-gray-400 font-bold">0.02</td>
+                                                            <td class="text-green-600 font-bold">0.98</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <!-- Temporal link matrix -->
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">Temporal
+                                                link matrix L[i→j] (written i after j?)</div>
+                                            <div class="overflow-x-auto">
+                                                <table class="mem-matrix border-collapse text-center">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>L[i\j]</th>
+                                                            <th>j=0</th>
+                                                            <th>j=1</th>
+                                                            <th>j=2</th>
+                                                            <th>j=3</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="font-bold text-violet-700">i=0</td>
+                                                            <td>0.0</td>
+                                                            <td class="text-violet-500 font-bold">0.9</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-bold text-sky-700">i=1</td>
+                                                            <td class="text-sky-500 font-bold">0.9</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-bold text-pink-700">i=2</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="font-bold text-gray-500">i=3</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                            <td>0.0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="text-[10px] text-gray-400 mt-1">L[1,0]=0.9: location 1 was
+                                                written just after location 0 (write sequence 0→1).</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- WRITE PHASE label -->
+                            <div
+                                class="text-[10px] font-bold text-purple-500 uppercase tracking-widest px-1 flex items-center gap-2">
+                                <div class="h-px flex-1 bg-purple-100"></div>
+                                <span>WRITE PHASE</span>
+                                <div class="h-px flex-1 bg-purple-100"></div>
+                            </div>
+
+                            <!-- Step 2: Write head addressing -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Write
+                                        addressing — allocation + content blend → w<sub>w</sub></div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-600 uppercase mb-1">Allocation
+                                                a</div>
+                                            <div class="text-[10px] text-gray-600 mb-1.5">Sorted by freeness ψ (least
+                                                used first)</div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">a[3] = <strong
+                                                            class="text-purple-700">0.78</strong> (freest)</div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-purple-400" style="width:78%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">a[2] = <strong
+                                                            class="text-purple-400">0.17</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-purple-300" style="width:17%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">a[1] = <strong
+                                                            class="text-gray-400">0.04</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-300" style="width:4%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">a[0] = <strong
+                                                            class="text-gray-300">0.01</strong></div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-200" style="width:1%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-600 uppercase mb-1">Content
+                                                w<sub>c</sub></div>
+                                            <div class="text-[10px] text-gray-600 mb-1.5">Lookup key from controller
+                                            </div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>c</sub>[0] =
+                                                        <strong class="text-violet-600">0.55</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-violet-400" style="width:55%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>c</sub>[1] =
+                                                        <strong class="text-sky-500">0.30</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-sky-400" style="width:30%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>c</sub>[2] =
+                                                        <strong class="text-gray-400">0.10</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-300" style="width:10%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>c</sub>[3] =
+                                                        <strong class="text-gray-300">0.05</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-200" style="width:5%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-purple-50 border border-purple-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-700 uppercase mb-1">Final
+                                                w<sub>w</sub> (g<sub>a</sub>=0.7)</div>
+                                            <div class="font-mono text-[10px] text-gray-600 mb-1.5">w<sub>w</sub> =
+                                                0.7·a + 0.3·w<sub>c</sub></div>
+                                            <div class="space-y-1">
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>w</sub>[3] =
+                                                        <strong class="text-purple-700">0.56</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-purple-500" style="width:56%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>w</sub>[0] =
+                                                        <strong class="text-violet-500">0.17</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-violet-400" style="width:17%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>w</sub>[1] =
+                                                        <strong class="text-sky-400">0.12</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-sky-400" style="width:12%"></div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="text-[10px] mb-0.5 text-gray-500">w<sub>w</sub>[2] =
+                                                        <strong class="text-gray-400">0.15</strong>
+                                                    </div>
+                                                    <div class="prob-bar-bg">
+                                                        <div class="prob-bar-fill bg-gray-300" style="width:15%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">
+                                        g<sub>a</sub>=1 → pure allocation (write to freest slot). g<sub>a</sub>=0 → pure
+                                        content (overwrite a known location). Write gate g<sub>w</sub> can suppress all
+                                        writes if ≈0.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3: Write to memory (erase + add) — NEW -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Write
+                                        to memory — erase then add, weighted by w<sub>w</sub></div>
+                                    <div class="flex flex-wrap gap-4 items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div class="text-gray-400 mb-1">// controller emits erase e and write v
+                                                vectors</div>
+                                            <div>e = [0.9, 0.9, 0.9] &nbsp;&nbsp; <span class="text-gray-400">(sigmoid →
+                                                    strong erase)</span></div>
+                                            <div>v = [0.5, 0.8, 0.3] &nbsp;&nbsp; <span class="text-gray-400">(write
+                                                    vector)</span></div>
+                                            <div class="mt-1 border-t border-gray-100 pt-1">M<sub>t</sub>[i] =
+                                                M<sub>t-1</sub>[i] ⊙ (1 − w<sub>w</sub>[i]·e) + w<sub>w</sub>[i]·v</div>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase">Example rows
+                                                after write</div>
+                                            <div
+                                                class="font-mono text-[10px] bg-purple-50 border border-purple-100 rounded px-3 py-1.5 text-purple-800 space-y-0.5">
+                                                <div><span class="text-gray-400">M[3]</span> = [0,0,0]⊙(1−0.56·e) +
+                                                    0.56·v = <strong>[0.28, 0.45, 0.17]</strong> <span
+                                                        class="text-[9px] text-purple-400">&larr; mostly fresh
+                                                        write</span></div>
+                                                <div><span class="text-gray-400">M[0]</span> = [0.9,0.1,0.4]⊙(1−0.17·e)
+                                                    + 0.17·v = <strong>[0.85, 0.22, 0.39]</strong> <span
+                                                        class="text-[9px] text-purple-400">&larr; partially
+                                                        overwritten</span></div>
+                                                <div><span class="text-gray-400">M[1]</span> = [0.3,0.7,0.2]⊙(1−0.12·e)
+                                                    + 0.12·v = <strong>[0.33, 0.72, 0.21]</strong></div>
+                                                <div><span class="text-gray-400">M[2]</span> = [0.1,0.2,0.1]⊙(1−0.15·e)
+                                                    + 0.15·v = <strong>[0.16, 0.29, 0.13]</strong></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">Erase happens before add at each
+                                        location. A location with w<sub>w</sub>[i]≈0 is untouched; w<sub>w</sub>[i]≈1
+                                        fully replaces it with v.</div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4: Temporal link update (moved before read) -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Temporal link update — records new write sequence (must precede read)</div>
+                                    <div
+                                        class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5 max-w-lg">
+                                        <div>p<sub>t</sub> = (1 − Σ<sub>i</sub>w<sub>w</sub>[i])·p<sub>t-1</sub> +
+                                            w<sub>w,t</sub> &nbsp;&nbsp; <span class="text-gray-400">— precedence
+                                                vector</span></div>
+                                        <div>L<sub>t</sub>[i,j] =
+                                            (1−w<sub>w</sub>[i]−w<sub>w</sub>[j])·L<sub>t-1</sub>[i,j] +
+                                            w<sub>w</sub>[i]·p<sub>t-1</sub>[j]</div>
+                                        <div class="text-gray-400">L[i,j] → 1 means i was most recently written just
+                                            after j. Updated here so the read head can use L<sub>t</sub>.</div>
+                                    </div>
+                                    <div
+                                        class="mt-1.5 text-[10px] bg-green-50 border border-green-100 rounded px-2 py-1.5 text-green-700 max-w-lg">
+                                        This makes the DNC's memory behave like a linked list: you can store data in
+                                        arbitrary slots, then traverse them in write order without knowing the addresses
+                                        in advance.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5: Usage update (after write, before read) -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Usage
+                                        &amp; freeness update — after write, before read</div>
+                                    <div class="flex flex-wrap gap-4 items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>ψ<sub>t</sub> = ∏<sub>r</sub> (1 − f<sub>r</sub>·w<sub>r,t-1</sub>)
+                                                &nbsp;&nbsp;
+                                                <span class="text-gray-400">— free gate × prev read weights</span>
+                                            </div>
+                                            <div>u<sub>t</sub> = (u<sub>t-1</sub> + w<sub>w,t</sub> −
+                                                u<sub>t-1</sub>⊙w<sub>w,t</sub>) ⊙ ψ<sub>t</sub></div>
+                                            <div class="text-gray-400">u<sub>t</sub> is used to compute allocation
+                                                weights at the <em>next</em> timestep.</div>
+                                        </div>
+                                        <div
+                                            class="text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1.5 text-orange-700 max-w-xs">
+                                            Key difference from NTM: there is no explicit "free" action. Freeing happens
+                                            automatically when a location is read with the free gate open — the model
+                                            learns when to release slots.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- READ PHASE label -->
+                            <div
+                                class="text-[10px] font-bold text-blue-500 uppercase tracking-widest px-1 flex items-center gap-2">
+                                <div class="h-px flex-1 bg-blue-100"></div>
+                                <span>READ PHASE</span>
+                                <div class="h-px flex-1 bg-blue-100"></div>
+                            </div>
+
+                            <!-- Step 6: Read head with temporal modes -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-purple-100 text-purple-700">⑥</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Read
+                                        head — 3-mode blend using updated M<sub>t</sub> and L<sub>t</sub></div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-blue-600 uppercase mb-1">Content
+                                                w<sub>r,c</sub></div>
+                                            <div class="text-[10px] text-gray-500">Associative lookup by key against
+                                                updated M<sub>t</sub></div>
+                                            <div class="font-mono text-[10px] mt-1 text-gray-600">[0.60, 0.25, 0.10,
+                                                0.05]</div>
+                                        </div>
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-600 uppercase mb-1">Forward
+                                                f<sub>w</sub> = L<sub>t</sub>·w<sub>r,prev</sub></div>
+                                            <div class="text-[10px] text-gray-500">"What was written after last read?" —
+                                                uses updated L<sub>t</sub></div>
+                                            <div class="font-mono text-[10px] mt-1 text-gray-600">[0.90, 0.05, 0.03,
+                                                0.02]</div>
+                                        </div>
+                                        <div class="bg-gray-50 border border-gray-100 rounded p-2">
+                                            <div class="text-[10px] font-bold text-purple-600 uppercase mb-1">Backward
+                                                b<sub>w</sub> = L<sub>t</sub><sup>T</sup>·w<sub>r,prev</sub></div>
+                                            <div class="text-[10px] text-gray-500">"What was written before?" — traverse
+                                                chain backward</div>
+                                            <div class="font-mono text-[10px] mt-1 text-gray-600">[0.05, 0.90, 0.03,
+                                                0.02]</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-3 flex-wrap">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-2 py-1.5 text-gray-700">
+                                            mode π = Softmax([π<sub>f</sub>, π<sub>b</sub>, π<sub>c</sub>]) = [0.5, 0.3,
+                                            0.2]
+                                        </div>
+                                        <span class="text-gray-300">→</span>
+                                        <div
+                                            class="font-mono text-[10px] bg-purple-50 border border-purple-100 rounded px-2 py-1.5 text-purple-800">
+                                            w<sub>r</sub> = 0.5·f<sub>w</sub> + 0.3·b<sub>w</sub> + 0.2·w<sub>r,c</sub>
+                                            = [0.585, 0.345, 0.044, 0.026]
+                                        </div>
+                                        <span class="text-gray-300">→</span>
+                                        <div
+                                            class="font-mono text-[10px] bg-blue-50 border border-blue-100 rounded px-2 py-1.5 text-blue-800">
+                                            r = M<sub>t</sub><sup>T</sup>·w<sub>r</sub>
+                                        </div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">π<sub>f</sub>=1 → follow write order
+                                        forward (replay). π<sub>b</sub>=1 → reverse traversal. π<sub>c</sub>=1 → pure
+                                        lookup. Reads from the already-updated M<sub>t</sub>, so it sees the values just
+                                        written this step.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= NEURAL RAM ============================= -->
+            <section id="nram" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-green-500 pl-3">Neural RAM — Zaremba
+                        &amp; Sutskever (2016)</h2>
+                    <span class="text-xs font-mono text-gray-400">Discrete Addresses · Hard or Soft Access · Register
+                        File · Branching Programs</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Overview -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-green-100 bg-green-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-green-800">Overview</h3>
+                                <span
+                                    class="text-[10px] font-mono text-green-500 bg-white border border-green-200 px-1 rounded">Zaremba
+                                    2016</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Core idea.</strong> Neural RAM (nRAM) models a
+                                register-based random-access machine. Memory consists of a fixed set of integer-indexed
+                                slots. The controller emits a <em>discrete address</em> (argmax or Gumbel-softmax over N
+                                locations) rather than a continuous attention distribution — trading differentiability
+                                for sharpness.</p>
+                            <p><strong class="text-gray-800">Registers.</strong> A small set of R registers hold working
+                                values. Each timestep the controller (1) loads from memory into a register, (2) applies
+                                an ALU-like function (add, subtract, copy, compare), and (3) stores a register value
+                                back to memory. The program is a sequence of such micro-operations.</p>
+                            <p><strong class="text-gray-800">Addressing.</strong> Content-free — addresses are
+                                positional integers, not similarity lookups. The controller directly outputs a
+                                distribution over [0…N−1] and selects an address. This means reading a value requires
+                                knowing (or learning) where it was stored, not what it contains.</p>
+                            <p><strong class="text-gray-800">Soft vs hard.</strong> Training uses a soft (weighted)
+                                relaxation of discrete addressing so gradients flow. At test time, the argmax is used —
+                                one location, zero cost. The gap between soft training and hard inference is smaller
+                                than in NTM because the distribution is already very sharp.</p>
+                            <p><strong class="text-gray-800">Use case.</strong> Best for learning algorithms that are
+                                <em>intrinsically positional</em>: sort by index, random swap, array reversal.
+                                Content-based lookup (e.g., find a value equal to a key) is harder without similarity
+                                addressing.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Forward pass -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass (one micro-operation step)
+                                </h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">N=6
+                                    memory slots · R=3 registers · instruction: LOAD r2 ← mem[addr] then ADD r0 ← r0 +
+                                    r2</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1: State -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Current state — memory array + register file</div>
+                                    <div class="flex gap-6 flex-wrap items-start">
+                                        <!-- Memory array -->
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">Memory
+                                                M[0…5]</div>
+                                            <table class="mem-matrix border-collapse">
+                                                <thead>
+                                                    <tr>
+                                                        <th>addr</th>
+                                                        <th>value</th>
+                                                        <th>note</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="background:#ede9fe">
+                                                        <td class="font-bold text-violet-700">0</td>
+                                                        <td class="font-bold">12</td>
+                                                        <td class="text-violet-500">M[0]</td>
+                                                    </tr>
+                                                    <tr style="background:#e0f2fe">
+                                                        <td class="font-bold text-sky-700">1</td>
+                                                        <td class="font-bold">7</td>
+                                                        <td class="text-sky-500">M[1]</td>
+                                                    </tr>
+                                                    <tr style="background:#d1fae5">
+                                                        <td class="font-bold text-emerald-700">2</td>
+                                                        <td class="font-bold">23</td>
+                                                        <td class="text-emerald-500">target</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">3</td>
+                                                        <td>0</td>
+                                                        <td>M[3]</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">4</td>
+                                                        <td>5</td>
+                                                        <td>M[4]</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">5</td>
+                                                        <td>0</td>
+                                                        <td>M[5]</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Registers -->
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">Register
+                                                file R[0…2]</div>
+                                            <table class="mem-matrix border-collapse">
+                                                <thead>
+                                                    <tr>
+                                                        <th>reg</th>
+                                                        <th>value</th>
+                                                        <th>role</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="background:#fef9c3">
+                                                        <td class="font-bold text-amber-700">R0</td>
+                                                        <td class="font-bold">35</td>
+                                                        <td class="text-amber-600">accumulator</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-700">R1</td>
+                                                        <td class="font-bold">2</td>
+                                                        <td class="text-gray-400">ptr</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-700">R2</td>
+                                                        <td class="font-bold">0</td>
+                                                        <td class="text-gray-400">scratch</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2: Address generation -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Address distribution — controller outputs soft address, argmax at inference
+                                    </div>
+                                    <div class="flex gap-4 flex-wrap items-start">
+                                        <div class="space-y-1 w-52">
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[0] = <strong
+                                                        class="text-gray-400">0.02</strong></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-300" style="width:2%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[1] = <strong
+                                                        class="text-gray-400">0.04</strong></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-300" style="width:4%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[2] = <strong
+                                                        class="text-green-700">0.88</strong> ← argmax</div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-green-500" style="width:88%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[3] = <strong
+                                                        class="text-gray-400">0.03</strong></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-300" style="width:3%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[4] = <strong
+                                                        class="text-gray-400">0.02</strong></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-300" style="width:2%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="text-[10px] mb-0.5 text-gray-500">addr[5] = <strong
+                                                        class="text-gray-400">0.01</strong></div>
+                                                <div class="prob-bar-bg">
+                                                    <div class="prob-bar-fill bg-gray-300" style="width:1%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="text-[10px] bg-green-50 border border-green-100 rounded px-2 py-1.5 text-green-700 max-w-xs self-start">
+                                            <strong>Soft (training):</strong> read = Σ addr[i]·M[i] = 0.88·23 + … =
+                                            <strong>20.86</strong><br><br>
+                                            <strong>Hard (inference):</strong> read = M[argmax] = M[2] =
+                                            <strong>23</strong> exactly.<br><br>
+                                            Gradients flow during training through the weighted sum; inference snaps to
+                                            one slot.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3: Load + ALU -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">LOAD
+                                        + ALU micro-ops</div>
+                                    <div class="flex gap-4 flex-wrap">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div class="font-bold text-green-700">LOAD: R[2] ← M[2]</div>
+                                            <div>R[2] = 23</div>
+                                            <div class="mt-1 font-bold text-blue-700">ALU: R[0] ← R[0] + R[2]</div>
+                                            <div>R[0] = 35 + 23 = <strong>58</strong></div>
+                                        </div>
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5 self-start">
+                                            <div class="text-gray-400 font-bold uppercase text-[9px]">Available ALU ops
+                                            </div>
+                                            <div>COPY r<sub>dst</sub> ← r<sub>src</sub></div>
+                                            <div>ADD r<sub>dst</sub> ← r<sub>a</sub> + r<sub>b</sub></div>
+                                            <div>INC r<sub>dst</sub> ← r<sub>src</sub> + 1</div>
+                                            <div>DEC r<sub>dst</sub> ← r<sub>src</sub> − 1</div>
+                                            <div>CMP r<sub>dst</sub> ← (r<sub>a</sub> == r<sub>b</sub>)</div>
+                                            <div>JZ if r<sub>cond</sub>==0: goto addr</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4: Store -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">STORE
+                                        — write register back to memory at chosen address</div>
+                                    <div class="flex gap-4 flex-wrap items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>store addr distribution → focused on M[0]</div>
+                                            <div>M[0] ← R[0] = <strong class="text-amber-700">58</strong></div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">Memory after
+                                                step</div>
+                                            <table class="mem-matrix border-collapse">
+                                                <thead>
+                                                    <tr>
+                                                        <th>addr</th>
+                                                        <th>value</th>
+                                                        <th>status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="background:#fef9c3">
+                                                        <td class="font-bold text-amber-700">0</td>
+                                                        <td class="font-bold">58</td>
+                                                        <td class="text-amber-600">updated ✓</td>
+                                                    </tr>
+                                                    <tr style="background:#e0f2fe">
+                                                        <td class="font-bold text-sky-700">1</td>
+                                                        <td>7</td>
+                                                        <td class="text-gray-400">unchanged</td>
+                                                    </tr>
+                                                    <tr style="background:#d1fae5">
+                                                        <td class="font-bold text-emerald-700">2</td>
+                                                        <td>23</td>
+                                                        <td class="text-gray-400">unchanged</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">3</td>
+                                                        <td>0</td>
+                                                        <td class="text-gray-400">unchanged</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">4</td>
+                                                        <td>5</td>
+                                                        <td class="text-gray-400">unchanged</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="font-bold text-gray-400">5</td>
+                                                        <td>0</td>
+                                                        <td class="text-gray-400">unchanged</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5: Program loop -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-green-100 text-green-700">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Program structure — controller unrolled for T steps</div>
+                                    <div
+                                        class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5 max-w-md">
+                                        <div>for t in 1…T:</div>
+                                        <div>&nbsp;&nbsp;addr_read = softmax(W<sub>r</sub>·h<sub>t</sub>)</div>
+                                        <div>&nbsp;&nbsp;addr_write = softmax(W<sub>w</sub>·h<sub>t</sub>)</div>
+                                        <div>&nbsp;&nbsp;reg_src, reg_dst = softmax(W<sub>reg</sub>·h<sub>t</sub>)</div>
+                                        <div>&nbsp;&nbsp;op = softmax(W<sub>op</sub>·h<sub>t</sub>) ← which ALU op</div>
+                                        <div>&nbsp;&nbsp;regs ← execute(op, regs, M[addr_read])</div>
+                                        <div>&nbsp;&nbsp;M[addr_write] ← regs[reg_dst]</div>
+                                        <div>&nbsp;&nbsp;h<sub>t+1</sub> = LSTM(concat(h<sub>t</sub>, regs,
+                                            M[addr_read]))</div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">All distributions are learned
+                                        end-to-end from input/output examples. No explicit program is given — the
+                                        controller discovers the algorithm.</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= LIE-ACCESS NTM ============================= -->
+            <section id="lie" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-orange-500 pl-3">Lie-Access NTM — Yang
+                        &amp; Rush (2016)</h2>
+                    <span class="text-xs font-mono text-gray-400">Lie Group Manifold · Geometric Addressing ·
+                        Group-Action Navigation · SO(2) / SE(2)</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- Overview -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
+                        <div class="px-4 py-3 border-b border-orange-100 bg-orange-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-orange-800">Overview</h3>
+                                <span
+                                    class="text-[10px] font-mono text-orange-400 bg-white border border-orange-200 px-1 rounded">Yang
+                                    &amp; Rush 2016</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-3 text-xs text-gray-600 leading-relaxed flex-1">
+                            <p><strong class="text-gray-800">Core idea.</strong> Replace the flat integer address space
+                                with a <em>Lie group manifold</em>. Each memory cell is pinned to a point on the
+                                manifold (a group element g<sub>k</sub> ∈ G). The read/write head also lives on the
+                                manifold. Moving the head means multiplying its current position by a learned group
+                                element δ — a group action, not an index increment.</p>
+                            <p><strong class="text-gray-800">Lie groups used.</strong> Typical choices: SO(2) — the
+                                circle of rotations in 2D (parameterised by one angle θ); ℝ<sup>n</sup> — translations
+                                (recovers NTM-style shift); SE(2) — rotation + translation (richer 2D plane). The group
+                                law encodes the geometry: on SO(2), "move by δ" means θ ← θ + δ mod 2π.</p>
+                            <p><strong class="text-gray-800">Attention.</strong> At each timestep, similarity between
+                                head position h and each cell address g<sub>k</sub> is measured by the group metric d(h,
+                                g<sub>k</sub>) = ‖log(h<sup>−1</sup>g<sub>k</sub>)‖. A softmax over −β·d(·) gives
+                                attention weights w<sub>k</sub>. Small d → high weight.</p>
+                            <p><strong class="text-gray-800">Navigation.</strong> The controller outputs a "step" δ ∈ G
+                                (via a learned map). The head updates: h<sub>t+1</sub> = h<sub>t</sub> · δ. On SO(2)
+                                this is just θ<sub>t+1</sub> = θ<sub>t</sub> + δ. The model can learn complex traversal
+                                patterns — e.g., a zigzag (alternating +90°, −90°) to visit odd-indexed cells before
+                                even ones (oddFirst task).</p>
+                            <p><strong class="text-gray-800">Read &amp; write.</strong> Once attention weights are
+                                computed from geometry, reading and writing are identical to NTM: r = Σ
+                                w<sub>k</sub>·v<sub>k</sub>; write via erase+add. The <em>only</em> change is how w is
+                                computed — geometry replaces cosine similarity.</p>
+                        </div>
+                    </div>
+
+                    <!-- Forward pass -->
+                    <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                            <div class="flex justify-between items-center">
+                                <h3 class="text-sm font-bold text-gray-800">One Forward Pass</h3>
+                                <span class="text-[10px] font-mono text-gray-400 bg-white border px-1 rounded">G = SO(2)
+                                    · K=8 cells equally spaced on circle · head at θ=45° · step δ=+90°</span>
+                            </div>
+                        </div>
+                        <div class="p-4 space-y-4">
+
+                            <!-- Step 1: Manifold state -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-orange-100 text-orange-700">①</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Memory cells on SO(2) manifold — 8 cells at fixed angular addresses</div>
+                                    <div class="flex gap-4 flex-wrap items-start">
+                                        <!-- Angular cell table -->
+                                        <div class="overflow-x-auto">
+                                            <table class="mem-matrix border-collapse">
+                                                <thead>
+                                                    <tr>
+                                                        <th>cell k</th>
+                                                        <th>angle g<sub>k</sub></th>
+                                                        <th>value v<sub>k</sub> (scalar shown)</th>
+                                                        <th>d(h, g<sub>k</sub>) at h=45°</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr style="background:#ede9fe">
+                                                        <td class="font-bold text-violet-700">k=0</td>
+                                                        <td>0°</td>
+                                                        <td>0.8</td>
+                                                        <td class="text-gray-500">45°</td>
+                                                    </tr>
+                                                    <tr style="background:#fef9c3">
+                                                        <td class="font-bold text-amber-700">k=1</td>
+                                                        <td><strong>45°</strong></td>
+                                                        <td>0.3</td>
+                                                        <td class="text-amber-600 font-bold">0° ← head here</td>
+                                                    </tr>
+                                                    <tr style="background:#e0f2fe">
+                                                        <td class="font-bold text-sky-700">k=2</td>
+                                                        <td>90°</td>
+                                                        <td>0.5</td>
+                                                        <td class="text-sky-500">45°</td>
+                                                    </tr>
+                                                    <tr style="background:#d1fae5">
+                                                        <td class="font-bold text-emerald-700">k=3</td>
+                                                        <td>135°</td>
+                                                        <td>0.9</td>
+                                                        <td class="text-emerald-500">90°</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="text-gray-500">k=4</td>
+                                                        <td>180°</td>
+                                                        <td>0.1</td>
+                                                        <td class="text-gray-400">135°</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="text-gray-500">k=5</td>
+                                                        <td>225°</td>
+                                                        <td>0.4</td>
+                                                        <td class="text-gray-400">180°</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="text-gray-500">k=6</td>
+                                                        <td>270°</td>
+                                                        <td>0.6</td>
+                                                        <td class="text-gray-400">135°</td>
+                                                    </tr>
+                                                    <tr style="background:#f3f4f6">
+                                                        <td class="text-gray-500">k=7</td>
+                                                        <td>315°</td>
+                                                        <td>0.2</td>
+                                                        <td class="text-gray-400">90°</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- Circle diagram -->
+                                        <div class="flex flex-col items-center">
+                                            <div class="text-[10px] text-gray-400 font-bold uppercase mb-1">SO(2) circle
+                                            </div>
+                                            <svg width="120" height="120" viewBox="-60 -60 120 120">
+                                                <!-- Circle -->
+                                                <circle cx="0" cy="0" r="50" fill="none" stroke="#e5e7eb"
+                                                    stroke-width="1.5" />
+                                                <!-- Cells at 0,45,90,135,180,225,270,315 -->
+                                                <circle cx="50" cy="0" r="4" fill="#ede9fe" stroke="#a78bfa"
+                                                    stroke-width="1" /> <!-- k=0: 0° -->
+                                                <circle cx="35.4" cy="-35.4" r="5" fill="#fde047" stroke="#eab308"
+                                                    stroke-width="1.5" /> <!-- k=1: 45° (head) -->
+                                                <circle cx="0" cy="-50" r="4" fill="#e0f2fe" stroke="#7dd3fc"
+                                                    stroke-width="1" /> <!-- k=2: 90° -->
+                                                <circle cx="-35.4" cy="-35.4" r="4" fill="#d1fae5" stroke="#6ee7b7"
+                                                    stroke-width="1" /> <!-- k=3: 135° -->
+                                                <circle cx="-50" cy="0" r="3" fill="#f3f4f6" stroke="#d1d5db"
+                                                    stroke-width="1" />
+                                                <circle cx="-35.4" cy="35.4" r="3" fill="#f3f4f6" stroke="#d1d5db"
+                                                    stroke-width="1" />
+                                                <circle cx="0" cy="50" r="3" fill="#f3f4f6" stroke="#d1d5db"
+                                                    stroke-width="1" />
+                                                <circle cx="35.4" cy="35.4" r="3" fill="#f3f4f6" stroke="#d1d5db"
+                                                    stroke-width="1" />
+                                                <!-- Head pointer (45°) -->
+                                                <line x1="0" y1="0" x2="33" y2="-33" stroke="#f59e0b" stroke-width="2"
+                                                    stroke-dasharray="none" />
+                                                <!-- Step arrow to 135° -->
+                                                <path d="M 33 -33 A 47 47 0 0 0 -33 -33" fill="none" stroke="#fb923c"
+                                                    stroke-width="1.5" stroke-dasharray="3 2" marker-end="url(#arr)" />
+                                                <defs>
+                                                    <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3"
+                                                        orient="auto">
+                                                        <path d="M0,0 L6,3 L0,6 Z" fill="#fb923c" />
+                                                    </marker>
+                                                </defs>
+                                                <!-- Labels -->
+                                                <text x="52" y="4" font-size="8" fill="#9ca3af">0°</text>
+                                                <text x="37" y="-38" font-size="8" fill="#d97706"
+                                                    font-weight="bold">h</text>
+                                                <text x="-45" y="-38" font-size="8" fill="#fb923c">→</text>
+                                                <text x="-52" y="4" font-size="8" fill="#9ca3af">180°</text>
+                                            </svg>
+                                            <div class="text-[10px] text-orange-600 font-mono mt-1">δ = +90° rotation
+                                            </div>
+                                            <div class="text-[10px] text-gray-400 mt-0.5">h: 45° → 135°</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 2: Geometric attention -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-orange-100 text-orange-700">②</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Geometric attention — softmax over −β·d(h, g<sub>k</sub>), β=0.02</div>
+                                    <div class="space-y-1 max-w-sm">
+                                        <div>
+                                            <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                <span class="text-amber-700 font-bold">k=1 (45°) d=0° → w =
+                                                    <strong>0.43</strong></span>
+                                            </div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-amber-400" style="width:43%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                <span class="text-violet-600 font-bold">k=0 (0°) d=45° → w =
+                                                    <strong>0.18</strong></span>
+                                            </div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-violet-400" style="width:18%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                <span class="text-sky-600 font-bold">k=2 (90°) d=45° → w =
+                                                    <strong>0.18</strong></span>
+                                            </div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-sky-400" style="width:18%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="flex justify-between text-[10px] text-gray-500 mb-0.5">
+                                                <span class="text-emerald-600">k=3 (135°) d=90° → w =
+                                                    <strong>0.07</strong></span>
+                                            </div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-emerald-400" style="width:7%"></div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="text-[10px] text-gray-400 mb-0.5">k=4…7 (far) → w ≈ 0.01-0.03
+                                                each
+                                            </div>
+                                            <div class="prob-bar-bg">
+                                                <div class="prob-bar-fill bg-gray-300" style="width:14%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="mt-2 font-mono text-xs bg-orange-50 border border-orange-100 rounded px-2 py-1 text-orange-800">
+                                        r = 0.43·v<sub>1</sub> + 0.18·v<sub>0</sub> + 0.18·v<sub>2</sub> +
+                                        0.07·v<sub>3</sub> + … = [weighted blend]
+                                    </div>
+                                    <div
+                                        class="mt-1 text-[10px] bg-orange-50 border border-orange-100 rounded px-2 py-1 text-orange-700">
+                                        Increasing β sharpens attention — β→∞ recovers hard nearest-neighbour lookup. β
+                                        is a learnable parameter or fixed hyperparameter.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 3: Controller -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-orange-100 text-orange-700">③</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+                                        Controller — LSTM emits group step δ and write vectors</div>
+                                    <div
+                                        class="font-mono text-xs bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                        <div>input = concat([ x<sub>t</sub>, r<sub>t</sub> ]) — same as NTM</div>
+                                        <div>h<sub>t</sub> = LSTM( input, h<sub>t-1</sub> )</div>
+                                        <div>δ = lie_exp( W<sub>δ</sub>·h<sub>t</sub> ) — map ℝ<sup>dim(𝔤)</sup> → G
+                                            via exponential map</div>
+                                        <div class="text-orange-700">h<sub>pos,t+1</sub> = h<sub>pos,t</sub> · δ — group
+                                            action: new head position</div>
+                                        <div>e, a = Sigmoid(W<sub>e</sub>·h<sub>t</sub>),
+                                            Tanh(W<sub>a</sub>·h<sub>t</sub>) — erase, add (NTM-style)</div>
+                                    </div>
+                                    <div class="mt-1.5 text-[10px] text-gray-400">
+                                        The exponential map <code>lie_exp</code> converts a Lie algebra vector (tangent
+                                        space) into a group element. For SO(2) this is simply exp(iθ), i.e., a rotation
+                                        by angle θ. The group element is never stored as Euler angles — it lives on the
+                                        manifold.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 4: Head update (group action) -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-orange-100 text-orange-700">④</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Group
+                                        action — head moves on manifold, re-compute attention</div>
+                                    <div class="flex gap-4 flex-wrap items-start">
+                                        <div
+                                            class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5">
+                                            <div>SO(2) group law: θ<sub>a</sub> · θ<sub>b</sub> = (θ<sub>a</sub> +
+                                                θ<sub>b</sub>) mod 360°</div>
+                                            <div>h<sub>pos</sub> = 45°, &nbsp; δ = 90°</div>
+                                            <div class="text-orange-700 font-bold">h<sub>pos,new</sub> = (45 + 90) mod
+                                                360 = 135°</div>
+                                            <div class="mt-1">New closest cell: k=3 at 135° (d=0°)</div>
+                                            <div>New attention peak: w[3] → ~0.52</div>
+                                        </div>
+                                        <div
+                                            class="text-[10px] bg-green-50 border border-green-100 rounded px-2 py-1.5 text-green-700 max-w-xs">
+                                            <strong>oddFirst zigzag example:</strong> cells at 0°=even, 45°=odd,
+                                            90°=even, 135°=odd, … The model learns δ=+90° on odd steps and δ=−90° on
+                                            even steps — a zigzag that visits only odd addresses first, then even. The
+                                            group structure makes this geometrically regular and easy to learn.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-divider"></div>
+
+                            <!-- Step 5: Write (identical to NTM) -->
+                            <div class="flex gap-3">
+                                <div class="step-num bg-orange-100 text-orange-700">⑤</div>
+                                <div class="flex-1">
+                                    <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Write
+                                        — identical to NTM erase+add, attention from geometry</div>
+                                    <div
+                                        class="font-mono text-[10px] bg-gray-50 border border-gray-100 rounded px-3 py-2 text-gray-700 space-y-0.5 max-w-md">
+                                        <div>w<sub>k</sub> = softmax(−β · d(h<sub>pos</sub>, g<sub>k</sub>)) — geometric
+                                            weights</div>
+                                        <div>v<sub>k</sub> ← v<sub>k</sub> ⊙ (1 − w<sub>k</sub>·e) — erase</div>
+                                        <div>v<sub>k</sub> ← v<sub>k</sub> + w<sub>k</sub>·a — add</div>
+                                    </div>
+                                    <div class="mt-2 text-[10px] text-gray-400">
+                                        The group structure does <em>not</em> constrain what values can be stored —
+                                        values v<sub>k</sub> are arbitrary float vectors of dimension W. Only the
+                                        <em>addressing</em> scheme changes. This means any NTM task can be attempted;
+                                        the question is whether the group geometry helps or hurts generalization on that
+                                        task.
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============================= COMPARISON ============================= -->
+            <section id="comparison" class="scroll-mt-20">
+                <div class="flex items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-gray-800 border-l-4 border-gray-400 pl-3">Comparison</h2>
+                    <span class="text-xs font-mono text-gray-400">(NTM · DNC · Neural RAM · Lie-Access)</span>
+                </div>
+
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                    <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                        <h3 class="text-sm font-bold text-gray-800">Side-by-side property table</h3>
+                        <p class="text-xs text-gray-500 mt-1">Key architectural decisions distinguishing the four
+                            matrix-memory (random-access) designs.</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs font-mono">
+                            <thead>
+                                <tr class="border-b border-gray-200 bg-gray-50">
+                                    <th
+                                        class="text-left px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider w-44">
+                                        Property</th>
+                                    <th
+                                        class="text-left px-4 py-2 text-[10px] font-bold text-blue-500 uppercase tracking-wider">
+                                        NTM — Graves 2014</th>
+                                    <th
+                                        class="text-left px-4 py-2 text-[10px] font-bold text-purple-500 uppercase tracking-wider">
+                                        DNC — Graves 2016</th>
+                                    <th
+                                        class="text-left px-4 py-2 text-[10px] font-bold text-green-600 uppercase tracking-wider">
+                                        Neural RAM — Zaremba 2016</th>
+                                    <th
+                                        class="text-left px-4 py-2 text-[10px] font-bold text-orange-500 uppercase tracking-wider">
+                                        Lie-Access NTM — Yang 2016</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Memory repr</td>
+                                    <td class="px-4 py-2 text-gray-700">N×W float matrix<br><span
+                                            class="text-gray-400">fully soft, all locations active</span></td>
+                                    <td class="px-4 py-2 text-gray-700">N×W float matrix<br><span
+                                            class="text-gray-400">+ usage u, precedence p, link L</span></td>
+                                    <td class="px-4 py-2 text-gray-700">N integer-indexed slots<br><span
+                                            class="text-gray-400">+ R small register file</span></td>
+                                    <td class="px-4 py-2 text-gray-700">K cells on Lie group manifold<br><span
+                                            class="text-gray-400">each pinned to group element g<sub>k</sub> ∈ G</span>
+                                    </td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Read addressing</td>
+                                    <td class="px-4 py-2 text-gray-700">Content (cosine) + Location (shift)<br><span
+                                            class="text-gray-400">2-stage; soft weighted sum over N</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Content + Forward link + Backward link<br><span
+                                            class="text-gray-400">3-mode blend via π weights</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Positional (integer address)<br><span
+                                            class="text-gray-400">soft during train, hard at test</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Geometric — group distance d(h,
+                                        g<sub>k</sub>)<br><span class="text-gray-400">softmax(−β·d); head lives on
+                                            manifold</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Write addressing</td>
+                                    <td class="px-4 py-2 text-gray-700">Same 2-stage as read (independent head)<br><span
+                                            class="text-gray-400">separate key / shift / gate</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Allocation (freest slot) + Content
+                                        blend<br><span class="text-gray-400">g<sub>a</sub> gates between them</span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-700">Separate positional address<br><span
+                                            class="text-gray-400">controller outputs store-addr dist</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Same geometric weights as read head<br><span
+                                            class="text-gray-400">single head (read + write share position)</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Write operation</td>
+                                    <td class="px-4 py-2 text-gray-700">Erase vector then add vector<br><span
+                                            class="text-gray-400">M ← M⊙(1−w·e<sup>T</sup>) + w·a<sup>T</sup></span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-700">Same erase+add<br><span
+                                            class="text-gray-400">also updates usage u, link L, precedence p</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Hard overwrite or soft blend<br><span
+                                            class="text-gray-400">M[addr] ← reg value</span></td>
+                                    <td class="px-4 py-2 text-gray-700">NTM erase+add<br><span
+                                            class="text-gray-400">v<sub>k</sub> ← v<sub>k</sub>⊙(1−w<sub>k</sub>·e) +
+                                            w<sub>k</sub>·a</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Memory management</td>
+                                    <td class="px-4 py-2 text-gray-700">None — model must learn not to clobber<br><span
+                                            class="text-gray-400">no usage tracking</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Explicit usage tracking + freeness
+                                        gates<br><span class="text-gray-400">free gate on reads; alloc writes to
+                                            least-used</span></td>
+                                    <td class="px-4 py-2 text-gray-700">None — positional, no overlap guard<br><span
+                                            class="text-gray-400">model learns not to alias</span></td>
+                                    <td class="px-4 py-2 text-gray-700">None — cells at fixed manifold
+                                        addresses<br><span class="text-gray-400">geometry prevents unintended overlap if
+                                            cells spaced far apart</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Temporal traversal</td>
+                                    <td class="px-4 py-2 text-gray-700">Location shift (left/right by 1)<br><span
+                                            class="text-gray-400">limited to local neighbours</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Forward / backward link matrix L<br><span
+                                            class="text-gray-400">follows write-order chain, not spatial</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Implicit — controller increments pointer
+                                        register<br><span class="text-gray-400">INC/DEC on address register</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Group action h ← h·δ on manifold<br><span
+                                            class="text-gray-400">any group element reachable in one step; zigzag,
+                                            spiral, etc.</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Attention type</td>
+                                    <td class="px-4 py-2 text-gray-700">Always soft — weighted sum over all N<br><span
+                                            class="text-gray-400">never argmax</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Always soft — weighted sum<br><span
+                                            class="text-gray-400">never argmax</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Soft train / hard test<br><span
+                                            class="text-gray-400">Gumbel-softmax bridges the gap</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Soft — geometric softmax<br><span
+                                            class="text-gray-400">β controls sharpness; β→∞ = hard nearest cell</span>
+                                    </td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Best suited for</td>
+                                    <td class="px-4 py-2 text-gray-700">Copy, sort, associative recall<br><span
+                                            class="text-gray-400">where content lookup matters</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Algorithms with structured access
+                                        patterns<br><span class="text-gray-400">graph traversal, question answering,
+                                            replay</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Positional algorithms, arithmetic<br><span
+                                            class="text-gray-400">addition, sorting by index, pointer arithmetic</span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-700">Tasks with geometric structure in access
+                                        pattern<br><span class="text-gray-400">oddFirst, skip-k, spiral traversal,
+                                            rotation-invariant tasks</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Controller</td>
+                                    <td class="px-4 py-2 text-gray-700">LSTM (or FF)<br><span
+                                            class="text-gray-400">output = f(h<sub>t</sub>, read vectors)</span></td>
+                                    <td class="px-4 py-2 text-gray-700">LSTM<br><span class="text-gray-400">richer
+                                            interface vector (usage gates, mode π)</span></td>
+                                    <td class="px-4 py-2 text-gray-700">LSTM<br><span class="text-gray-400">also
+                                            receives register file as input</span></td>
+                                    <td class="px-4 py-2 text-gray-700">LSTM<br><span class="text-gray-400">outputs Lie
+                                            algebra vector → exp map → δ ∈ G</span></td>
+
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-4 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                                        Chomsky class</td>
+                                    <td class="px-4 py-2 text-gray-700">Context-sensitive &amp; beyond<br><span
+                                            class="text-gray-400">sufficient for Turing-complete tasks</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Context-sensitive &amp; beyond<br><span
+                                            class="text-gray-400">arguably stronger due to link traversal</span></td>
+                                    <td class="px-4 py-2 text-gray-700">Context-sensitive &amp; beyond<br><span
+                                            class="text-gray-400">discrete RAM = Turing machine if T unbounded</span>
+                                    </td>
+                                    <td class="px-4 py-2 text-gray-700">Context-sensitive &amp; beyond<br><span
+                                            class="text-gray-400">same capacity as NTM; group structure aids inductive
+                                            bias</span></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer placeholder — Part 3 will replace -->
+        <footer class="mt-12 pt-8 border-t border-gray-200">
+            <div class="mx-auto max-w-[48rem] w-full text-center">
+                <p class="text-gray-500 italic text-sm mb-6">
+                    The opinions expressed herein are solely those of the author in their individual capacity and do not
+                    necessarily reflect the official policy or position of any current or former employer, client, or
+                    affiliated organization.
+                    <a href="https://github.com/yashbonde/yashbonde_com/issues/new?title=Request%20changes%20in%20neural-automata-matrix-memory"
+                        target="_blank" rel="noopener noreferrer"
+                        class="text-[#0056b3] underline underline-offset-4 hover:text-[#002e4f] transition-colors">
+                        Suggest changes
+                    </a>.
+                </p>
+                <p class="text-[10px] font-mono text-gray-500 mb-1">This page has been generated by AI, numbers were
+                    verified using a script.</p>
+                <p class="text-[10px] font-mono text-gray-400">neural-automata &middot; matrix-memory &middot;
+                    2026-02-17</p>
+            </div>
+        </footer>
+
+    </div>
+</body>
+
+</html>
