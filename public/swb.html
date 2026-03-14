@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -68,6 +73,32 @@
                 content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.03), transparent); transform: translateX(-100%); animation: sweep 3s infinite;
             }
             @keyframes sweep { 100% { transform: translateX(100%); } }
+
+            /* Prism overrides */
+            pre[class*="language-"] {
+                @apply bg-transparent !important;
+                @apply p-0 m-0 !important;
+                text-shadow: none !important;
+            }
+            code[class*="language-"] {
+                @apply bg-transparent !important;
+                @apply text-[0.8rem] md:text-[0.85rem] !important;
+                text-shadow: none !important;
+            }
+            .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string {
+                @apply bg-transparent !important;
+            }
+            .token.comment { @apply text-textDim !important; }
+            .token.keyword { @apply text-primary !important; }
+            .token.string { @apply text-secondary !important; }
+            .token.function { @apply text-accent !important; }
+            .token.boolean, .token.number { @apply text-secondary !important; }
+
+            .zig-zag-divider {
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='10' viewBox='0 0 40 10'%3E%3Cpolyline points='0,10 10,0 20,10 30,0 40,10' fill='none' stroke='%2300ff41' stroke-width='2'/%3E%3C/svg%3E");
+                background-repeat: repeat-x;
+                background-size: 20px 5px;
+            }
         }
     </style>
 </head>
@@ -77,7 +108,7 @@
     <div class="grid-bg fixed inset-0 z-[-1]"></div>
 
     <nav class="sticky top-0 z-[100] py-4 bg-black/70 border-b border-border backdrop-blur-md">
-        <div class="container mx-auto px-8 flex justify-between items-center">
+        <div class="container mx-auto px-6 md:px-8 flex justify-between items-center relative">
             <div class="flex items-center gap-4">
                 <div class="relative w-8 h-8 group">
                     <svg class="absolute inset-0 text-primary animate-[spin_10s_linear_infinite]" viewBox="0 0 100 100">
@@ -94,7 +125,18 @@
                     SWARM_BUDDY_WORKS
                 </div>
             </div>
-            <div class="nav-links flex items-center gap-6">
+
+            <!-- Hamburger Menu Button -->
+            <button id="menu-toggle" class="md:hidden text-primary focus:outline-none p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <!-- Navigation Links -->
+            <div id="nav-menu"
+                class="hidden absolute top-full left-0 w-full bg-black/95 border-b border-border flex-col items-center gap-6 py-8 md:static md:w-auto md:bg-transparent md:border-none md:flex md:flex-row md:py-0 md:gap-6">
                 <a href="#quickstart"
                     class="text-[0.7rem] text-textDim uppercase font-bold hover:text-primary transition-colors">Quickstart</a>
                 <a href="#use-cases"
@@ -112,77 +154,23 @@
         </div>
     </nav>
 
-    <main class="container mx-auto px-8 max-w-[1200px]">
+    <main class="container mx-auto px-6 md:px-8 max-w-[1200px]">
         <!-- Hero Section -->
         <section class="py-12 md:py-24 relative" id="quickstart">
-            <div class="inline-flex items-center gap-2 group cursor-pointer mb-6"
-                onclick="copyToClipboard(this.querySelector('span'), 'claude \&quot;fetch https://swb.yashbonde.com, how can I use it?\&quot;')">
-                <div
-                    class="text-[0.6rem] md:text-[0.65rem] bg-surface border border-border px-3 py-1.5 rounded font-mono text-textDim group-hover:text-primary group-hover:border-primary transition-all flex items-center gap-3">
-                    <span class="uppercase tracking-widest transition-colors">claude "fetch swb.yashbonde.com, how
-                        can I use it?"</span>
-                    <svg class="w-3 h-3 opacity-30 group-hover:opacity-100 transition-opacity" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                    </svg>
-                </div>
-            </div>
+
             <h1 class="font-extrabold tracking-tighter leading-[0.9] mb-6 text-white text-[clamp(2rem,10vw,5.5rem)]">
                 <span class="glitch-text block w-fit" data-text="SWARM BUDDY">SWARM BUDDY</span>
                 <span class="glitch-text block w-fit" data-text="& FRIENDS">&amp; FRIENDS</span>
             </h1>
             <p class="max-w-[650px] text-[1.1rem] text-textDim mb-8 leading-relaxed">
-                Intelligence orchestration without the overhead. <strong class="text-white">Manage swarms via
-                    REST.</strong>
+                Swarm management for sensitive environments. . <strong class="text-white">REST.</strong>
                 Serve agents using static binary. <strong class="text-white">Deploy anywhere, scale instantly.</strong>
             </p>
 
             <div class="flex flex-col gap-3 mb-12 max-w-[700px]">
                 <a href="#"
-                    class="bg-primary text-black px-8 py-4 font-extrabold text-base uppercase shadow-[0_0_20px_rgba(0,255,65,0.2)] hover:shadow-[0_0_40px_#00ff41] hover:-translate-y-0.5 transition-all text-center inline-block w-fit"
+                    class="bg-primary text-black px-8 py-4 font-extrabold text-base uppercase shadow-[0_0_20px_rgba(0,255,65,0.2)] hover:shadow-[0_0_40px_#00ff41] hover:-translate-y-0.5 transition-all text-center inline-block w-full sm:w-fit"
                     onclick="openRandomTypeform(event)">Join the Swarm</a>
-
-                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
-                    onclick="copyToClipboard(this.querySelector('code'), 'curl -sSL https://yashbonde.com/swb.sh | sh')">
-                    <div class="flex items-center gap-4 text-[0.9rem]">
-                        <span class="text-primary font-extrabold">$</span>
-                        <code
-                            class="text-white transition-colors group-hover:text-primary">curl -sSL https://yashbonde.com/swb.sh | sh</code>
-                    </div>
-                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                    </svg>
-                </div>
-
-                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
-                    onclick="copyToClipboard(this.querySelector('code'), 'swb init && swb serve')">
-                    <div class="flex items-center gap-4 text-[0.9rem]">
-                        <span class="text-primary font-extrabold">$</span>
-                        <code class="text-white transition-colors group-hover:text-primary">swb init && swb serve</code>
-                    </div>
-                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                    </svg>
-                </div>
-
-                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
-                    onclick="copyToClipboard(this.querySelector('code'), 'curl -X POST localhost:7070/swb/ -d \'{\&quot;msg\&quot;: \&quot;Write and send me a poem in 3 minutes.\&quot;}\'')">
-                    <div class="flex items-center gap-4 text-[0.9rem]">
-                        <span class="text-primary font-extrabold">$</span>
-                        <code
-                            class="text-white transition-colors group-hover:text-primary">curl -X POST localhost:7070/swb/ -d '{"msg": "Write and send me a poem in 3 minutes."}'</code>
-                    </div>
-                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                    </svg>
-                </div>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 border-t border-border pt-8 mb-8">
@@ -209,265 +197,146 @@
             </div>
         </section>
 
+        <!-- What is Swarm Section -->
+        <section id="what-swarm" class="py-16">
+            <div class="border-l-4 border-l-primary pl-6 mb-8">
+                <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">WHAT_IS.SWARM
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-textDim leading-relaxed mb-6">
+                        ChatGPT invented single-turn interactions with LLMs. 3 years later AI can control computer
+                        shell (thing that runs your GUI and Applications) very efficiently. Today we can run
+                        100s of these <strong class="text-white">"agents"</strong> to solve various problems.
+                        <strong class="text-white">"Swarm-Buddy"</strong> is a helper AI in running such
+                        <strong class="text-white">"swarms"</strong>. It provides the critical infrastructure to
+                        deploy, manage, and coordinate these agents.
+                    </p>
+                </div>
+
+                <div
+                    class="bg-surface border border-border rounded-xl p-8 flex items-center justify-center relative overflow-hidden">
+                    <div class="absolute inset-0 grid-bg opacity-20"></div>
+                    <svg viewBox="0 0 400 220" class="w-full max-w-[400px] h-auto relative z-10">
+                        <defs>
+                            <filter id="glow-swarm">
+                                <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
+                                <feMerge>
+                                    <feMergeNode in="coloredBlur" />
+                                    <feMergeNode in="SourceGraphic" />
+                                </feMerge>
+                            </filter>
+                            <style>
+                                .agent-node {
+                                    fill: #0a0a0a;
+                                    stroke: #bf00ff;
+                                    stroke-width: 1.5;
+                                }
+
+                                .mesh-line-static {
+                                    stroke: #4a4a4a;
+                                    stroke-width: 0.8;
+                                    opacity: 0.4;
+                                }
+
+                                .mesh-line-flow {
+                                    stroke: #bf00ff;
+                                    stroke-width: 1;
+                                    stroke-dasharray: 4 4;
+                                    animation: flow-mesh 3s linear infinite;
+                                    opacity: 0.6;
+                                }
+
+                                @keyframes flow-mesh {
+                                    to {
+                                        stroke-dashoffset: -20;
+                                    }
+                                }
+
+                                @keyframes flow-user {
+                                    to {
+                                        stroke-dashoffset: -20;
+                                    }
+                                }
+
+                                .user-flow-ball {
+                                    fill: #00e5ff;
+                                    filter: url(#glow-swarm);
+                                }
+                            </style>
+                        </defs>
+
+                        <!-- User Node -->
+                        <g transform="translate(160, 10)">
+                            <rect width="80" height="30" rx="4" fill="#0a0a0a" stroke="#00e5ff" stroke-width="2" />
+                            <text x="40" y="20" text-anchor="middle" font-size="8" fill="#00e5ff"
+                                font-weight="bold">USER</text>
+                        </g>
+
+                        <!-- Mesh Connections -->
+                        <g>
+                            <!-- Static Lines -->
+                            <line x1="80" y1="70" x2="140" y2="90" class="mesh-line-static" />
+                            <line x1="140" y1="90" x2="200" y2="60" class="mesh-line-static" />
+                            <line x1="200" y1="60" x2="260" y2="100" class="mesh-line-static" />
+                            <line x1="260" y1="100" x2="320" y2="70" class="mesh-line-static" />
+                            <line x1="80" y1="140" x2="140" y2="90" class="mesh-line-static" />
+                            <line x1="140" y1="160" x2="200" y2="130" class="mesh-line-static" />
+                            <line x1="200" y1="130" x2="260" y2="170" class="mesh-line-static" />
+                            <line x1="260" y1="100" x2="320" y2="140" class="mesh-line-static" />
+
+                            <!-- Flowing Lines -->
+                            <path d="M140 90 L200 130" class="mesh-line-flow" />
+                            <path d="M200 60 L260 100" class="mesh-line-flow" />
+                            <path d="M80 70 L80 140" class="mesh-line-flow" />
+                            <path d="M320 70 L320 140" class="mesh-line-flow" />
+                            <path d="M140 160 L80 140" class="mesh-line-flow" />
+                            <path d="M320 140 L260 170" class="mesh-line-flow" />
+                        </g>
+
+                        <!-- Agent Mesh Nodes (Purple) -->
+                        <circle cx="80" cy="70" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="140" cy="90" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="200" cy="60" r="10" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="260" cy="100" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="320" cy="70" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="80" cy="140" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="140" cy="160" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="200" cy="130" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="260" cy="170" r="8" class="agent-node" filter="url(#glow-swarm)" />
+                        <circle cx="320" cy="140" r="8" class="agent-node" filter="url(#glow-swarm)" />
+
+                        <!-- Data Flow from User -->
+                        <circle r="3" class="user-flow-ball">
+                            <animateMotion path="M200 40 L200 50" dur="1.2s" repeatCount="indefinite" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
         <!-- Use Cases Section -->
         <section id="use-cases" class="py-16">
             <div class="border-l-4 border-l-secondary pl-6 mb-8">
-                <h2 class="text-[2rem] text-white uppercase tracking-widest font-bold">USE_CASE.LOG</h2>
+                <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">USE_CASE.LOG
+                </h2>
             </div>
-            <p class="text-textDim mb-12 max-w-[800px]">Autonomous swarms for research and data processing tasks.
-                Discovering novel architectures, organising our heritage all done with swarm-buddy &amp; friends.
-                <br /><br />
-                Built for your AI. Start <strong>swb</strong> and ask Claude to help you. Everything can be done
-                from the comfort of your laptop.
+            <p class="text-textDim mb-12 max-w-[800px]">Autonomous swarms for research
+                and data processing tasks. Discovering novel architectures, organising our heritage all done with
+                swarm-buddy &amp; friends.
             </p>
 
-            <!-- Technical Architecture Diagram -->
-            <div
-                class="w-full bg-surface border border-border rounded-xl p-6 mb-16 overflow-hidden relative group max-w-[1000px] mx-auto">
-                <div class="absolute top-4 right-6 text-[0.7rem] text-textDim uppercase tracking-[3px]">
-                    ARCHITECTURE_DIAGRAM // SWARM_BUDDY</div>
-                <svg viewBox="0 0 1000 650" class="w-full h-auto">
-                    <defs>
-                        <filter id="glow-neon">
-                            <feGaussianBlur stdDeviation="2" result="blur" />
-                            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                        </filter>
-                        <style>
-                            @keyframes data-flow {
-                                from {
-                                    stroke-dashoffset: 30;
-                                }
+            <p class="text-textDim mb-12 max-w-[800px]"><strong class="text-white">Swarm-Buddy</strong> (codename: swb)
+                will help you manage the swarm better. He is not a tryhard, he knows how to handle swarm not solve your
+                tasks. All intelligence is offloaded into to the LLMs and user prompts. If your prompt contains
+                instructions to use <strong>Codex</strong>, Swarm-Buddy will happily use it.
+            </p>
 
-                                to {
-                                    stroke-dashoffset: 0;
-                                }
-                            }
-
-                            @keyframes pulse-node {
-
-                                0%,
-                                100% {
-                                    opacity: 0.5;
-                                    transform: scale(1);
-                                }
-
-                                50% {
-                                    opacity: 1;
-                                    transform: scale(1.02);
-                                }
-                            }
-
-                            @keyframes blink {
-
-                                0%,
-                                100% {
-                                    opacity: 1;
-                                }
-
-                                50% {
-                                    opacity: 0.3;
-                                }
-                            }
-
-                            .flow-path {
-                                stroke-dasharray: 4, 10;
-                                animation: data-flow 0.8s linear infinite;
-                            }
-
-                            .box {
-                                fill: #0a0a0a;
-                                stroke: #4a4a4a;
-                                stroke-width: 1.5;
-                                rx: 4;
-                            }
-
-                            .box-active {
-                                stroke: #00ff41;
-                                fill: rgba(0, 255, 65, 0.02);
-                            }
-
-                            .box-user {
-                                stroke: #00e5ff;
-                                fill: rgba(0, 229, 255, 0.02);
-                            }
-
-                            .text-main {
-                                fill: #fff;
-                                font-family: 'JetBrains Mono', monospace;
-                                font-size: 14px;
-                                font-weight: 700;
-                            }
-
-                            .text-sub {
-                                fill: #a0a0a0;
-                                font-family: 'JetBrains Mono', monospace;
-                                font-size: 11px;
-                            }
-
-                            .kernel-box {
-                                fill: rgba(191, 0, 255, 0.03);
-                                stroke: #bf00ff;
-                                stroke-width: 2;
-                            }
-                        </style>
-                    </defs>
-
-                    <!-- User Layer -->
-                    <g transform="translate(300, 30)">
-                        <rect width="400" height="100" class="box box-user" />
-                        <text x="200" y="35" text-anchor="middle" class="text-main"
-                            style="fill: #00e5ff;">USER_MACHINE</text>
-                        <text x="200" y="58" text-anchor="middle" class="text-sub">
-                            <tspan x="200" dy="0">REST API Clients / CLI / Custom Apps / Skills</tspan>
-                            <tspan x="200" dy="14">+ Agents (Claude, Codex, Opencode, ...)</tspan>
-                        </text>
-                    </g>
-
-                    <!-- Connections from User -->
-                    <path d="M500 130 L548, 178" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
-                    <path d="M500 130 L548, 178" stroke="#00e5ff" stroke-width="2" fill="none" class="flow-path" />
-
-                    <!-- Main SWB Node (LEFT) -->
-                    <g transform="translate(50, 200)">
-                        <rect width="400" height="410" class="box box-active" />
-                        <text y="-10" class="text-main" style="fill: #00ff41; font-size: 12px;">SWARM_NODE
-                            EXPANDED</text>
-
-                        <!-- ENV Info -->
-                        <text x="200" y="22" text-anchor="middle" class="text-sub"
-                            style="opacity: 0.7; font-size: 10px;">ENV: [ KUBERNETES | BARE_METAL | LOCAL_OS ]</text>
-
-                        <!-- Local Storage -->
-                        <g transform="translate(30, 40)">
-                            <path d="M0 0 L150 0 L150 30 L0 30 Z" fill="#111" stroke="#4a4a4a" />
-                            <text x="75" y="20" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px;">SHEPHARD_AGENT</text>
-                        </g>
-
-                        <g transform="translate(220, 40)">
-                            <path d="M0 0 L150 0 L150 30 L0 30 Z" fill="#111" stroke="#4a4a4a" />
-                            <text x="75" y="20" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px;">LOCAL_PERSISTENCE</text>
-                        </g>
-
-                        <!-- Prompts Layer (formerly Agent Orchestrator) -->
-                        <g transform="translate(30, 90)">
-                            <rect width="340" height="50" class="box" stroke="#00e5ff" />
-                            <text x="170" y="30" text-anchor="middle" class="text-main">CONTEXT_GENERATION</text>
-                        </g>
-
-                        <!-- Kernel & Tools -->
-                        <g transform="translate(30, 160)">
-                            <!-- Tools -->
-                            <rect width="100" height="40" class="box" />
-                            <text x="50" y="25" text-anchor="middle" class="text-sub" style="font-size: 10px;">Std.
-                                Tools</text>
-
-                            <path d="M-60 70 L0 70" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
-                            <path d="M-60 70 L0 70" stroke="#ffff00" stroke-width="2" class="flow-path" />
-                            <rect y="50" width="100" height="40" class="box" />
-                            <text x="50" y="75" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px;">PrivateTools</text>
-
-                            <!-- Toroid Kernel -->
-                            <rect x="130" y="0" width="210" height="140" class="kernel-box" />
-                            <text x="235" y="65" text-anchor="middle" class="text-main"
-                                style="fill: #bf00ff;">TOROID_KERNEL</text>
-                            <text x="235" y="85" text-anchor="middle" class="text-sub" style="font-size: 9px;">Recursive
-                                Reasoning Loop</text>
-
-                            <!-- Internal Connections -->
-                            <path d="M100 20 L130 20 M100 70 L130 70" stroke="#4a4a4a" fill="none" />
-                        </g>
-
-                        <!-- Hook Chain -->
-                        <g transform="translate(30, 330)">
-                            <path d="M170 -30 L170 20" stroke="#4a4a4a" fill="none" />
-                            <rect width="340" height="60" class="box" stroke="#ff0055" />
-                            <text x="170" y="25" text-anchor="middle" class="text-main"
-                                style="fill: #ff0055; font-size: 12px;">HOOK_CHAIN.SYS</text>
-
-                            <g transform="translate(20, 35)">
-                                <text x="0" y="10" class="text-sub" style="font-size: 9px;">- Trace Export</text>
-                                <text x="110" y="10" class="text-sub" style="font-size: 9px;">- Metric Sink</text>
-                                <text x="220" y="10" class="text-sub" style="font-size: 9px;">- Custom Plugins</text>
-                            </g>
-                        </g>
-
-                        <!-- Outgoing Data Line -->
-                        <path d="M200 390 L200 460" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
-                        <path d="M200 390 L200 460" stroke="#ff0055" stroke-width="2" fill="none" class="flow-path" />
-                    </g>
-
-                    <!-- Left to Right (LEFT) -->
-                    <path d="M550 310 L450 200" style="stroke-dasharray: 10, 5;" stroke="#00ff41" stroke-width="1.5"
-                        fill="none" />
-
-                    <path d="M550 390 L450 610" style="stroke-dasharray: 10, 5;" stroke="#00ff41" stroke-width="1.5"
-                        fill="none" />
-
-                    <!-- SWB Nodes (RIGHT) -->
-                    <g transform="translate(550, 200)">
-                        <text x="0" y="-10" class="text-main" style="fill: #00ff41; font-size: 12px;">SWARM_NODES</text>
-
-                        <!-- Grid of smaller boxes -->
-                        <g transform="translate(0, 0)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 01</text>
-                        </g>
-                        <g transform="translate(220, 0)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 02</text>
-                        </g>
-                        <g transform="translate(0, 110)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 03</text>
-                        </g>
-                        <g transform="translate(220, 110)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 04</text>
-                        </g>
-                        <g transform="translate(0, 220)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 05</text>
-                        </g>
-                        <g transform="translate(220, 220)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 06</text>
-                        </g>
-                        <g transform="translate(0, 330)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 07</text>
-                        </g>
-                        <g transform="translate(220, 330)">
-                            <rect width="180" height="80" class="box box-active" />
-                            <text x="90" y="45" text-anchor="middle" class="text-sub"
-                                style="font-size: 10px; fill: #fff;">SWB Node 08</text>
-                        </g>
-
-                        <!-- Connections between nodes -->
-                        <path d="M180 40 L220 40 M180 150 L220 150 M180 260 L220 260 M180 370 L220 370" stroke="#4a4a4a"
-                            stroke-width="1" />
-                        <path
-                            d="M90 80 L90 110 M310 80 L310 110 M90 190 L90 220 M310 190 L310 220 M90 300 L90 330 M310 300 L310 330"
-                            stroke="#4a4a4a" stroke-width="1" />
-                    </g>
-                </svg>
-            </div>
-
-            <p class="text-textDim mb-12 max-w-[800px]"><strong>Swarm-Buddy</strong> (codename: shephard) will help you
-                manage the swarm
-                better. He is not a tryhard, he knows how to handle swarm not solve your tasks. All intelligence is
-                offloaded into to the LLMs and user prompts.<br /><br />
-                If your prompt contains instructions to use <strong>Codex</strong>, Swarm-Buddy will happily use it.
-                You ask your agent to use curl to pull ephemeral credentials and use for authentication.
+            <p class="text-textDim mb-12 max-w-[800px]">
+                Built for your AI. Start <strong class="text-white">swb</strong> and ask <strong
+                    class="text-white">Claude</strong> to connect and help you. Everything
+                can be done from the comfort of your laptop.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
@@ -497,7 +366,7 @@
                     <div
                         class="w-10 h-10 bg-gradient-to-br from-border to-black border border-border rounded-lg flex items-center justify-center font-extrabold text-[1.2rem] text-secondary mb-4 shadow-lg shadow-black/30">
                         ◈</div>
-                    <h3 class="text-[1rem] text-secondary uppercase font-bold mb-3">Map-Reduce</h3>
+                    <h3 class="text-[1rem] text-secondary uppercase font-bold mb-3">Map-Reduce ETL pipelines</h3>
                     <p class="text-[0.85rem] text-textDim leading-relaxed">
                         Using <strong class="text-white">toroid</strong> we built scripts to standardize and record
                         Sanskrit texts. So far we have indexed 103K+ shloka. Manage multiple agents like downloader,
@@ -516,245 +385,809 @@
                     <div
                         class="w-10 h-10 bg-gradient-to-br from-border to-black border border-border rounded-lg flex items-center justify-center font-extrabold text-[1.2rem] text-secondary mb-4 shadow-lg shadow-black/30">
                         🛡️</div>
-                    <h3 class="text-[1rem] text-secondary uppercase font-bold mb-3">Secure Enclave</h3>
+                    <h3 class="text-[1rem] text-secondary uppercase font-bold mb-3">Home Codebase</h3>
                     <p class="text-[0.85rem] text-textDim leading-relaxed">
-                        Deployed Swarm Buddy in air-gapped environments. Used Maya to audit 4M lines of sensitive C++
-                        without a single packet leaving the internal network.
-                    </p>
-                </div>
-
-                <div
-                    class="group relative bg-surface border border-border p-8 overflow-hidden transition-all hover:-translate-y-0.5">
-                    <div
-                        class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-500">
-                    </div>
-                    <div
-                        class="w-10 h-10 bg-gradient-to-br from-border to-black border border-border rounded-lg flex items-center justify-center font-extrabold text-[1.2rem] text-secondary mb-4 shadow-lg shadow-black/30">
-                        🤖</div>
-                    <h3 class="text-[1rem] text-secondary uppercase font-bold mb-3">Edge Robotics OS</h3>
-                    <p class="text-[0.85rem] text-textDim leading-relaxed">
-                        Swarm Buddy serves as the reasoning kernel for warehouse drones. Toroid manages real-time sensor
-                        calibration via direct OS syscalls on ARM64 hardware.
+                        We use Swarm Buddy to maintain the codebase. Using <strong class="text-white">swb</strong>
+                        we schedule it to checkout the latest code from various online inspirations (incl. Opencode).
+                        If there are any changes it will update the codebase and notify us.
                     </p>
                 </div>
             </div>
         </section>
 
-        <!-- Ecosystem Section -->
-        <section id="friends" class="py-16">
-            <div class="border-l-4 border-l-secondary pl-6 mb-8">
-                <h2 class="text-[2rem] text-white uppercase tracking-widest font-bold">FRIENDS.MODULES</h2>
-            </div>
-            <p class="text-textDim mb-12">Swarm buddy is a gang that comes with multiple modules that fit together to
-                form a complete swarm.</p>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
-                <div
-                    class="md:col-span-2 relative bg-surface border border-border p-8 group hover:border-primary transition-all">
-                    <div
-                        class="absolute top-4 right-4 text-[0.6rem] text-primary border border-primary px-1.5 py-0.5 uppercase">
-                        KERNEL</div>
-                    <h3 class="text-[1.1rem] text-secondary font-bold mb-4 uppercase">Toroid</h3>
-                    <p class="text-[0.85rem] text-textDim leading-relaxed text-balance">A no-bullshit coding agent
-                        package in Go to run your own custom agentic loops. The core agentic coding loop.
-                        Performs autonomous with high-fidelity OS permissions. Provides 16+ hooks to operate agent as
-                        you like. Built using battle tested Opencode tools. MIT License.</p>
+        <!-- Technical Documentation Trigger -->
+        <div id="tech-docs-trigger" class="w-full py-12 flex flex-col items-center">
+            <button onclick="toggleTechDocs()"
+                class="w-full group relative flex flex-col items-center justify-center transition-all duration-300">
+                <div class="w-full h-1 zig-zag-divider opacity-30 group-hover:opacity-100 transition-opacity mb-4">
                 </div>
-                <div class="relative bg-surface border border-border p-8 group hover:border-primary transition-all">
-                    <div
-                        class="absolute top-4 right-4 text-[0.6rem] text-primary border border-primary px-1.5 py-0.5 uppercase">
-                        CONTROL</div>
-                    <h3 class="text-[1.1rem] text-primary font-bold mb-4">SWB</h3>
-                    <p class="text-[0.85rem] text-textDim leading-relaxed">Herds your
-                        swarm ensuring tasks operate reliably. Your <strong class="text-white">node</strong> is the
-                        playground for your swarm.
-                        Exposes a REST API for easy integration.</p>
-                </div>
-            </div>
-
-            <p class="text-textDim mb-12 max-w-[800px]">
-                Import <strong class="text-white">toroid.Agent</strong> and run event loops with <strong
-                    class="text-white">16</strong> hooks.
-
-            </p>
-
-            <div class="install-container max-w-[800px] flex flex-col gap-4">
-                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
-                    onclick="copyToClipboard(this.querySelector('code'), 'go get github.com/yashbonde/swarm-buddy')">
-                    <div class="flex items-center gap-4 text-[0.9rem]">
-                        <span class="text-primary font-extrabold">$</span>
-                        <code
-                            class="text-white transition-colors group-hover:text-primary">go get github.com/yashbonde/swarm-buddy</code>
-                    </div>
-                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
+                <div class="flex items-center gap-6 z-10 py-4">
+                    <svg id="tech-toggle-icon" class="w-6 h-6 text-primary transition-transform duration-500"
                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 5l-7 7 7 7" />
+                    </svg>
+                    <span
+                        class="text-primary font-black font-mono uppercase tracking-[0.5em] text-sm md:text-base group-hover:drop-shadow-[0_0_8px_#00ff41] transition-all">
+                        READ_BY_TECHNICAL_FOLKS_ONLY
+                    </span>
+                    <svg id="tech-toggle-icon" class="w-6 h-6 text-primary transition-transform duration-500"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7" />
                     </svg>
                 </div>
-                <div
-                    class="bg-surface border border-border p-6 border-l-4 border-l-secondary relative overflow-hidden group">
-                    <div
-                        class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
+                <div class="w-full h-1 zig-zag-divider opacity-30 group-hover:opacity-100 transition-opacity mt-4">
+                </div>
+                <div class="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors duration-500">
+                </div>
+            </button>
+        </div>
+
+        <div id="tech-docs-container"
+            class="hidden overflow-hidden transition-all duration-500 border-l border-r border-border/30 mx-4 md:mx-0">
+            <!-- Technical Documentation -->
+            <div class="px-2 md:px-8">
+
+                <!-- HLD -->
+                <section id="technical-architecture" class="py-16">
+                    <div class="border-l-4 border-l-secondary pl-6 mb-8">
+                        <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">
+                            HLD</h2>
                     </div>
-                    <div class="flex flex-col gap-4">
-                        <span class="text-secondary font-bold text-xs uppercase tracking-[3px] opacity-70">//
-                            CUSTOM_AGENTIC_LOOP.GO</span>
-                        <pre class="text-white text-[0.85rem] leading-relaxed overflow-x-auto"><code class="font-mono">import "swarm-buddy/pkg/toroid"
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        <p class="text-textDim mb-6 max-w-[800px]">
+                            In the Swarm-Buddy architecture, users exercise total control over distributed <strong
+                                class="text-white">nodes</strong>—which can be anything from K8S pods and E2B machines
+                            to
+                            bare-metal VMs or local environments.
+                        </p>
+                        <p class="text-textDim mb-6 max-w-[800px]">
+                            Each node is a <strong class="text-white">standalone unit</strong>. There is no complex
+                            primary/secondary handshake; instead, every instance is individually accessible via a
+                            dedicated
+                            REST network interface. This shared-nothing approach ensures that each pod remains isolated,
+                            secure, and focused exclusively on its assigned workload.
+                        </p>
+                        <p class="text-textDim mb-6 max-w-[800px]">
+                            Each SWB node houses a server that manages multiple <strong class="text-white">Toroid
+                                Kernels</strong>. These kernels ingest data from user prompts and tools, emitting
+                            real-time
+                            events that hooks use to export traces or metrics. Built for high-sensitivity tasks,
+                            Swarm-Buddy
+                            automatically tracks and logs all internet-bound commands, ensuring complete auditability.
+                        </p>
+                        <p class="text-textDim mb-6 max-w-[800px]">Screenshot and share this diagram with an AI to
+                            understand more.</p>
+
+                    </div>
+
+                    <!-- Technical Architecture Diagram -->
+                    <div
+                        class="w-full bg-surface border border-border rounded-xl p-6 mb-16 overflow-x-auto relative group max-w-[1000px] mx-auto">
+                        <div class="absolute top-4 right-6 text-[0.7rem] text-textDim uppercase tracking-[3px]">
+                            ARCHITECTURE_DIAGRAM // SWARM_BUDDY</div>
+                        <svg viewBox="0 0 1000 650" class="w-full h-auto min-w-[850px]">
+                            <defs>
+                                <filter id="glow-neon">
+                                    <feGaussianBlur stdDeviation="2" result="blur" />
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                </filter>
+                                <style>
+                                    @keyframes data-flow {
+                                        from {
+                                            stroke-dashoffset: 30;
+                                        }
+
+                                        to {
+                                            stroke-dashoffset: 0;
+                                        }
+                                    }
+
+                                    @keyframes pulse-node {
+
+                                        0%,
+                                        100% {
+                                            opacity: 0.5;
+                                            transform: scale(1);
+                                        }
+
+                                        50% {
+                                            opacity: 1;
+                                            transform: scale(1.02);
+                                        }
+                                    }
+
+                                    @keyframes blink {
+
+                                        0%,
+                                        100% {
+                                            opacity: 1;
+                                        }
+
+                                        50% {
+                                            opacity: 0.3;
+                                        }
+                                    }
+
+                                    .flow-path {
+                                        stroke-dasharray: 4, 10;
+                                        animation: data-flow 0.8s linear infinite;
+                                    }
+
+                                    .box {
+                                        fill: #0a0a0a;
+                                        stroke: #4a4a4a;
+                                        stroke-width: 1.5;
+                                        rx: 4;
+                                    }
+
+                                    .box-active {
+                                        stroke: #00ff41;
+                                        fill: rgba(0, 255, 65, 0.02);
+                                    }
+
+                                    .box-user {
+                                        stroke: #00e5ff;
+                                        fill: rgba(0, 229, 255, 0.02);
+                                    }
+
+                                    .text-main {
+                                        fill: #fff;
+                                        font-family: 'JetBrains Mono', monospace;
+                                        font-size: 14px;
+                                        font-weight: 700;
+                                    }
+
+                                    .text-sub {
+                                        fill: #a0a0a0;
+                                        font-family: 'JetBrains Mono', monospace;
+                                        font-size: 11px;
+                                    }
+
+                                    .kernel-box {
+                                        fill: rgba(191, 0, 255, 0.03);
+                                        stroke: #bf00ff;
+                                        stroke-width: 2;
+                                    }
+                                </style>
+                            </defs>
+
+                            <!-- User Layer -->
+                            <g transform="translate(300, 30)">
+                                <rect width="400" height="100" class="box box-user" />
+                                <text x="200" y="35" text-anchor="middle" class="text-main"
+                                    style="fill: #00e5ff;">USER_MACHINE</text>
+                                <text x="200" y="58" text-anchor="middle" class="text-sub">
+                                    <tspan x="200" dy="0">REST API Clients / CLI / Custom Apps / Skills</tspan>
+                                    <tspan x="200" dy="14">+ Agents (Claude, Codex, Opencode, ...)</tspan>
+                                </text>
+                            </g>
+
+                            <!-- Connections from User -->
+                            <path d="M500 130 L548, 178" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
+                            <path d="M500 130 L548, 178" stroke="#00e5ff" stroke-width="2" fill="none"
+                                class="flow-path" />
+
+                            <!-- Main SWB Node (LEFT) -->
+                            <g transform="translate(50, 200)">
+                                <rect width="400" height="410" class="box box-active" />
+                                <text y="-10" class="text-main" style="fill: #00ff41; font-size: 12px;">SWARM_NODE
+                                    EXPANDED</text>
+
+                                <!-- ENV Info -->
+                                <text x="200" y="22" text-anchor="middle" class="text-sub"
+                                    style="opacity: 0.7; font-size: 10px;">ENV: [
+                                    KUBERNETES | BARE_METAL | LOCAL_OS ]</text>
+
+                                <!-- Local Storage -->
+                                <g transform="translate(30, 40)">
+                                    <path d="M0 0 L150 0 L150 30 L0 30 Z" fill="#111" stroke="#4a4a4a" />
+                                    <text x="75" y="20" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px;">SHEPHARD_AGENT</text>
+                                </g>
+
+                                <g transform="translate(220, 40)">
+                                    <path d="M0 0 L150 0 L150 30 L0 30 Z" fill="#111" stroke="#4a4a4a" />
+                                    <text x="75" y="20" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px;">LOCAL_PERSISTENCE</text>
+                                </g>
+
+                                <!-- Prompts Layer (formerly Agent Orchestrator) -->
+                                <g transform="translate(30, 90)">
+                                    <rect width="340" height="50" class="box" stroke="#00e5ff" />
+                                    <text x="170" y="30" text-anchor="middle"
+                                        class="text-main">CONTEXT_GENERATION</text>
+                                </g>
+
+                                <!-- Kernel & Tools -->
+                                <g transform="translate(30, 160)">
+                                    <!-- Tools -->
+                                    <rect width="100" height="40" class="box" />
+                                    <text x="50" y="25" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px;">Std.
+                                        Tools</text>
+
+                                    <path d="M-60 70 L0 70" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
+                                    <path d="M-60 70 L0 70" stroke="#ffff00" stroke-width="2" class="flow-path" />
+                                    <rect y="50" width="100" height="40" class="box" />
+                                    <text x="50" y="75" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px;">PrivateTools</text>
+
+                                    <!-- Toroid Kernel -->
+                                    <rect x="130" y="0" width="210" height="140" class="kernel-box" />
+                                    <text x="235" y="65" text-anchor="middle" class="text-main"
+                                        style="fill: #bf00ff;">TOROID_KERNEL</text>
+                                    <text x="235" y="85" text-anchor="middle" class="text-sub"
+                                        style="font-size: 9px;">Recursive
+                                        Reasoning Loop</text>
+
+                                    <!-- Internal Connections -->
+                                    <path d="M100 20 L130 20 M100 70 L130 70" stroke="#4a4a4a" fill="none" />
+                                </g>
+
+                                <!-- Hook Chain -->
+                                <g transform="translate(30, 330)">
+                                    <path d="M170 -30 L170 20" stroke="#4a4a4a" fill="none" />
+                                    <rect width="340" height="60" class="box" stroke="#ff0055" />
+                                    <text x="170" y="25" text-anchor="middle" class="text-main"
+                                        style="fill: #ff0055; font-size: 12px;">HOOK_CHAIN.SYS</text>
+
+                                    <g transform="translate(20, 35)">
+                                        <text x="0" y="10" class="text-sub" style="font-size: 9px;">- Trace
+                                            Export</text>
+                                        <text x="110" y="10" class="text-sub" style="font-size: 9px;">- Metric
+                                            Sink</text>
+                                        <text x="220" y="10" class="text-sub" style="font-size: 9px;">- Custom
+                                            Plugins</text>
+                                    </g>
+                                </g>
+
+                                <!-- Outgoing Data Line -->
+                                <path d="M200 390 L200 460" stroke="#4a4a4a" stroke-width="1.5" fill="none" />
+                                <path d="M200 390 L200 460" stroke="#ff0055" stroke-width="2" fill="none"
+                                    class="flow-path" />
+                            </g>
+
+                            <!-- Left to Right (LEFT) -->
+                            <path d="M550 310 L450 200" style="stroke-dasharray: 10, 5;" stroke="#00ff41"
+                                stroke-width="1.5" fill="none" />
+
+                            <path d="M550 390 L450 610" style="stroke-dasharray: 10, 5;" stroke="#00ff41"
+                                stroke-width="1.5" fill="none" />
+
+                            <!-- SWB Nodes (RIGHT) -->
+                            <g transform="translate(550, 200)">
+                                <text x="0" y="-10" class="text-main"
+                                    style="fill: #00ff41; font-size: 12px;">SWARM_NODES</text>
+
+                                <!-- Grid of smaller boxes -->
+                                <g transform="translate(0, 0)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 01</text>
+                                </g>
+                                <g transform="translate(220, 0)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 02</text>
+                                </g>
+                                <g transform="translate(0, 110)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 03</text>
+                                </g>
+                                <g transform="translate(220, 110)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 04</text>
+                                </g>
+                                <g transform="translate(0, 220)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 05</text>
+                                </g>
+                                <g transform="translate(220, 220)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 06</text>
+                                </g>
+                                <g transform="translate(0, 330)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 07</text>
+                                </g>
+                                <g transform="translate(220, 330)">
+                                    <rect width="180" height="80" class="box box-active" />
+                                    <text x="90" y="45" text-anchor="middle" class="text-sub"
+                                        style="font-size: 10px; fill: #fff;">SWB
+                                        Node 08</text>
+                                </g>
+
+                                <!-- Connections between nodes -->
+                                <path d="M180 40 L220 40 M180 150 L220 150 M180 260 L220 260 M180 370 L220 370"
+                                    stroke="#4a4a4a" stroke-width="1" />
+                                <path
+                                    d="M90 80 L90 110 M310 80 L310 110 M90 190 L90 220 M310 190 L310 220 M90 300 L90 330 M310 300 L310 330"
+                                    stroke="#4a4a4a" stroke-width="1" />
+                            </g>
+                        </svg>
+                    </div>
+                </section>
+
+                <!-- Modules -->
+                <section id="friends" class="py-16">
+                    <div class="border-l-4 border-l-secondary pl-6 mb-8">
+                        <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">
+                            FRIENDS.MODULES
+                        </h2>
+                    </div>
+                    <p class="text-textDim mb-12 text-[0.95rem] md:text-[1.1rem]">Swarm buddy is a gang that comes with
+                        multiple
+                        modules that fit together to
+                        form a complete swarm.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+                        <div
+                            class="md:col-span-2 flex flex-col relative bg-surface border border-border p-8 group hover:border-primary transition-all">
+                            <div
+                                class="absolute top-4 right-4 text-[0.6rem] text-primary border border-primary px-1.5 py-0.5 uppercase">
+                                KERNEL</div>
+                            <h3 class="text-[1.1rem] text-secondary font-bold mb-4 uppercase">Toroid</h3>
+                            <p class="text-[0.85rem] text-textDim leading-relaxed">A no-bullshit coding agent package in
+                                Go
+                                to
+                                run your own custom agentic loops. The core agentic coding loop. Performs autonomous
+                                with
+                                high-fidelity OS permissions. MIT License.</p>
+                        </div>
+                        <div
+                            class="flex flex-col relative bg-surface border border-border p-8 group hover:border-primary transition-all">
+                            <div
+                                class="absolute top-4 right-4 text-[0.6rem] text-primary border border-primary px-1.5 py-0.5 uppercase">
+                                CONTROL</div>
+                            <h3 class="text-[1.1rem] text-primary font-bold mb-4 uppercase">SWB</h3>
+                            <p class="text-[0.85rem] text-textDim leading-relaxed mb-4">Herds your swarm ensuring tasks
+                                operate reliably. Your <strong class="text-white">node</strong> is the playground for
+                                your
+                                swarm. Exposes a REST API for easy integration.</p>
+                        </div>
+                    </div>
+
+                    <!-- SWB Section -->
+                    <div>
+                        <div class="border-l-4 border-l-secondary pl-6 mb-4">
+                            <h3 class="text-[1.1rem] md:text-[1.5rem] text-white uppercase tracking-widest font-bold">
+                                SWB
+                            </h3>
+                        </div>
+
+                        <p class="text-textDim mb-4 max-w-[800px]">
+                            swb your swarm ensuring tasks operate reliably. Your <strong
+                                class="text-white">node</strong>
+                            is the
+                            playground for your swarm. Exposes a REST API for easy integration.
+                        </p>
+
+
+                        <!-- API Doc Block -->
+                        <div class="mt-auto pt-4 border-t border-border/30 mb-16">
+                            <div class="flex flex-col gap-3">
+
+                                <p class="text-textDim mb-4 mt-2 max-w-[800px]">
+                                    Start by installing the binary like:
+                                </p>
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'curl -sSL https://yashbonde.com/swb.sh | sh')">
+                                    <div
+                                        class="flex items-center gap-4 text-[0.85rem] md:text-[0.9rem] overflow-x-auto w-full scrollbar-hide">
+                                        <span class="text-primary font-extrabold shrink-0">$</span>
+                                        <pre
+                                            class="language-bash"><code class="language-bash text-white transition-colors group-hover:text-primary">curl -sSL https://yashbonde.com/swb.sh | sh</code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all shrink-0"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+
+                                <p class="text-textDim mb-4 mt-2 max-w-[800px]">
+                                    Then start the server like:
+                                </p>
+
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'swb init && swb serve')">
+                                    <div
+                                        class="flex items-center gap-4 text-[0.85rem] md:text-[0.9rem] overflow-x-auto w-full scrollbar-hide">
+                                        <span class="text-primary font-extrabold shrink-0">$</span>
+                                        <pre
+                                            class="language-bash"><code class="language-bash text-white transition-colors group-hover:text-primary">swb init && swb serve</code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all shrink-0"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+
+                                <p class="text-textDim mb-4 mt-2 max-w-[800px]">
+                                    Swarm-Buddy will already be present for you at <strong
+                                        class="text-white">/swb/</strong>
+                                    endpoint. Ask it any question you want.
+                                </p>
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'curl -X POST http://localhost:7070/swb/ -d \'{\&quot;msg\&quot;: \&quot;Who are you?\&quot;}\'')">
+                                    <div
+                                        class="flex items-center gap-4 text-[0.85rem] md:text-[0.9rem] overflow-x-auto w-full scrollbar-hide">
+                                        <span
+                                            class="text-primary font-extrabold shrink-0 text-[0.65rem] border border-primary px-1.5 py-0.5 uppercase tracking-wider">/swb</span>
+                                        <pre
+                                            class="language-bash !m-0 !p-0 !bg-transparent !shadow-none"><code class="language-bash text-white transition-colors group-hover:text-primary whitespace-nowrap">curl -X POST http://localhost:7070/swb/ -d '{"msg": "Who are you?"}'</code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all shrink-0 ml-4"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+
+                                <p class="text-textDim mb-4 mt-2 max-w-[800px]">
+                                    When you first start <strong class="text-white">swb</strong> it will not contain any
+                                    agent,
+                                    you
+                                    can create a new folder (say <strong>morty</strong>) and
+                                    move your prompt files in there. Then you can call the agent directly using the
+                                    <strong class="text-white">/app/&lt;morty&gt;/</strong> endpoint.
+                                </p>
+
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'go get github.com/yashbonde/swarm-buddy')">
+                                    <div class="flex items-center gap-4 text-[0.9rem]">
+                                        <span class="text-primary font-extrabold">$</span>
+                                        <pre class="language-bash"><code class="language-bash text-white transition-colors group-hover:text-primary"><pre>mkdir -p .swb/agents/morty && \
+  echo 'You will always talk like you are panicking.' >> \
+  .swb/agents/morty/agent.md</pre>
+                                        </code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-secondary overflow-hidden hover:border-secondary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'curl -X POST http://localhost:7070/app/morty/ -d \'{\&quot;prompt\&quot;: \&quot;Can you make sense of this data: https://tinyurl.com/22je3zr7\&quot;}\'')">
+                                    <div
+                                        class="flex items-center gap-4 text-[0.85rem] md:text-[0.9rem] overflow-x-auto w-full scrollbar-hide">
+                                        <span
+                                            class="text-secondary font-extrabold shrink-0 text-[0.65rem] border border-secondary px-1.5 py-0.5 uppercase tracking-wider">/app/</span>
+                                        <pre class="language-bash !m-0 !p-0 !bg-transparent !shadow-none"><code class="language-bash text-white transition-colors group-hover:text-secondary whitespace-nowrap">curl -X POST http://localhost:7070/app/morty/ \
+  -d '{
+    "prompt": "Can you make sense of this data: https://tinyurl.com/22je3zr7"
+  }'</code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-secondary transition-all shrink-0 ml-4"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+
+                                <p class="text-textDim mb-4 mt-2 max-w-[800px]">
+                                    The above request will give you an ID that you can poll for results:
+                                </p>
+
+                                <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-secondary overflow-hidden hover:border-secondary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                    onclick="copyToClipboard(this.querySelector('code'), 'curl -X POST http://localhost:7070/status/swbreq_xxxxxx')">
+                                    <div
+                                        class="flex items-center gap-4 text-[0.85rem] md:text-[0.9rem] overflow-x-auto w-full scrollbar-hide">
+                                        <span
+                                            class="text-secondary font-extrabold shrink-0 text-[0.65rem] border border-secondary px-1.5 py-0.5 uppercase tracking-wider">/status/</span>
+                                        <pre
+                                            class="language-bash !m-0 !p-0 !bg-transparent !shadow-none"><code class="language-bash text-white transition-colors group-hover:text-secondary whitespace-nowrap">curl -X POST http://localhost:7070/status/swbreq_00si9f2s9</code></pre>
+                                    </div>
+                                    <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-secondary transition-all shrink-0 ml-4"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Toroid Kernel Section -->
+                    <div>
+                        <div class="border-l-4 border-l-secondary pl-6 mb-8">
+                            <h3 class="text-[1.1rem] md:text-[1.5rem] text-white uppercase tracking-widest font-bold">
+                                Toroid
+                                Kernel
+                            </h3>
+                        </div>
+
+                        <p class="text-textDim mb-12 max-w-[800px]">
+                            Import <strong class="text-white">toroid.Agent</strong> and run event loops with <strong
+                                class="text-white">16</strong> hooks.
+                        </p>
+
+                        <div class="install-container max-w-[800px] flex flex-col gap-4">
+                            <div class="group relative flex justify-between items-center bg-surface border border-border p-3 border-l-4 border-l-primary overflow-hidden hover:border-primary hover:bg-white/[0.02] transition-all sweep-anim cursor-pointer"
+                                onclick="copyToClipboard(this.querySelector('code'), 'go get github.com/yashbonde/swarm-buddy')">
+                                <div class="flex items-center gap-4 text-[0.9rem]">
+                                    <span class="text-primary font-extrabold">$</span>
+                                    <pre
+                                        class="language-bash"><code class="language-bash text-white transition-colors group-hover:text-primary">go get github.com/yashbonde/swarm-buddy</code></pre>
+                                </div>
+                                <svg class="w-4 h-4 text-textDim opacity-30 group-hover:opacity-100 group-hover:text-primary transition-all"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                </svg>
+                            </div>
+                            <div
+                                class="bg-surface border border-border p-6 border-l-4 border-l-secondary relative overflow-hidden group">
+                                <div
+                                    class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
+                                </div>
+                                <div class="flex flex-col gap-4">
+                                    <span
+                                        class="text-secondary font-bold text-xs uppercase tracking-[3px] opacity-70">//
+                                        CUSTOM_AGENTIC_LOOP.GO</span>
+                                    <pre class="language-go text-white text-[0.85rem] leading-relaxed overflow-x-auto"><code class="language-go font-mono">import "swarm-buddy/pkg/toroid"
 
 func main() {
     ctx := context.Background()
-    agent, _ := toroid.New(ctx, toroid.Config{
-        Model:   "gemini-3-flash-preview",
-        WorkDir: ".",
-    })
+    kernel, _ := toroid.New(ctx, toroid.Config{})
     
-    // Register custom lifecycle hooks
-    agent.On(toroid.EventPreToolUse, func(ctx context.Context, e toroid.Event) error {
+    // Register lifecycle hooks
+    kernel.On(toroid.EventPreToolUse, func(ctx context.Context, e toroid.Event) error {
         fmt.Println("Toroid is about to execute a tool...")
         return nil
     })
 
-    resp, _ := agent.Run(ctx, "Analyze this repository")
+    // Print usage
+    kernel.On(toroid.EventStop, func(ctx context.Context, e toroid.Event) error {
+		if p, ok := e.Payload.(*toroid.UsagePayload); ok {
+			fmt.Println("Usage:", p.Tokens)
+		}
+		return nil
+	})
+
+    resp, _ := kernel.Run(ctx, "Analyze this repository")
     fmt.Println(resp.Text())
 
     // continue the conversation anytime, automatically picks up the context
-    resp, _ = agent.Run(ctx, resp, "Can you search all the prompts in this repository?")
+    resp, _ = kernel.Run(ctx, resp, "Can you search all the prompts in this repository?")
     fmt.Println(resp.Text())
 }</code></pre>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
-        </section>
+                </section>
 
-        <!-- Tools Section -->
-        <section id="tools" class="py-16">
-            <div class="border-l-4 border-l-secondary pl-6 mb-8">
-                <h2 class="text-[2rem] text-white uppercase tracking-widest font-bold">TOOL_REGISTRY.SYS</h2>
-            </div>
-            <p class="text-textDim mb-8 max-w-[800px]">Toroid comes equipped with a set of hardened system tools that
-                allow agents to interact with the local environment with surgical precision.</p>
+                <!-- Tools Section -->
+                <section id="tools" class="py-16">
+                    <div class="border-l-4 border-l-secondary pl-6 mb-8">
+                        <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">
+                            TOOLS.SYS
+                        </h2>
+                    </div>
+                    <p class="text-textDim mb-12 max-w-[800px] text-[0.95rem] md:text-[1.1rem]">Toroid comes equipped
+                        with a
+                        set
+                        of hardened system tools that
+                        allow agents to interact with the local environment with surgical precision.</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">bash</span>
-                    <span class="text-[0.75rem] text-textDim">Execute non-interactive shell commands.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">read
-                        / write</span>
-                    <span class="text-[0.75rem] text-textDim">High-fidelity filesystem operations.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">grep
-                        / glob</span>
-                    <span class="text-[0.75rem] text-textDim">Efficient pattern matching and file discovery.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">multiedit</span>
-                    <span class="text-[0.75rem] text-textDim">Perform batch atomic edits across multiple files.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">subagent</span>
-                    <span class="text-[0.75rem] text-textDim">Spawn recursive intelligence nodes for complex
-                        sub-tasks.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/10 hover:-translate-y-1 cursor-default group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase tracking-wider group-hover:text-white transition-colors">todo</span>
-                    <span class="text-[0.75rem] text-textDim">Internal task management and state tracking.</span>
-                </div>
-            </div>
-        </section>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">bash</h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">Execute non-interactive shell
+                                    commands.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">read /
+                                    write
+                                </h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">High-fidelity filesystem
+                                    operations.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">grep / glob
+                                </h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">Efficient pattern matching and
+                                    file
+                                    discovery.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">multiedit
+                                </h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">Perform batch atomic edits across
+                                    multiple files.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">subagent
+                                </h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">Spawn recursive intelligence
+                                    nodes
+                                    for
+                                    complex sub-tasks.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 group">
+                            <span class="text-primary mt-1 group-hover:translate-x-1 transition-transform">→</span>
+                            <div>
+                                <h3 class="text-primary font-bold text-[1rem] uppercase tracking-wider mb-1">todo</h3>
+                                <p class="text-[0.85rem] text-textDim leading-relaxed">Internal task management and
+                                    state
+                                    tracking.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-        <!-- Hooks Section -->
-        <section id="hooks" class="py-16">
-            <div class="border-l-4 border-l-secondary pl-6 mb-8">
-                <h2 class="text-[2rem] text-white uppercase tracking-widest font-bold">HOOK_CHAIN.SYS</h2>
-            </div>
-            <p class="text-textDim mb-8 max-w-[800px]">Toroid exposes 16 lifecycle hooks allowing you to inject logic,
-                monitoring, or constraints at every stage of the agent's execution loop.</p>
+                <!-- Hooks Section -->
+                <section id="hooks" class="py-16">
+                    <div class="border-l-4 border-l-secondary pl-6 mb-8">
+                        <h2 class="text-[1.5rem] md:text-[2rem] text-white uppercase tracking-widest font-bold">
+                            HOOK_CHAIN.SYS
+                        </h2>
+                    </div>
+                    <p class="text-textDim mb-12 max-w-[800px] text-[0.95rem] md:text-[1.1rem]">Toroid exposes 16
+                        lifecycle
+                        hooks
+                        allowing you to inject logic,
+                        monitoring, or constraints at every stage of the agent's execution loop.</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8">
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">SessionStart</span>
-                    <span class="text-[0.75rem] text-textDim">Initial handshake and context loading.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">UserPromptSubmit</span>
-                    <span class="text-[0.75rem] text-textDim">Fired when raw user input is received.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">Token</span>
-                    <span class="text-[0.75rem] text-textDim">Real-time stream of LLM generated text.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">PermissionRequest</span>
-                    <span class="text-[0.75rem] text-textDim">Pre-flight check for destructive operations.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">PreToolUse</span>
-                    <span class="text-[0.75rem] text-textDim">Last buffer before tool execution begins.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">PostToolUse</span>
-                    <span class="text-[0.75rem] text-textDim">Validation and processing of tool output.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">PostToolUseFailure</span>
-                    <span class="text-[0.75rem] text-textDim">Error recovery and retry logic point.</span>
-                </div>
-                <div
-                    class="bg-white/10 border border-border p-4 flex flex-col gap-2 transition-all hover:border-primary hover:bg-primary/5 group">
-                    <span
-                        class="text-primary font-bold text-[0.8rem] uppercase group-hover:text-primary transition-colors">SessionEnd</span>
-                    <span class="text-[0.75rem] text-textDim">Final cleanup and database sync.</span>
-                </div>
-                <a href="https://github.com/yashbonde/swarm-buddy/blob/master/pkg/toroid/events.go"
-                    class="bg-white/5 border border-dashed border-border p-4 flex flex-col items-center justify-center gap-2 transition-all hover:border-primary hover:bg-primary/10 group no-underline">
-                    <span
-                        class="text-primary font-bold text-[1rem] uppercase transition-transform group-hover:scale-110">+8
-                        MORE</span>
-                    <span class="text-[0.6rem] text-textDim uppercase tracking-widest">View Source on GitHub</span>
-                </a>
-            </div>
-            </div>
-        </section>
+                    <div class="relative flex flex-col gap-0 max-w-[600px] mt-12 ml-4 md:ml-8">
+                        <!-- Vertical Line -->
+                        <div class="absolute left-[7px] top-2 bottom-2 w-[1px] bg-border z-0"></div>
 
-        <!-- Call to Action Section -->
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">SessionStart</h3>
+                                <p class="text-[0.75rem] text-textDim">Initial handshake and context loading.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">UserPromptSubmit</h3>
+                                <p class="text-[0.75rem] text-textDim">Fired when raw user input is received.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">Token</h3>
+                                <p class="text-[0.75rem] text-textDim">Real-time stream of LLM generated text.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">PermissionRequest</h3>
+                                <p class="text-[0.75rem] text-textDim">Pre-flight check for destructive operations.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">PreToolUse</h3>
+                                <p class="text-[0.75rem] text-textDim">Last buffer before tool execution begins.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">PostToolUse</h3>
+                                <p class="text-[0.75rem] text-textDim">Validation and processing of tool output.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">PostToolUseFailure</h3>
+                                <p class="text-[0.75rem] text-textDim">Error recovery and retry logic point.</p>
+                            </div>
+                        </div>
+                        <div class="relative z-10 flex items-start gap-6 pb-10 group">
+                            <div
+                                class="w-3.5 h-3.5 rounded-full bg-border border-2 border-bg group-hover:bg-primary group-hover:border-primary/30 transition-all mt-1.5 shrink-0">
+                            </div>
+                            <div>
+                                <h3 class="text-primary font-bold text-[0.9rem] uppercase mb-1">SessionEnd</h3>
+                                <p class="text-[0.75rem] text-textDim">Final cleanup and database sync.</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <a href="https://github.com/yashbonde/swarm-buddy/blob/master/pkg/toroid/events.go"
+                                class="inline-flex items-center gap-3 text-secondary hover:text-primary transition-colors text-[0.8rem] font-bold uppercase tracking-widest">
+                                <span>+8 More Hooks</span>
+                                <span class="text-[1.2rem]">↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bottom Collapse Button -->
+                <div class="py-12 flex justify-center border-t border-border/30">
+                    <button
+                        onclick="toggleTechDocs(); window.scrollTo({top: document.getElementById('tech-docs-trigger').offsetTop - 100, behavior: 'smooth'});"
+                        class="group flex flex-col items-center gap-3 text-textDim hover:text-primary transition-all">
+                        <span class="text-[0.7rem] uppercase tracking-[4px] font-bold">Collapse_Documentation</span>
+                        <svg class="w-5 h-5 transform rotate-180 transition-transform group-hover:-translate-y-1"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
         <section class="py-40 text-center flex flex-col items-center">
-            <h2 class="text-white text-[3rem] font-bold uppercase tracking-widest mb-8">READY TO ESCALATE?</h2>
-            <p class="max-w-[600px] text-textDim mb-12 text-lg">Join the developers building the next generation of
+            <h2 class="text-white text-[2rem] md:text-[3rem] font-bold uppercase tracking-widest mb-8">READY TO
+                JOIN?</h2>
+            <p class="max-w-[600px] text-textDim mb-12 text-base md:text-lg">Join the developers building the next
+                generation of
                 autonomous swarms.</p>
-            <a href="#"
-                class="bg-primary text-black px-12 py-6 font-extrabold text-2xl uppercase shadow-[0_0_20px_rgba(0,255,65,0.2)] hover:shadow-[0_0_40px_#00ff41] hover:-translate-y-1 transition-all"
-                onclick="openRandomTypeform(event)">Initialize Signup</a>
+
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <a href="#"
+                    class="bg-primary text-black px-12 py-6 font-extrabold text-xl md:text-2xl uppercase shadow-[0_0_20px_rgba(0,255,65,0.2)] hover:shadow-[0_0_40px_#00ff41] hover:-translate-y-1 transition-all min-w-[300px]"
+                    onclick="openRandomTypeform(event)">Signup for Platform</a>
+
+                <div class="flex flex-col gap-3">
+                    <button
+                        class="border-2 border-secondary text-secondary px-12 py-6 font-extrabold text-xl md:text-2xl uppercase hover:bg-secondary/10 hover:-translate-y-1 transition-all min-w-[300px]"
+                        onclick="copyToClipboard(this.querySelector('span'), 'Can you fetch https://yashbonde.com/swb and tell me how I can use it for my work. Also refer memory for personalization.')">
+                        <span>Copy prompt for AI</span>
+                    </button>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -833,6 +1266,57 @@ func main() {
                 }
             });
         });
+
+        // Hamburger Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        const menuIcon = document.getElementById('menu-icon');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('hidden');
+            navMenu.classList.toggle('flex');
+
+            // Change icon to X when open
+            if (navMenu.classList.contains('hidden')) {
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            } else {
+                menuIcon.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+            }
+        });
+
+        // Close menu when clicking a link
+        const navLinks = navMenu.querySelectorAll('a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (href.startsWith('#')) {
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const techDocs = document.getElementById('tech-docs-container');
+                        if (techDocs.contains(target) && techDocs.classList.contains('hidden')) {
+                            toggleTechDocs();
+                        }
+                    }
+                }
+                navMenu.classList.add('hidden');
+                navMenu.classList.remove('flex');
+                menuIcon.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+            });
+        });
+
+        function toggleTechDocs() {
+            const container = document.getElementById('tech-docs-container');
+            const arrow = document.getElementById('tech-toggle-icon');
+            const isHidden = container.classList.contains('hidden');
+
+            if (isHidden) {
+                container.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                container.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
     </script>
 </body>
 
