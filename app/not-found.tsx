@@ -17,7 +17,7 @@ export default function NotFound() {
                 </div>
                 <div className="flex-1">
                     <h1 className="text-3xl font-serif font-bold text-ink mb-2">Are you lost?</h1>
-                    <Link href="/" className="text-base">
+                    <Link href="/" className="text-base" prefetch={false}>
                         Go home
                     </Link>
                 </div>

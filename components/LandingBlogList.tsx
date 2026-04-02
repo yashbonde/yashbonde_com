@@ -178,7 +178,7 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
         }
 
         return (
-            <Link href={`/blogs/${post.slug}`} className="group">
+            <Link href={`/blogs/${post.slug}`} className="group" prefetch={false}>
                 {content}
             </Link>
         );

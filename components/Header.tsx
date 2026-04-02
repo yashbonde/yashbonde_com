@@ -4,10 +4,10 @@ export default function Header() {
     return (
         <header className="flex items-center justify-between mb-8">
             <div className="text-sm font-sans font-semibold">
-                <Link className="transition-transform duration-200" href="/">Yash Bonde</Link>
+                <Link className="transition-transform duration-200" href="/" prefetch={false}>Yash Bonde</Link>
             </div>
             <nav className="flex items-center gap-3 text-sm font-sans">
-                <Link className="transition-transform duration-200" href="/about">Work Profile</Link>
+                <Link className="transition-transform duration-200" href="/about" prefetch={false}>Work Profile</Link>
             </nav>
         </header >
     );

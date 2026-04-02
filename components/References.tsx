@@ -36,6 +36,7 @@ export default function References({ references }: ReferencesProps) {
                                                 <Link
                                                     href={ref.url}
                                                     className="font-medium text-ink hover:opacity-70 transition-all"
+                                                    prefetch={false}
                                                 >
                                                     {ref.title}
                                                 </Link>

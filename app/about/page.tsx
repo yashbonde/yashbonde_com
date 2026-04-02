@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 
@@ -24,31 +23,31 @@ export default function AboutPage() {
                         real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
                         startup journey. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
-                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>
+                        Building <a href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="underline">Project अर्थ (Artha)</a>
                         {" "}on the side.{" "}
-                        <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer">
-                            Resume</Link>. See code <Link href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer">GitHub</Link>.
-                        Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
-                            LinkedIn</Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
-                            X</Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
-                            YouTube</Link>.
+                        <a href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer" className="underline">
+                            Resume</a>. See code <a href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>.
+                        Subscrible on <a href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer" className="underline">
+                            LinkedIn</a>, <a href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer" className="underline">
+                            X</a>, <a href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer" className="underline">
+                            YouTube</a>.
                     </div>
-                    <div className="text-link mb-1">
-                        <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                    <div className="text-link mb-1 underline">
+                        <a href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
                             Project अर्थ (Artha)
-                        </Link>
+                        </a>
                     </div>
-                    <div className="text-link mb-1">
-                        <Link href="#work-experience" className="inline-flex items-center gap-2 ">
+                    <div className="text-link mb-1 underline">
+                        <a href="#work-experience" className="underline inline-flex items-center gap-2 ">
                             Experience
                             <ArrowDown className="w-4 h-4 font-bold text-link" />
-                        </Link>
+                        </a>
                     </div>
-                    <div className="text-link mb-4">
-                        <Link href="#projects" className="inline-flex items-center gap-2 ">
+                    <div className="text-link mb-4 underline">
+                        <a href="#projects" className="underline inline-flex items-center gap-2 ">
                             Projects
                             <ArrowDown className="w-4 h-4 font-bold text-link" />
-                        </Link>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -75,17 +74,17 @@ export default function AboutPage() {
                         real business value. Designed, deployed and scaled agentic systems. Lived a 0 → 1 devtool
                         startup journey, led product development. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
-                        Building <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha)</Link>
+                        Building <a href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="underline">Project अर्थ (Artha)</a>
                         {" "}on the side.{" "}
-                        <Link href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer">
-                            Resume</Link>. See code <Link href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer">GitHub</Link>.
-                        Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
+                        <a href="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/resumes/Yash_Bonde.pdf" target="_blank" rel="noopener noreferrer" className="underline">
+                            Resume</a>. See code <a href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer" className="underline">GitHub</a>.
+                        Subscrible on <a href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer" className="underline">
                             LinkedIn
-                        </Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
+                        </a>, <a href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer" className="underline">
                             X
-                        </Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
+                        </a>, <a href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer" className="underline">
                             YouTube
-                        </Link>.
+                        </a>.
                     </div>
                 </div>
             </div>
@@ -117,9 +116,9 @@ export default function AboutPage() {
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Software Engineer, CVE Lead</p>
                             <p className="text-base text-ink font-medium">
-                                <Link href="http://ema.co" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                                <a href="http://ema.co" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
                                     <code>Ema Unlimited</code>
-                                </Link>
+                                </a>
                             </p>
                         </div>
                         <div className="text-left sm:text-right text-ink">
@@ -148,9 +147,9 @@ export default function AboutPage() {
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Head of Research</p>
                             <p className="text-base text-ink font-medium">
-                                <Link href="https://github.com/NimbleBoxAI" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                                <a href="https://github.com/NimbleBoxAI" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
                                     <code>Tune AI</code>
-                                </Link>
+                                </a>
                             </p>
                         </div>
                         <div className="text-left sm:text-right text-ink">
@@ -189,7 +188,7 @@ export default function AboutPage() {
                             </li>
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
-                                <span>With <span className="font-bold">Intel</span> we delivered a <Link href="https://drive.google.com/file/d/1DCCDl1qzhsJ2TfSZP_T6EcAJUeptRxK7/view?usp=sharing" target="_blank" rel="noopener noreferrer">whitepaper on OpenVino</Link>, delivering <span className="font-bold">20x faster Mask-RCNN</span></span>
+                                <span>With <span className="font-bold">Intel</span> we delivered a <a href="https://drive.google.com/file/d/1DCCDl1qzhsJ2TfSZP_T6EcAJUeptRxK7/view?usp=sharing" target="_blank" rel="noopener noreferrer" className="underline">whitepaper on OpenVino</a>, delivering <span className="font-bold">20x faster Mask-RCNN</span></span>
                             </li>
                         </ul>
                     </div>
@@ -241,9 +240,9 @@ export default function AboutPage() {
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">ML Engineer</p>
                             <p className="text-base text-ink font-medium">
-                                <Link href="https://shipmnts.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                                <a href="https://shipmnts.com/" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
                                     <code>Shipmnts</code>
-                                </Link>
+                                </a>
                             </p>
                         </div>
                         <div className="text-left sm:text-right text-ink">
@@ -286,9 +285,9 @@ export default function AboutPage() {
                         <ul className="text-ink space-y-2 mb-2">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
-                                <span>(<Link href="https://connecticus.in/" target="_blank" rel="noopener noreferrer" className="hover:underline inline-flex items-center gap-1">
+                                <span>(<a href="https://connecticus.in/" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-1">
                                     Connecticus
-                                </Link>, Pune, May 2017 — July 2017) Built an ML-based FAQ module for <strong>NESSA</strong> using <Link href="https://arxiv.org/pdf/1503.08895" target="_blank" rel="noopener noreferrer">End-to-End Memory Networks</Link> and NLP tasks including POS tagging, stemming, and lemmatisation.</span>
+                                </a>, Pune, May 2017 — July 2017) Built an ML-based FAQ module for <strong>NESSA</strong> using <a href="https://arxiv.org/pdf/1503.08895" target="_blank" rel="noopener noreferrer" className="underline">End-to-End Memory Networks</a> and NLP tasks including POS tagging, stemming, and lemmatisation.</span>
                             </li>
                         </ul>
 
@@ -296,9 +295,9 @@ export default function AboutPage() {
                         <ul className="text-ink space-y-2 mb-2">
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
-                                <span>(<Link href="https://www.mastersoft.ai/" target="_blank" rel="noopener noreferrer" className="hover:underline inline-flex items-center gap-1">
+                                <span>(<a href="https://www.mastersoft.ai/" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-1">
                                     MasterSoft ERP
-                                </Link>, Nagpur, May 2016 — July 2016) Designed a <strong>Python 3</strong> toolkit for rapid infographic deployment within ERP solutions, utilizing pandas, numpy, and ggplot2.</span>
+                                </a>, Nagpur, May 2016 — July 2016) Designed a <strong>Python 3</strong> toolkit for rapid infographic deployment within ERP solutions, utilizing pandas, numpy, and ggplot2.</span>
                             </li>
                         </ul>
 
@@ -311,16 +310,16 @@ export default function AboutPage() {
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">
                                 Developer, {" "}
-                                <Link href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">
+                                <a href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer" className="underline">
                                     Project अर्थ (Artha)
-                                </Link>
+                                </a>
                             </p>
                         </div>
                     </div>
                     <p className="text-ink mb-2">Building world&apos;s largest digital enclyclopaedia for ancient Indian literature. Spend time reading, curating and digitising books, editing and
-                        compiling the digital Encyclopaedia. Indexed <strong>6,363+</strong> articles, <strong>3+</strong> books, <strong>103,211+</strong> shlokas with unique ids. Read <Link href="https://github.com/yashbonde/artha" target="_blank" rel="noopener noreferrer" className="text-ink hover:text-ink transition-colors">
+                        compiling the digital Encyclopaedia. Indexed <strong>6,363+</strong> articles, <strong>3+</strong> books, <strong>103,211+</strong> shlokas with unique ids. Read <a href="https://github.com/yashbonde/artha" target="_blank" rel="noopener noreferrer" className="underline text-ink hover:text-ink transition-colors">
                             <span className="font-semibold">code</span>
-                        </Link> and contribute.
+                        </a> and contribute.
                     </p>
                 </div>
 
@@ -337,16 +336,16 @@ export default function AboutPage() {
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>Research on RL agents that do not need the perfect board state to play superhuman chess. This would demonstrate that NNs have internal representation capacity to solve complicated problems giving only traces of information.
-                                    <Link href="https://www.youtube.com/watch?v=Xd0psila1Ug" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
+                                    <a href="https://www.youtube.com/watch?v=Xd0psila1Ug" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center text-ink hover:text-ink transition-colors">
                                         <span className="font-semibold ml-1">YouTube</span>
-                                    </Link></span>
+                                    </a></span>
                             </li>
                             <li className="flex gap-2 text-justify">
                                 <span>•</span>
                                 <span>New research directions for weather modelling that uses ground based sensor data instead of solely relying on weather satellites, which causes issues like cold-bias and wrong temperature prediction.
-                                    <Link href="https://github.com/yashbonde/vaayuvidha" target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-ink hover:text-ink transition-colors">
+                                    <a href="https://github.com/yashbonde/vaayuvidha" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center text-ink hover:text-ink transition-colors">
                                         <span className="font-semibold ml-1">GitHub</span>
-                                    </Link></span>
+                                    </a></span>
                             </li>
                         </ul>
                     </div>
@@ -373,13 +372,11 @@ export default function AboutPage() {
                     <p className="text-ink mb-1">Activities and societies: Training and Placement Cell NIT Raipur. Entrepreneurship Cell of NIT Raipur. Photography Club of the NIT Raipur. Manager at the Entrepreneurship Cell (E-Cell) of the NIT Raipur.</p>
                     <p className="text-ink mb-1">Was part of a team that organised <span className="font-bold">E-Summit 2016 - 2018</span> Central India&apos;s largest Entrepreneurship Event. Responsible for the conduction of the Wall Street Event in the Annual Techno-Management Fest of the College (<span className="font-bold">Aavartan 2016</span>).</p>
                     <p className="text-ink">Worked on building AI powered Indian sign language detector for Texas Instruments&apos; challenge. Implemented transformer network for speech to text for Microsoft&apos;s challenge (MSAIC).
-                        <Link href="https://github.com/krsubham48/Babylon" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 ">
+                        <a href="https://github.com/krsubham48/Babylon" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
                             <span className="font-semibold ml-1">GitHub</span>
-                        </Link></p>
+                        </a></p>
                 </div>
             </div>
         </section>
     );
 }
-
-

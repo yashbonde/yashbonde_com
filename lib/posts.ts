@@ -37,12 +37,13 @@ const POST_INDEX: { slug: string; url?: string; title: string; date: string; tag
     // 2026
     // { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
-    // { slug: "automata/4-5-code-review-neural-automata", title: "Neural Automata #4.5: Technical Code Review", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
 
+    { group: "Neural Automata: Supplementary", slug: "industrial-automaton", url: "https://github.com/yashbonde/industrial-automaton", title: "Code Repo (industrial-automaton)", date: "2026-02-24", tags: ["Code", "Neural Automata"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-implicit-transformers", url: "/pages/neural-automata-implicit-transformers.html", title: "Neural Automata: Implicit Memory Models", date: "2026-02-17", tags: ["Notes", "Neural Automata"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-matrix-memory", url: "/pages/neural-automata-matrix-memory.html", title: "Neural Automata: Matrix (Random Access) Memory", date: "2026-02-17", tags: ["Notes", "Neural Automata"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-stack-rnn-comparison", url: "/pages/neural-automata-stack-rnn-comparison.html", title: "Neural Automata: Stack Memory Models", date: "2026-02-17", tags: ["Notes", "Neural Automata", "Research"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Research"] },
+    { slug: "automata/4a-code-review-neural-automata", title: "Neural Automata #4a: Technical Overview", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-15", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Neural Automata", "Research"] },

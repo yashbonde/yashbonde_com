@@ -27,24 +27,25 @@ export default function Home() {
           <div className="flex-1">
             <p className="text-3xl font-serif font-bold text-ink  mb-2">Yash's Notes</p>
             <p className="text-base text-ink mb-6">AI Researcher. Lived a 0 → 1 Devtool Startup. Product Builder. Developing{' '}
-              <Link href="https://artha-pearl.vercel.app"
+              <a href="https://artha-pearl.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="underline text-link hover:text-link-hover"
               >
                 Project अर्थ (Artha)
-              </Link>.
+              </a>.
             </p>
             <p className="text-base text-ink">
               Working on neural networks and automata theory.
               I think we can build an end to end neural computer by 2030.
               My we<span className="font-semibold">b-log</span> is a bunch of structured thoughts, code commits or tweets over the years.
-              Subscrible on <Link href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer">
+              Subscrible on <a href="https://in.linkedin.com/in/yash-bonde" target="_blank" rel="noopener noreferrer" className="underline text-link hover:text-link-hover">
                 LinkedIn
-              </Link>, <Link href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer">
+              </a>, <a href="https://x.com/bondebhai" target="_blank" rel="noopener noreferrer" className="underline text-link hover:text-link-hover">
                 X
-              </Link>, <Link href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer">
+              </a>, <a href="https://www.youtube.com/@yash_bonde" target="_blank" rel="noopener noreferrer" className="underline text-link hover:text-link-hover">
                 YouTube
-              </Link>.
+              </a>.
             </p>
             {/* 
             <p className="text-base text-ink mb-2">
