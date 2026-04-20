@@ -35,6 +35,7 @@ export type Post = {
 // When you add a new post, add an entry here.
 const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[]; group?: string }[] = [
     // 2026
+    { slug: "toroid-agentic-kernels", title: "Toroid: Agentic Micro-Kernels", date: "2026-04-20", tags: ["Swarm Buddy", "Toroid", "AI Agents"] },
     // { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
 
