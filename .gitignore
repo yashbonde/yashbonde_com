@@ -38,3 +38,4 @@ next-env.d.ts
 future
 false/
 content/blog/automata/*
+.images/
