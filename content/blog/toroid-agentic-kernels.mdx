@@ -1,0 +1,37 @@
+--- 
+title: Toroid: Agentic Micro-Kernels
+date: '2026-04-20'
+subtitle: Building an agents you can import in code!
+tags:
+- Swarm Buddy
+- Toroid
+- AI Agents
+references:
+- title: Website
+  url: https://swb.yashbonde.com/
+- title: Swarm Buddy App
+  url: https://swb.yashbonde.com/app/
+- title: Swarm Buddy Docs
+  url: https://swb.yashbonde.com/docs/
+---
+
+Agents are the AI software stack’s first true layer. They provide an interface to harness the intelligence in LLMs and solve tasks with it. Once someone has their “Aha!” moment with Clade code, they can’t really go back.
+
+LLMs are just **string-in string-out machines** that we discovered work when trained on huge amounts of causal data. But that’s all they are strings (or tokens) generators. Images, audio, all modalities are eventually represented as just tokens. Model APIs are merely a serving utility layer on top of these LLMs.
+
+Of all the things that LLMs can generate, we will focus on only one: tool call. Tool call is when you run LLM in your master code line and it decides the functions you need to call. **You “offload” the intelligence (decision of if/else) to LLMs**. When run in a loop it can call 100s (eventually 1000s) of functions one after another.
+
+**Agentic-Kernel is a software loop** that manages this intelligence and reliably executes these thousands of tool calls. It generates events (swb has 22+ events) that put together give us a picture (called trace) of what happened. Claude Code, [Opencode](https://github.com/anomalyco/opencode), [Crush](https://github.com/charmbracelet/crush), [Codex](https://github.com/openai/codex), [OpenCluade](https://github.com/Gitlawb/openclaude), etc. are interaction layers on top of their own written loops.
+
+**Business case**: Based on the tools you give your kernel, it utilises the intelligence in LLMs for different industry sectors. The LLMs will always keep getting smarter ([ARC-AGI leaderboard](https://arcprize.org/leaderboard)). **Today’s best will be tomorrow’s worst**. This unlocks new business models, like document processing, and makes them profitable over time without any technical effort on their side. 
+
+I wanted to write my own agentic kernels but make it the smallest possible size. This will allow me to drop a bunch of kernels and run a whole swarm. **Think seeds not tractors**. Claude Code is good but I can’t run it inside my go code, sorry but I won’t `os/exec`. The first step is to build an importable kernel so I can run it in my server.
+
+I built it and named it [Toroid-Kernel](https://github.com/yashbonde/toroid-kernel). Here’s docs:
+
+* [Building your own Claude Code with toroid](https://swb.yashbonde.com/docs/build-your-own-claude-code-using-toroid)  
+* [Toroid HLD](https://swb.yashbonde.com/docs/toroid-kernel-first-read)
+
+I have been running coding (daily change → Github), document (webfetch → research doc) and save/search (memories) agents with these tiny kernels.
+
+Excited to see where this goes!
