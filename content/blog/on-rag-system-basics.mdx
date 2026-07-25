@@ -7,15 +7,15 @@ references:
 - title: Economic Survey of India Report
   url: https://www.indiabudget.gov.in/economicsurvey/doc/eschapter/echap09.pdf
 - title: Economic Survey Chart
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/05.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/05.webp
 - title: HNSW
   url: https://en.wikipedia.org/wiki/Hierarchical_navigable_small_world
 - title: RAG Search Space
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/01.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/01.webp
 - title: Cosine Similarity Issues
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/02.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/02.webp
 - title: Hierarchical Storage Benefits
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/03.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/03.webp
 ---
 
 Any AI company will ultimately want to become a data company where it holds certain unique data that no one else in the world has access to. This means that the company needs to have a great database. At Tune AI we are building a high performance IDP that can consume millions of documents / day, organise that information and provide a retrieving method as an API (traditional) or agent (conversational).
@@ -30,7 +30,7 @@ The first part in any RAG system is going to be chunking ie. breaking the docume
 
 Documents must be split into parts that have some meaning. When you look at a part it should make sense, just like when you look at a nail you don't know where it comes from but you know how it can be useful. There are some attributes like it is pointy and made of steel. Similarly, think of the [Economic Survey of India Report](https://www.indiabudget.gov.in/economicsurvey/doc/eschapter/echap09.pdf), it is a PDF document with charts and images. When you look at a chart, you may not be aware where it comes from, but you know what it means. In the chart below you can understand what it is about.
 
-![Economic Survey Chart](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/05.png)
+![Economic Survey Chart](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/05.webp)
 
 The chunking strategy you use should be smart enough to break apart the document into components like these. When your AI refers to this to answer a question it will not only be able to give a much better answer, but your user will be happy when they can see the chart for themselves. Ultimately everything is done to build a great user experience. For this I recommend using a VLM based model that can break apart the incoming documents into semantic chunks.
 
@@ -97,15 +97,15 @@ As explained in the previous section, current embedding systems treat every info
 
 Another aspect is searching non-stop. The AI systems are designed to run non-stop and keep digging through things to find answers. Unlike a Google Search which ends once it has returned you with results, AI systems want to consolidate more information which means it should be able to navigate the search space like humans. If you find an interesting link, go read it, click on a link on that page, go back to Google, go to another link and so on. All this while AI should keep collecting the information and storing it for future use. In a flat storage system you can be sure that once the first few items have been checked new items are going to be less relevant.
 
-![RAG Search Space](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/01.png)
+![RAG Search Space](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/01.webp)
 
 Due to the nature of cosine similarity there will be some chunk vectors that are always going to be more similar to others. This means that not only are some chunks more referred than others. This can create outliers that are not considered. In the example below let's say we query for "nuclear power plants", the sentences that contain the word "nuclear" are more similar however any human with knowledge can tell that places can also refer to such power plants.
 
-![Cosine Similarity Issues](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/02.png)
+![Cosine Similarity Issues](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/02.webp)
 
 If there was a hierarchical storage, the agent could have traversed over the search space to continuously improve the RAG context window. This not only would have allowed it to search things faster at the higher level but also go deeper into any topic.
 
-![Hierarchical Storage Benefits](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/03.png)
+![Hierarchical Storage Benefits](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/03.webp)
 
 One clear drawback to this approach because it implies that there is an index already present before querying. What happens when there is a document thrown at realtime? For this we can always fallback to an embedding based system which will actually work better since the search space of a document is smaller than all 2.6Mn documents.
 

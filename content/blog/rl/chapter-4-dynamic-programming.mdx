@@ -23,15 +23,15 @@ references:
 - title: graphical problems
   url: https://en.wikipedia.org/wiki/Viterbi_algorithm
 - title: $E$ is evaluation and $I$ is improvement
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap4_1.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap4_1.webp
 - title: poisson probability distribution
   url: https://en.wikipedia.org/wiki/Poisson_distribution
 - title: Policy Iteration Algorithm
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/policy_iteration.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/policy_iteration.webp
 - title: Value Iteration Algorithm
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/value_iteration.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/value_iteration.webp
 - title: Generalised Policy Iteration
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/generalised_PI2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/generalised_PI2.webp
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap4_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and [slides](./slides/L3_DP.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).
@@ -105,13 +105,13 @@ But this is same as [Bellman optimality equation](./chap3.html#3_6) and therefor
 
 The idea of policy improvement is very simple as follows: if any policy $\pi$ has been improved using $v_\pi$ to yield a better policy $\pi'$, we can then compute $v_{\pi'}$ and improve it again to yield an even better $\pi^{''}$. We can thus obtain a sequence of monotonically improving policies and value functions like:
 
-![$E$ is evaluation and $I$ is improvement](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap4_1.png)
+![$E$ is evaluation and $I$ is improvement](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap4_1.webp)
 
 *$E$ is evaluation and $I$ is improvement*
 
 **Example 4.2: Jack's Car Rental** This is a detailed question where we have to calculate how many cars need to be transferred in either of two locations and cost of it, given that Jack gets profit for renting out the cars. This question can be broken down as follows, **state** is that any location can have a maximum of 20 cars. **Actions** are to move upto 5 cars overnight, **reward** is `$10` for rented car and `-$2` for moving a car overnight and **transitions** are [poisson probability distribution](https://en.wikipedia.org/wiki/Poisson_distribution).
 
-![Policy Iteration Algorithm](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/policy_iteration.png)
+![Policy Iteration Algorithm](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/policy_iteration.webp)
 
 *Policy Iteration Algorithm*
 
@@ -125,7 +125,7 @@ $$v_{k+1} = \max_a \sum_{s',r}p(s',r|s,a) \left[r + \gamma v_k(s') \right]$$
 
 Faster convergence is often achieved by interposing multiple policy evaluation sweeps between each policy improvement.
 
-![Value Iteration Algorithm](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/value_iteration.png)
+![Value Iteration Algorithm](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/value_iteration.webp)
 
 *Value Iteration Algorithm*
 
@@ -137,7 +137,7 @@ DP by default is not very fast and there are multiple improvements that can be m
 
 The value function stabilizes only when it is consistent with the current policy, and the policy stabilizes only when it is greedy with respect to the current value function. Thus both the processes stabilize only when a policy has been found which is greedy with respect to its own evaluation functions. This implies that Bellman optimality equation holds and thus that the policy and value function are optimal. In either case, the two processes together achieve the overall goal of optimality even though neither is attempting to achieve it directly.
 
-![Generalised Policy Iteration](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/generalised_PI2.png)
+![Generalised Policy Iteration](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/generalised_PI2.webp)
 
 *Generalised Policy Iteration*
 

@@ -13,19 +13,19 @@ references:
 - title: A sample Markov Decision Process
   url: https://cdn-images-1.medium.com/max/800/1*rCko3p9x0rDv3v57rfckIg.png
 - title: Square block represents special absorbing state
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_1.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_1.webp
 - title: Example of backup diagram for $v_\pi$
   url: https://s3-ap-south-1.amazonaws.com/av-blog-media/wp-content/uploads/2018/09/im_13.png
 - title: Grid World for the example 3.5
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_2.webp
 - title: Golf World for the example 3.6
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_3.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_3.webp
 - title: New backup diagrams for $v_*$ and $q_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/modified_backup.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/modified_backup.webp
 - title: any method
   url: https://courses.lumenlearning.com/waymakercollegealgebra/chapter/methods-for-solving-a-system-of-nonlinear-equations/
 - title: MDP for examples 3.3 and 3.9
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/ex3_3.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/ex3_3.webp
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap3_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU).
@@ -98,7 +98,7 @@ $$G_t = \sum_{k=0}^{\infty}\gamma^k = \frac{1}{1-\gamma}$$
 
 Till now, we have discussed two kinds of reinforcement learning tasks, one in which the agent-environment interaction breaks down into a sequence of separate episodes (episodic tasks), and one in which it does not (continuous tasks). Since we use these kinds of interactions throughout the book [and blogs], it is important to have consistency. We need to obtain a single notation that covers both episodic and continuing tasks.
 
-![Square block represents special absorbing state](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_1.png)
+![Square block represents special absorbing state](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_1.webp)
 
 *Square block represents special absorbing state*
 
@@ -150,13 +150,13 @@ We define this using **backup diagrams** where states are represented using open
 
 The value function $v_\pi$ is the unique solution to Bellman equation. These operations transfer value information back to state or state-action pairs from its successor states or state-action pairs respectively. Note that though unlike state transition graphs the output state can be same as the input state i.e. distinct states in backup diagram do not represent distinct states as in state transition graphs.
 
-![Grid World for the example 3.5](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_2.png)
+![Grid World for the example 3.5](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_2.webp)
 
 *Grid World for the example 3.5*
 
 **Example 3.5: Gridworld** We are given a gridworld as shown above, where the agent can move around in `north, south, east, west`. It gets reward $-1$ for actions that take it off grid, $+10$ and $+5$ for those that move out of special states $A$ to $A'$ and $B$ to $B'$ respectively and $0$ everywhere else. The chart on the right are the value for the states. Notice negative values near the edge as agent is more likely to get off grid. Notice that the value at $A$ is less than $10$ as at $A'$ it is likely to go off grid, whereas the value at $B$ is more that $5$ as it is safer at $B'$.
 
-![Golf World for the example 3.6](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_3.png)
+![Golf World for the example 3.6](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap3_3.webp)
 
 *Golf World for the example 3.6*
 
@@ -204,7 +204,7 @@ $$= \sum_{s',r} p(s',r|s,a) \left[r + \gamma \max_{a'}q_*(s',a')\right] \tag{14}
 
 We will also need to modify the backup diagrams, here the arcs represent the maximum over the choice taken. The diagram on left and right represent $(12)$ and $(13)$ respectively.
 
-![New backup diagrams for $v_*$ and $q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/modified_backup.png)
+![New backup diagrams for $v_*$ and $q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/modified_backup.webp)
 
 *New backup diagrams for $v_*$ and $q_*$*
 
@@ -214,7 +214,7 @@ So if we have the optimal policy then we can take the best action for each state
 
 **Example 3.9 Bellman Optimality Equations for Recycling Robot** In [example 3.3](#recyling_robot) we look at a robot with the following MDP. We need to calculate the Bellman optimality equations for the same
 
-![MDP for examples 3.3 and 3.9](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/ex3_3.png)
+![MDP for examples 3.3 and 3.9](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/ex3_3.webp)
 
 *MDP for examples 3.3 and 3.9*
 

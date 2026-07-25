@@ -1,6 +1,6 @@
 ---
 title: Reading List on Neural Graph Execution
-ogImage: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/sf-tiny.jpeg
+ogImage: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/sf-tiny.webp
 subtitle: Lets Call this Neural Algorithm Execution (NAE)
 date: '2020-05-11'
 tags:
@@ -71,9 +71,9 @@ Classical algorithms on the other hand **(+)** trivially strongly generalise, **
 
 In this paper authors tell how the current datasets and models are bad metrics to find the optimal models. The comparison was done on 3 major dataset CORA, CiteSeer, PubMed and the main results was that different splits lead to a completely different ranking of models. Our results highlight the fragility of experimental setups that consider only a single train/validation/test split of the data. We also find that, surprisingly, a simple GCN model can outperform the more sophisticated GNN architectures if the same hyperparameter selection and training procedures are used, and the results are averaged over multiple data splits.
 
-![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-1.png)
+![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-1.webp)
 
-![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-2.png)
+![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-2.webp)
 
 In addition, we consider four baseline models. Logistic Regression (**LogReg**) and Multilayer Perceptron (**MLP**) are attribute-based models that do not consider the graph structure. Label Propagation (**LabelProp**) and Normalized Laplacian Label Propagation (**LabelProp NL**), on the other hand, only consider the graph structure and ignore the node attributes.
 
@@ -81,11 +81,11 @@ In addition, we consider four baseline models. Logistic Regression (**LogReg**) 
 
 Authors show that despite recent advanced in GNNs the competitive performance is achieved by the simplest of models – structure-blind MLP, single- layer GCN and fixed-weight GCN. For simple baseline two models are considered:
 
-![Simple baseline models](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-3.png)
+![Simple baseline models](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-3.webp)
 
 Now going over the benchmark comparisons we see that majority cases the GNN models perform worse to MLP (blue).
 
-![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-4.png)
+![The above two are screenshots from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-4.webp)
 
 This brings to question a couple of things, whether the datasets really require the advantages that GNNs provide, as we can see in many cases that is not even true. The other way to see it is whether the implementations of GNNs really allows it to be powerful over basic MLP.
 
@@ -93,7 +93,7 @@ This brings to question a couple of things, whether the datasets really require 
 
 Paper that shows how reducing the GCN by removing non-linearities and collapsing weight matrices between consecutive layers, then the model corresponds to a fixed low-pass filter followed by a linear classifier. This is a pretty smart paper where they explain how the entire graph layers with regularities between graph removed is nothing but a feature extraction preprocessing layer. More details in the diagram below:
 
-![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-5.png)
+![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-5.webp)
 
 The idea is discussed in Section 2, first they explain the conventional Graph Convolutional Network (GCN). Feature propogation is what separates GCN from MLP, at the beggining of each layers is the features $h_i$ for each node $v_i$ which are averaged in the local neighbourhood:
 $$h_i^{(k)} \leftarrow \frac{1}{d_i + 1}h_i^{(k+1)} + \sum_{j=1}^{n}\frac{a_{ij}}{\sqrt{(d_i + 1)(d_j + 1)}}h_j^{(k-1)}$$
@@ -117,7 +117,7 @@ SGC distinguishes between feature extraction and classifier, SGC consists of a f
 
 The paper then has some giant math spaghetti, I am not going to get into where they mathematically prove that under such setup the preprocessing layers behave as a low-pass filter.
 
-![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-6.png)
+![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-6.webp)
 
 Ultimately, the strong performance of SGC sheds light onto GCNs. It is likely that the expressive power of GCNs originates primarily from the repeated graph propagation (which SGC preserves) rather than the nonlinear feature extraction (which it doesn't.)
 
@@ -125,7 +125,7 @@ Ultimately, the strong performance of SGC sheds light onto GCNs. It is likely th
 
 Popular GNN benchmark datasets often unreliable and the complexity not very high. Training the networks on algorithms might prove to be favourable as we can generate infinite data, perform complex data manipulation and we get that a very clear hierarchy of models emerge (discussed [later](#problem-solving-in-hierarchy-of-control-discovering-algorithms)). Since we use a generating function we do not have noise in the data generated and [credit assignment](https://ai.stackexchange.com/questions/12908/what-is-the-credit-assignment-problem) becomes easier.
 
-![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-11.png)
+![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-11.webp)
 
 We can also use this on NP-hard problem such as travelling salesman problem as done in [An Efficient Graph Convolutional Network Technique for the Travelling Salesman Problem (Joshi et al.)](http://arxiv.org/abs/1906.01227), look at the diagram above. you can see that
 
@@ -133,11 +133,11 @@ We can also use this on NP-hard problem such as travelling salesman problem as d
 
 Algorithms are not simple data mapping (input-output mapping) but instead the network must learn the underlying manipulations / individual operations. Imitating individual operations enables strong generalisation, consider how humans devise algorithms by hand and scales to much larger graph sizes. This grounds the GNN in the underlying algorithmic reasoning it learns more than just mapping but learns the manipulations.
 
-![Neural Turing Machine (NTM) on copy task, from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-9.png)
+![Neural Turing Machine (NTM) on copy task, from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-9.webp)
 
 The two diagrams show different kinds of generalisation. In the above digram we see that when trained on sequence of a particular length when scaling up the copy on longer sequences it fails. Where as in the bottom we see different kind of generalisation, **NTM though not trained as composable** shows better generalisation on repeat copy task.
 
-![NTM vs. LSTM on repeat-copy task, from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-8.png)
+![NTM vs. LSTM on repeat-copy task, from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-8.webp)
 
 [Later](#problem-solving-in-hierarchy-of-control-discovering-algorithms) we will see how generalisation can be achieved on NAE and use that to achieve 100% on much different evaluation cases.
 
@@ -145,7 +145,7 @@ The two diagrams show different kinds of generalisation. In the above digram we 
 
 Many algorithms share many parts and vary very little. For comparison compare the [Prim's Algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm) and [Dijkstra's algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm). Both of them are used to find the shortest path between two points one using a Minimum Spanning Tree and other using shortest node path. Infact even the algorithms look very similar (share the sub-routines).
 
-![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-7.png)
+![from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-7.webp)
 
 Learning representations of manipulations we can then reuse the subroutines that are so massively shared (eg. length of maximum spannign tree and Djikstra's algorithm). Representations and positively reinforce one another and we can get the meta-representation of the algorithms. And also because we can then see the sharing of subroutines we can then have clearly defined task-relations. Output of easier algorithm can be used as input for a harder one, eg. if an alogrithm can learn the breadth first search on unweighted graph (basically shortest-path) we can then use it for weighted graph (which is what Bellman Ford Algorithm is).
 
@@ -153,7 +153,7 @@ Learning representations of manipulations we can then reuse the subroutines that
 
 We now see how using NAE allows us to improve and make better algorithms, we can inspect intermediate outputs of an algorithm can decode its behaviour, to understand its behaviour. It gives us opportunity for deriving novel algorithms eg. spanning trees or optimising GPU/TPU performace afterall they too are just computation graphs. **SuperProgrammer**: An interesting way to look at would be like the perfect problem solver. GNN can perform soft subroutine reuse from polynomial-time algorithms and once it has an arsenal of these it can use those to solve any problem (think competitive programming).
 
-![Looking at NAE from conventional programming paradigm, these are the 3 papers discussed below](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-10.png)
+![Looking at NAE from conventional programming paradigm, these are the 3 papers discussed below](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-10.webp)
 
 The idea is to breakdown the execution into three levels, similar to how the conventional programming is broken down. The higher up you go you get more abstract tasks and things that reason at a much higher level. And the lower you go, you get closer to metal more basic operations. In the following subsections I discuss all the three papers, [**What can Neural Networks Reason About? (Xu et al.)**](#what-can-neural-networks-reason-about-xu-et-al),
 
@@ -161,7 +161,7 @@ The idea is to breakdown the execution into three levels, similar to how the con
 
 This is an interesting paper/idea that sits at the top of the hierarachy of abstractive task and segements the idea in the 4 types: Summary Statistics, Relational Argmax, Dynamic Programming and NP-hard problem (Is there a subset that sums to 0?).
 
-![Different types of problems with different logic required](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-12.png)
+![Different types of problems with different logic required](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-12.webp)
 
 There are four main algorithms that the paper talks about. First is the simple MLP which works well when you have a single-object universe but fails when we have multiple objects. Secondly we have [Deep Sets](https://arxiv.org/pdf/1703.06114), which consider reasoning on an unordered set, to induce this permutation invariance authors use two MLPs that look like this
 $$y = MLP_2\big( \sum_{s \in S} MLP_1(X_s) \big)$$
@@ -176,7 +176,7 @@ MLP_2 (\max_{\tau \subseteq S} MLP_1 \circ
 LSTM (X_1, ..., X_{|\tau|}: X_1, ..., X_{|\tau|} \in \tau ))
 $$
 
-![What the framework shows](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-14.png)
+![What the framework shows](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-14.webp)
 
 What the paper showed is that GNNs that are very similar to the existing algorithms perform better to than any abstract method. Thus in order to create better models we must look for architectures that suit an existing algorithms. For reference in the tasks
 
@@ -185,7 +185,7 @@ What the paper showed is that GNNs that are very similar to the existing algorit
 - **Dynamic Programming**: In this task there are several rounds of propogation is required and so we can see that the GNNs with more layers are better at extracting the information
 - **NP-Hard Problem**: These are the problems that require a more deeper logic than just the propogation and thus even Deep GNNs perform poorly, while a simple logic works on this.
 
-![The above three images are from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-13.png)
+![The above three images are from this paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-13.webp)
 
 Rest of the paper involves massive amounts of mathematics, theorems proves claims etc. Most of the interesting theory on the work is in Section 4. In particular, the answer what tasks a neural network can learn to reason about is done by studying the generalization ability of learning the underlying reasoning processes for a task. And we find that GNNs are good when it comes to tasks that require dynamic programming kind of setup. Paper also introduces algorithmic alignment, neural networks that can learn other reasoning paradigms beyond dynamic programming.
 
@@ -207,7 +207,7 @@ $$ \tau^{(t)} = \rho( T_A(H^{(t)}, \overline{H^{(t)})} ) $$
 
 where $\overline{H^{(t)}} = \frac{1}{|V|}\sum_{i \in V} H^{(t)}$ is the mean of all the node embeddings and algorithm terminates if $\tau^{(t)} < 0.5$ then the above equation is reused with $y_i^{(t)}$ used to calculate $x_I^{(t + 1)}$.
 
-![Neural Execution of Graph Algorithms](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-15.png)
+![Neural Execution of Graph Algorithms](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-15.webp)
 
 Now the main comparison is done between two form of equations, one for Graph Attention Networks (GAT)
 $$h_i^{(t)} = ReLU\Big( \sum_{(j,i) \in E} a(z_i^{(t)}, z_j^{(t)}, e_{ij}^{(t)}) W z_j^{(t)} \Big)$$
@@ -217,15 +217,15 @@ $$h_i^{(t)} = U\Big(z_i^{(t)}, \oplus M (z_i^{(t)}, z_j^{(t)}, e_{ij}^{(t)}) \Bi
 
 where $M$ and $U$ are neural networks producing vector messages. $\oplus$ is element wise aggregation such as maximization, mean, summation.
 
-![Neural Execution of Graph Algorithms results](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-16.png)
+![Neural Execution of Graph Algorithms results](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-16.webp)
 
-![Neural Execution of Graph Algorithms results](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-17.png)
+![Neural Execution of Graph Algorithms results](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-17.webp)
 
 As we saw in the previous paper, we see the same repeating here as well. Architectures that are more alligned to the actual algorithm perform better. The above three images are from [this paper](https://openreview.net/forum?id=SkgKO0EtvS)
 
 It should be noted that, when learning to execute Bellman-Ford and Prim's algorithms, the prediction of $p_i^{(t)}$is performed by scoring each node-pair using an edge-wise scoring network (a neural network predicting a scalar score from $h_i^{(t)} || h_j^{(t)} || e_{ij}^{(t)}$ ), followed by a softmax over all neighbours of $i$.
 
-![Neural Execution of Graph Algorithms curriculum learning](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-18.png)
+![Neural Execution of Graph Algorithms curriculum learning](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-18.webp)
 
 The performance of a curriculum learning strategy (as curriculum): here, BFS is learnt first in isolation (to perfect validation accuracy), followed by fine- tuning on Bellman-Ford. We find that this approach performs worse than learning both algorithms simultaneously, and as such we do not consider it in further experiments. So basically we should learn more algorithms simultaneously and exploiting the similarities between their respective subroutines whenever appropriate.
 
@@ -246,27 +246,27 @@ They take the base Transformer and modify the masking mechanism. Simply stated, 
 - **Encoding Dependent Inputs**: If we receive two sub sequences we merge using $e$ token as $\{ [a,b];[c,d] \} \rightarrow [a, b, e, c, d, e] $ and the mask could become $[0, 0, 1, 0, 0, 1]$ and if we need to iterate over sub-sequences we could use $[0, 1, 1, 0, 1, 1]$.
 - **Decoding**: In decoding we start with the start tag $s$ and compute attention over encoder blocks and return a single value and/or pointer instead of sequence.
 
-![Seq2Seq style sorting when trained on sequences upto length 8. Thing to note is that despite heavy modifications the vanilla transformer is not really doing anything good.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-19.png)
+![Seq2Seq style sorting when trained on sequences upto length 8. Thing to note is that despite heavy modifications the vanilla transformer is not really doing anything good.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-19.webp)
 
 Authors found that sorting random numbers was easier than sorting those with minor difference (eg. $1$ and $90$ vs $53$ and $54$). The decoder uses a greedy decoding strategy. The outputs of the decoder are one-hot $256$ dim vectors representing the unnormalized log-probabilities of the output numbers. Thus training data has 70% random numbers, 30% numbers with small differences. The reason was seen when authors focused on the attention in the last layer of the decoder the attention was proper for the first few numbers but went completely fuzzy for the later numbers as seen in the image below.
 
-![Attention visualization](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-20.png)
+![Attention visualization](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-20.webp)
 
 - **Subroutine Level Traces (Selection Sort)**: Using this insight authors decided to increase teh supervision and break the problem in sub tasks which are more atomic than the previous paper. For example the task in selection-sort is to find the minimum of the list and that can be replaced with a neural network and to increase focus (attention only on required things), a mask was used to tell where it could attend.
 - **Recursive Subroutines (Merge Sort)**: In merge sort the list of the list is broken in two equal pieces till there is only one left and then they are joined iteratively, this is a recursive method as showin the image below. The NEE is able to learn merge sort with perfect strong generalization over long sequences (up to length 100). The NEE was trained to perform the computation underlying merge sort on sequences of length ≤ 8.
 - **Composable Subroutines (Shortest Path)**: After the success in recursive patterns the next question was whether it would learn something that was made up of many different pieces.
 
-![Subroutine Level Traces in Selection Sort.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-21.png)
+![Subroutine Level Traces in Selection Sort.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-21.webp)
 
-![Recursive Subroutine in Merge Sort.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-22.png)
+![Recursive Subroutine in Merge Sort.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-22.webp)
 
-![Djikstra's Algorithm to NEE Architecture.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-23.png)
+![Djikstra's Algorithm to NEE Architecture.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-23.webp)
 
 In order to see how the learning happened the emebddings for the numbers was passed through PCA, we can see that highly structured understanding of number system by the system. You can see that in the image below.
 
-![Model shows understanding of the number system](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-24.png)
+![Model shows understanding of the number system](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-24.webp)
 
-![Model showed unparalled results by learning what to actually do. All seven images above are from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-25.png)
+![Model showed unparalled results by learning what to actually do. All seven images above are from here](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/nae-25.webp)
 
 ## Conclusion
 

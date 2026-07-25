@@ -15,7 +15,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-6 md:gap-8 mb-6">
           <div className="flex-shrink-0 w-full sm:w-auto">
             <Image
-              src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.jpeg"
+              src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.webp"
               alt="Yash Bonde"
               width={400}
               height={250}

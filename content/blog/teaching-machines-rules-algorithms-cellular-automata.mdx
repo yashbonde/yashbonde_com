@@ -24,25 +24,25 @@ references:
 - title: Conway's Game of Life
   url: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 - title: starting top right go line by line
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_0.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_0.webp
 - title: this colab notebook
   url: https://colab.research.google.com/drive/1-Sw3jxWj4KOrZXBmCuKENUhuVr-hiSfT
 - title: 'Quick training result left: target, right: predicted'
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_1.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_1.webp
 - title: Surprisingly there is no change on results and in fact it performs better
     on larger grid sizes
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_2.webp
 - title: 'And no it is not over-fitting to give just one value; left: target, right:
     predicted'
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_3.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_3.webp
 - title: Though there is decline in performance when 1s occur too frequently its still
     above 95% mark
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_4.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_4.webp
 - title: 'Edge cases are still tricky, pun intended; left: target, right: predicted'
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_5.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_5.webp
 - title: 'Though it has the correct idea of where to look for it does not generate
     the proper result; left: target, right: predicted'
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_6.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_6.webp
 ---
 
 🦠 This particular Coronavirus strain [(SARS Cov2)](https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome_coronavirus_2) is the biggest calamity to happen to humanity since World War 2. It has put all of us in our homes without anything interesting to do, so I decided to take time and try out some whacky ideas. But being limited by compute power of a Google Colab I needed to try out something simple, quick and low power, not training some giant neural network based language model for [Covid-19 Kaggle challenge](https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge).
@@ -103,7 +103,7 @@ def game_of_life_step(grid):
 
 It generates sample like this:
 
-![starting top right go line by line](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_0.png)
+![starting top right go line by line](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_0.webp)
 
 ## ❄️ Building a Network
 
@@ -115,25 +115,25 @@ All the main code is uploaded on [this colab notebook](https://colab.research.go
 - since this is not a classification but more on line of regresstion its good to use MSE or BCE loss functions
 - $\sigma(\cdot)$ activation in final layer and a threshold of $0.5$
 
-![Quick training result left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_1.png)
+![Quick training result left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_1.webp)
 
 I got some good results after a quick model training I started getting good results. But there needs to be a good robustness test, so I tested on the following things:
 
 - **Size of grid changes**: though the network is has same output structure as input could changes in grid size affect the performance. It is very surprising to see the results there is no change in the performance of network when trained on fixed grid size but tested on multiple different size
 
-![Surprisingly there is no change on results and in fact it performs better on larger grid sizes](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_2.png)
+![Surprisingly there is no change on results and in fact it performs better on larger grid sizes](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_2.webp)
 
-![And no it is not over-fitting to give just one value; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_3.png)
+![And no it is not over-fitting to give just one value; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_3.webp)
 
 - **Board Sparsity**: the board was trained on samples that have probability distribution $P(1) = 0.3; P(0) = 0.7$ so could it generalise on boards that had a different distribution
 
-![Though there is decline in performance when 1s occur too frequently its still above 95% mark](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_4.png)
+![Though there is decline in performance when 1s occur too frequently its still above 95% mark](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_4.webp)
 
-![Edge cases are still tricky, pun intended; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_5.png)
+![Edge cases are still tricky, pun intended; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_5.webp)
 
 - **Edgecases where nothing changes**: an algorithm trained on boards that have changes, can it generalise the algorithm to cases where nothing can change. For this I got an accuracy of 99% but this is wrong because I am also comparing the negative values in accuracy
 
-![Though it has the correct idea of where to look for it does not generate the proper result; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_6.png)
+![Though it has the correct idea of where to look for it does not generate the proper result; left: target, right: predicted](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/CA_6.webp)
 
 ## 🤔 Some extensions and limitations
 

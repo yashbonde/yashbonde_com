@@ -15,36 +15,36 @@ references:
 - title: slides
   url: https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing
 - title: Tabular TD($0$) for estimating $v_\pi$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_1.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_1.webp
 - title: If our aim is to predict total time then how MC would compare against TD
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_2.webp
 - title: MC vs. TD
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_3.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_3.webp
 - title: Performance of TD($0$) and constant-$\alpha$ MC under batch training on random
     walk task
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_4.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_4.webp
 - title: Transition diagram
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_5.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_5.webp
 - title: Sarsa (On-policy TD Control) for estimating $Q \approx q_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_6.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_6.webp
 - title: Deepmind
   url: https://deepmind.com/research/publications/playing-atari-deep-reinforcement-learning
 - title: Learning from Delayed Rewards
   url: http://www.cs.rhul.ac.uk/~chrisw/new_thesis.pdf
 - title: Q-Learning (Off-policy TD Control) for estimating $\pi \approx \pi_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_7.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_7.webp
 - title: 'right: cliff environment setup | left: rewards by the two algorithms'
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_8.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_8.webp
 - title: Interim (dashed) and Asymptotic (solid) are calculated by getting averages
     from first 10 and 50,000 runs. Solid Circle shows the best performance for interim
     performance
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_9.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_9.webp
 - title: Q vs. Double-Q for the given MDP
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_10.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_10.webp
 - title: Double Q-learning, for estimating $Q_1 \approx Q_2 \approx q_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_11.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_11.webp
 - title: two state-action pairs make board reach the same "afterposition"
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_12.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_12.webp
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap6_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and slides for [model free value estimation](./slides/L4_MC-TD.pdf) and [model free control](./slides/L5_Model_Free_control.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).
@@ -63,7 +63,7 @@ $$V(S_t) \leftarrow V(S_t) + \alpha(R_t + \gamma V(S_{t+1}) - V(S_t))$$
 
 We call $R_t + \gamma V(S_{t+1})$ TD target and $\delta_t = R_t + \gamma V(S_{t+1}) - V(S_t)$ the TD error. Since this is just one step look-ahead it is called TD($0$) which is a special case of n-step TD and TD($\lambda$). We use the idea of bootstrapping, that we start off with a guess make a move and based on the returns update our original guess.
 
-![Tabular TD($0$) for estimating $v_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_1.png)
+![Tabular TD($0$) for estimating $v_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_1.webp)
 
 *Tabular TD($0$) for estimating $v_\pi$*
 
@@ -91,7 +91,7 @@ This identity is not exact if the $V$ changes during the episode eg. an update, 
 
 **Example 6.1: Driving Home** The aim is to predict the Total Time required to get home, which will be the sum of columns one and columns two.
 
-![If our aim is to predict total time then how MC would compare against TD](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_2.png)
+![If our aim is to predict total time then how MC would compare against TD](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_2.webp)
 
 *If our aim is to predict total time then how MC would compare against TD*
 
@@ -105,7 +105,7 @@ So if both the TD and MC are proven to converge then the question are which get 
 
 The return $G_t = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{T-1}R_{T}$ is the unbiased estimate of $v_\pi(S_t)$ same as the true TD target $R_{t+1} + \gamma v_\pi(S_{t+1})$ (as if someone has already given us the true value function $v_\pi$). However TD target $R_{t+1} + \gamma V(S_{t+1})$ is a biased estimate of $v_\pi(S_t)$, because the estimate $V(S_{t+1})$ can be wildly wrong.
 
-![MC vs. TD](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_3.png)
+![MC vs. TD](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_3.webp)
 
 *MC vs. TD*
 
@@ -113,7 +113,7 @@ The return $G_t = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{T-1}R_{T}$ is the unb
 
 If we have to approximate the value function V at we have just a few episodes or a few samples, we can pass over all the values and calculate the sum of all increments. We then apply this sum of all increments to change the value function $V$ unlike applying for each sample/episode. This is called batch updating because updates are made only after processing each complete batch of training data.
 
-![Performance of TD($0$) and constant-$\alpha$ MC under batch training on random walk task](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_4.png)
+![Performance of TD($0$) and constant-$\alpha$ MC under batch training on random walk task](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_4.webp)
 
 *Performance of TD($0$) and constant-$\alpha$ MC under batch training on random walk task*
 
@@ -131,7 +131,7 @@ This explains why TD$(0)$ methods converge faster and more quickly than MC metho
 
 Now we have reached the most popular learning algorithm, probably in all of RL that is Sarsa. The idea of sarsa is simple, you start with a state, action pair ($S,A$), you sample the environment and get reward $R$ and end up in state $S'$ and sample our policy to take the action $A'$ i.e. $S,A,R,S',A'$. Here we still follow the pattern of Generalised policy iteration and action-value function $q_\pi(s,a)$ instead of value-function $v(s)$. This can be done essentially the same TD method described above for learning $v_\pi$ applied to $q_\pi$
 
-![Transition diagram](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_5.png)
+![Transition diagram](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_5.webp)
 
 *Transition diagram*
 
@@ -141,7 +141,7 @@ $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma Q(S_{t+1}, A_{t+
 
 This update is done for each non-terminal state $S_t$ for terminal state $S_{t+1}$ we define $Q(S_{t+1}, A_{t+1}) = 0$. The convergence properties of the Sarsa depend on the nature of policy's dependence on $Q$, eg. one could use $\epsilon$-greedy or $\epsilon$-soft policies. Sarsa converges to probability 1 to an optimal policy and action-value function as long as all the state-actions have been visited $\infty$ times.
 
-![Sarsa (On-policy TD Control) for estimating $Q \approx q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_6.png)
+![Sarsa (On-policy TD Control) for estimating $Q \approx q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_6.webp)
 
 *Sarsa (On-policy TD Control) for estimating $Q \approx q_*$*
 
@@ -153,13 +153,13 @@ $$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha [R_{t+1} + \gamma \max_aQ(S_{t+1},
 
 And the algorithm is given as follows
 
-![Q-Learning (Off-policy TD Control) for estimating $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_7.png)
+![Q-Learning (Off-policy TD Control) for estimating $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_7.webp)
 
 *Q-Learning (Off-policy TD Control) for estimating $\pi \approx \pi_*$*
 
 **Example 6.6 Cliff Walking** In this example we find that Q-learning learns the optimal path of walking just next to the cliff while Sarsa learns the safest policy of walking as far from the cliff as possible. For Q-learning though this means it occasionally falls off the cliff because of $\epsilon$-greedy policy. Of course if the $\epsilon$ were to be gradually reduced, then both methods would asymptotically converge to the optimal policy.
 
-![right: cliff environment setup | left: rewards by the two algorithms](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_8.png)
+![right: cliff environment setup | left: rewards by the two algorithms](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_8.webp)
 
 *right: cliff environment setup | left: rewards by the two algorithms*
 
@@ -167,7 +167,7 @@ And the algorithm is given as follows
 
 Consider that we converted in $G_t = \mathbb{E}_\pi[Q(S_{t+1}, A_{t+1}) | S_{t+1}]$ to proper expectations as $G_t = \sum_a\pi(a|S_{t+1})Q(S_{t+1},a)$. We call this expected Sarsa, and since we remove the sampling of action given the probability we can eliminate the variance and this should result in better performance and that indeed is what we see.
 
-![Interim (dashed) and Asymptotic (solid) are calculated by getting averages from first 10 and 50,000 runs. Solid Circle shows the best performance for interim performance](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_9.png)
+![Interim (dashed) and Asymptotic (solid) are calculated by getting averages from first 10 and 50,000 runs. Solid Circle shows the best performance for interim performance](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_9.webp)
 
 *Interim (dashed) and Asymptotic (solid) are calculated by getting averages from first 10 and 50,000 runs. Solid Circle shows the best performance for interim performance*
 
@@ -177,7 +177,7 @@ It can also learn over a wide variety of step-sizes, it can safely set $\alpha=1
 
 In these algorithms, a maximum over estimates values is used implicitly as an estimate of the maximum value, which can lead to a significant positive bias. Consider a state $s$ where many actions $a$ whose true values $q(s,a) = 0$ but the estimated values $Q(s,a) \neq 0$, some are above and some are below zero. The maximum of true values is zero but the maximum of estimates is positive, *maximisation bias*. Consider the simple MDP below, the ideal solution is to never take left since the distribution is very likely to return negative rewards. But Q-learning will over estimate the value of B and chose that.
 
-![Q vs. Double-Q for the given MDP](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_10.png)
+![Q vs. Double-Q for the given MDP](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_10.webp)
 
 *Q vs. Double-Q for the given MDP*
 
@@ -187,7 +187,7 @@ $$Q_1(S_t, A_t) \leftarrow Q_1(S_t, A_t) + \alpha [R_{t+1} + \gamma Q_2(S_{t+1},
 
 This is the idea of double learning, and the algorithm is given below.
 
-![Double Q-learning, for estimating $Q_1 \approx Q_2 \approx q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_11.png)
+![Double Q-learning, for estimating $Q_1 \approx Q_2 \approx q_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_11.webp)
 
 *Double Q-learning, for estimating $Q_1 \approx Q_2 \approx q_*$*
 
@@ -195,6 +195,6 @@ This is the idea of double learning, and the algorithm is given below.
 
 In our algorithms we depend on the value of the next state, so when we reach the next state (afterstate) the values should be applied on all the state-actions that make it reach there. As in the diagram below we see that two state-action pairs make it reach the same "afterposition". Afterstates arise in many tasks, not just games. For example, in queuing tasks there are actions such as assigning customers to servers, rejecting customers, or discarding information. In such cases the action are in fact defined in terms of their immediate effects, which are completely known.
 
-![two state-action pairs make board reach the same "afterposition"](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_12.png)
+![two state-action pairs make board reach the same "afterposition"](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap6_12.webp)
 
 *two state-action pairs make board reach the same "afterposition"*

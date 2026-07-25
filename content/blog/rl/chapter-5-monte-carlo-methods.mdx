@@ -17,22 +17,22 @@ references:
 - title: often
   url: https://en.wikipedia.org/wiki/Monte_Carlo_method
 - title: Note the subtle difference in the two
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/FVMC-EVMC.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/FVMC-EVMC.webp
 - title: First Visit MC Process
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_1.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_1.webp
 - title: instead of $v_\pi$ we have $q_\pi$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_2.webp
 - title: On policy first-visit MC control (for $\epsilon$-soft policies), estimates
     $\pi \approx \pi_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_4.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_4.webp
 - title: For example 5.4
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_5.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_5.webp
 - title: For example 5.5
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_6.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_6.webp
 - title: Off-policy MC Prediction (policy evaluation) for estimating $Q \approx q_\pi$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_7.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_7.webp
 - title: Off-policy MC control for estimating $\pi \approx \pi_*$
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_8.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_8.webp
 ---
 
 These are just my notes of the book [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book-2nd.html), all the credit for book goes to the authors and other contributors. My solutions to the exercises are on [this page](./chap5_ex.html). Additional concise notes for this chapter [here](https://drive.google.com/open?id=0B3w765rOKuKAcERUTmJaN1lJbUU). There is also a [Deepmind's Youtube Lecture](https://www.youtube.com/watch?v=Nd1-UUMVfz4&list=PLqYmG7hTraZDM-OYHWgPebj2MfCFzFObQ&index=4&t=0s) and slides for [model free value estimation](./slides/L4_MC-TD.pdf) and [model free control](./slides/L5_Model_Free_control.pdf). Some other [slides](https://drive.google.com/file/d/0B3w765rOKuKAZWV6bGFJcWN6VDg/view?usp=sharing).
@@ -59,11 +59,11 @@ and instead of having an expected return $v_\pi = \mathbb{E}[G_t | S_t = s]$ we 
 
 **First visit MC** only considers each state once in an episode and take mean from that point onwards we do not consider if in some loop we visit that state again. We get the optimal value function from the law of large numbers and keep on averaging them over multiple episodes. **Every visit MC** increments the state counter every time I visit that state and not only once per episode.
 
-![Note the subtle difference in the two](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/FVMC-EVMC.png)
+![Note the subtle difference in the two](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/FVMC-EVMC.webp)
 
 *Note the subtle difference in the two*
 
-![First Visit MC Process](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_1.png)
+![First Visit MC Process](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_1.webp)
 
 *First Visit MC Process*
 
@@ -85,7 +85,7 @@ One serious problem we face is that there will be many state-action pairs that w
 
 It follows the general principle laid in [Policy Iteration](chap4.html#4_3) where we loop evaluation followed by greedy policy but instead of having plain value function we have action-values.
 
-![instead of $v_\pi$ we have $q_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_2.png)
+![instead of $v_\pi$ we have $q_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_2.webp)
 
 *instead of $v_\pi$ we have $q_\pi$*
 
@@ -107,7 +107,7 @@ But this assumes two things, one that episodes have exploring starts and other t
 
 There are two approaches for getting this working, first the vanilla approach. One is to hold firm to the idea of approximating $q_{\pi_k}$ in each policy evaluation. Measurements and assumptions are made to obtain bounds on the magnitude and probability error in the estimates, and then sufficient steps are taken during each policy evaluation. However, it is also to require far too many episodes to be useful in practice on any but the smallest problems.
 
-![Monte Carlo ES (Exploring Start), for estimating $\pi \approx \pi_*$. Note that this can be improved by having [incremental averaging](./chap2.html#2_4) as [here](./chap5_ex.html#5_4)](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_3.png)
+![Monte Carlo ES (Exploring Start), for estimating $\pi \approx \pi_*$. Note that this can be improved by having [incremental averaging](./chap2.html#2_4) as [here](./chap5_ex.html#5_4)](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_3.webp)
 
 *Monte Carlo ES (Exploring Start), for estimating $\pi \approx \pi_*$. Note that this can be improved by having [incremental averaging](./chap2.html#2_4) as [here](./chap5_ex.html#5_4)*
 
@@ -119,7 +119,7 @@ There are two approaches to ensuring this, resulting in what we call on-policy m
 
 In on-policy control methods we have a soft policy, meaning that $\pi(a|s) > 0$ for all $s \in S$ and all $a \in A(s)$, but gradually shift to deterministic optimal policy. The on-policy algorithm that we chose here is $\epsilon$-greedy that is it takes the maximal estimated action value but with probability $\epsilon$ they take a random action. We use a subset of $\epsilon$-greedy called $\epsilon$-soft in which the minimal probability of selection is $\pi(a|s) \geq \frac{\epsilon}{|A(s)|}$ and the remaining bulk of the probability $1 - \epsilon + \frac{\epsilon}{|A(s)|}$ is given to greedy action. Fortunately, GPI does not require that policy be taken all the way to greedy policy, only that it be moved toward a greedy policy.
 
-![On policy first-visit MC control (for $\epsilon$-soft policies), estimates $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_4.png)
+![On policy first-visit MC control (for $\epsilon$-soft policies), estimates $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_4.webp)
 
 *On policy first-visit MC control (for $\epsilon$-soft policies), estimates $\pi \approx \pi_*$*
 
@@ -195,13 +195,13 @@ To better understand the difference assume that we run for just one step and cal
 
 **Example 5.4** This question is used to evaluate this state: "the dealer is showing deuce, the sum of players card is 13, and the player has a usable ace (that is, the player holds an ace and a deuce, or equivalently three aces)". Using the target policy to $stick$ only on $20$ or $21$, ordinary and weighted value estimation over episodes is shown.
 
-![For example 5.4](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_5.png)
+![For example 5.4](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_5.webp)
 
 *For example 5.4*
 
 **Example 5.5 Infinite Variance:** since the target policy is $\pi(left|s) = 1$ and behaviour policy $b(left|s) = \frac{1}{2}$, the importance sampling ratio will be zero anytime $b$ takes a right. Thus weighted estimation calculates the estimation as $+1$ as soon as $b$ takes left once.
 
-![For example 5.5](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_6.png)
+![For example 5.5](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_6.webp)
 
 *For example 5.5*
 
@@ -223,7 +223,7 @@ $$= 0.1 \sum_{k=0}^{\infty}0.9^k \cdot 2^k \cdot 2 = 0.2 \sum_{k=0}^{\infty}1.8^
 
 For derivation look [here](./chap5_ex.html#5_10).
 
-![Off-policy MC Prediction (policy evaluation) for estimating $Q \approx q_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_7.png)
+![Off-policy MC Prediction (policy evaluation) for estimating $Q \approx q_\pi$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_7.webp)
 
 *Off-policy MC Prediction (policy evaluation) for estimating $Q \approx q_\pi$*
 
@@ -231,6 +231,6 @@ For derivation look [here](./chap5_ex.html#5_10).
 
 The behaviour policy can be anything, but in order to assure convergence of $\pi$ to the optimal policy an infinite number of returns must be obtained for all possible state-action pairs, which is achieved using $\epsilon$-soft policy. A potential problem is that this method only learns from the tails of episodes, when all the remaining actions in the episode are greedy. If non-greedy actions are common, then learning will be slow, particularly states appearing in the early portions of long episodes. Potentially this could greatly slow learning.
 
-![Off-policy MC control for estimating $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_8.png)
+![Off-policy MC control for estimating $\pi \approx \pi_*$](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/rl/chap5_8.webp)
 
 *Off-policy MC control for estimating $\pi \approx \pi_*$*

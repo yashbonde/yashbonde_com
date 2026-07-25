@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Source_Sans_3, Roboto_Mono, Eczar } from "next/font/google";
 import Header from "../components/Header";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 import "./globals.css";
 
 const sourceSans = Source_Sans_3({
@@ -21,10 +22,20 @@ const robotoMono = Roboto_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Yash Bonde",
-  description: "Portfolio and blog of Yash Bonde - ML Engineer, Systems Developer",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
   icons: {
     icon: "/favicon.svg",
+  },
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": `${SITE_URL}/rss.xml`,
+    },
   },
 };
 

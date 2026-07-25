@@ -8,7 +8,7 @@ export default function AboutPage() {
             <div className="flex flex-col sm:hidden mb-10">
                 <div className="mb-6 w-full">
                     <Image
-                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.jpeg"
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.webp"
                         alt="Yash Bonde"
                         width={400}
                         height={250}
@@ -57,7 +57,7 @@ export default function AboutPage() {
                 {/* Image on the left */}
                 <div className="flex-shrink-0 w-full sm:w-auto">
                     <Image
-                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.jpeg"
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5717.webp"
                         alt="Yash Bonde"
                         width={400}
                         height={250}

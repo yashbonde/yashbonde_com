@@ -1,6 +1,6 @@
 --- 
 title: 'Neural Automata #3: The species of computers'
-ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-3.jpeg'
+ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-3.webp'
 date: '2026-02-15'
 tags:
 - Notes
@@ -37,7 +37,7 @@ Now moving away from how the computers of today are, let’s go to how computers
 
 Let’s go back a bit further in time, [Church $1941$](https://www.cambridge.org/core/journals/journal-of-symbolic-logic/article/alonzo-church-the-calculi-of-lambdaconversion-annals-of-mathematics-studies-no-6-lithoprinted-princeton-university-press-princeton-1941-77-pp/B25AA86E102E282A10595C7693D9417A) proposed a new way to build a universal computer. There are three basics parts, first is a variable $x$, a function definition defined by $\lambda$ e.g. $x + 1$ can be defined as $\lambda x . x + 1$. Then applying the function on variable $s$ like $f x$. This way one can reuse the functions to build complex operations. Effectively modeling a TM as a series of operations that any human could do with a pen and paper. This is a foundational element of [functional programming](https://www.tutorialspoint.com/functional_programming/functional_programming_introduction.htm#:~:text=Functional%20Programming%20vs.%20Object%2Doriented%20Programming) and $\lambda$ becoming a [respected](https://mitp-content-server.mit.edu/books/content/sectbyfn/books_pres_0/6515/sicp.zip/sicp-reviews.html) cultural symbol, also [SICP](https://web.mit.edu/6.001/6.037/sicp.pdf).
 
-![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/have-you-read-your-sicp-today.jpeg)
+![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/have-you-read-your-sicp-today.webp)
   
 [LISP](https://en.wikipedia.org/wiki/Lisp_(programming_language)) is a raw implementation of Church’s idea, it provides guarantees that any code written, will execute on a TM. It is an interpreted language and thus requires a ***Virtual Machine*** (VM) to run, a pioneer. Not just that, a program can change itself during runtime thus making it a universal TM. This was a time when programs were precise instructions on how the machine operated. Which means a program can be tuned for the machine, juicing out sweet ROI. For this LSIPers [were trolled](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=55.%20A%20LISP%20programmer%20knows%20the%20value%20of%20everything%2C%20but%20the%20cost%20of%20nothing.) even back in $1982$\. However there were physical machines called [Lisp Machines](https://en.wikipedia.org/wiki/Lisp_machine) that were designed to run LISP.
 

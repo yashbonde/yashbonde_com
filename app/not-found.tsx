@@ -7,7 +7,7 @@ export default function NotFound() {
             <div className="max-w-xl w-full text-center">
                 <div className="mb-4 flex justify-center">
                     <Image
-                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/404.jpeg"
+                        src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/404.webp"
                         alt="404 - Not Found"
                         width={512}
                         height={512}

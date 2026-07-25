@@ -36,7 +36,7 @@ references:
   url: https://blog.griddynamics.com/deep-reinforcement-learning-for-supply-chain-and-price-optimization/
 - title: Training method (left) and network (right) of AlphaGo. Note how is utilises
     the complete board state and internally only process it.
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-0.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-0.webp
 - title: video
   url: https://www.youtube.com/watch?v=acVvkz4MsKc
 - title: transformer
@@ -55,14 +55,14 @@ references:
   url: https://github.com/yashbonde/chess_lm/blob/master/m2id.json
 - title: Sample sequences shuffled. Note 0 means new game just like GPT-2 and not
     use any special attention matrices. In my experience it does not work well.
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-2.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-2.webp
 - title: Tensorboard for training 3 models. Grey represents buffer size of 55555,
     red is larger model ~3× parameters of baseline parameters and buffer size of 1000000.
     Orange represents fully loaded dataset same arch. as Grey. Though the larger model
     trains quicker the loss function is rougher and there is a slight benefit. Grey
     was trained for 3 epochs whereas others were trained for 1 epoch. (there was as
     bug in IterableDataset which caused number of samples to be lower than fully loaded)
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-3.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-3.webp
 - title: ELO ratings
   url: https://en.wikipedia.org/wiki/Elo_rating_system
 ---
@@ -100,7 +100,7 @@ Now there is a reason why you would not want to have any prior (previously playe
 
 Muzero and AlphaZero showed how we can utilise self play and [AlphaGo](https://storage.googleapis.com/deepmind-media/alphago/AlphaGoNaturePaper.pdf) showed how we can use priors, thus this project is closer to AlphaGo than AZ. Now if there already exists AlphaGo (extend to AlphaGo for Chess) why do we even need this? All these algorithms and other supervised methods utilise board state. But most of the problems in this world, we may not be able to generate a perfect board state to feed into the model. Consider another RL problem like [Shipping](https://blog.griddynamics.com/deep-reinforcement-learning-for-supply-chain-and-price-optimization/) where creating a perfect board state is impossible.
 
-![Training method (left) and network (right) of AlphaGo. Note how is utilises the complete board state and internally only process it.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-0.png)
+![Training method (left) and network (right) of AlphaGo. Note how is utilises the complete board state and internally only process it.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-0.webp)
 
 Now that the perfect board state is thrown out of the window, how do we train a chess engine. One interesting thing I have noticed in great chess players is that they have a perfect memory of board moves as if they are poems to them. See this [video](https://www.youtube.com/watch?v=acVvkz4MsKc) of Magnus Carlsen remembering games. If they can just remember things, why can we not make a neural network just remember the moves and expect that it has an internal representation of the model.
 
@@ -135,7 +135,7 @@ A simpler method is to simply tag a starting box and a destination box ie. if a 
 - "f5d7" becomes ID $1288$
 - "d5c5" becomes ID $787$
 
-![Sample sequences shuffled. Note 0 means new game just like GPT-2 and not use any special attention matrices. In my experience it does not work well.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-2.png)
+![Sample sequences shuffled. Note 0 means new game just like GPT-2 and not use any special attention matrices. In my experience it does not work well.](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-2.webp)
 
 ## 🤸🏻‍♂️ Training
 
@@ -150,7 +150,7 @@ First task is to see if a model can actually learn and it turns out it eventuall
 - A larger embedding dimension does not actually help, this somehow validates what DeepMind found in the AlphaZero Paper. One part is the loss, which reduces faster when you have a large model but training for longer period gives the same loss. **And another part is accuracy, I still need to check this.**
 - The larger the buffer the better the training, by better I mean smoother loss curves. This happens because during dump creation the games are added sequentially and so some games might be more complicated and thus give a higher loss. Buffer size can help mitigate that.
 
-![Tensorboard for training 3 models. Grey represents buffer size of 55555, red is larger model ~3× parameters of baseline parameters and buffer size of 1000000. Orange represents fully loaded dataset same arch. as Grey. Though the larger model trains quicker the loss function is rougher and there is a slight benefit. Grey was trained for 3 epochs whereas others were trained for 1 epoch. (there was as bug in IterableDataset which caused number of samples to be lower than fully loaded)](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-3.png)
+![Tensorboard for training 3 models. Grey represents buffer size of 55555, red is larger model ~3× parameters of baseline parameters and buffer size of 1000000. Orange represents fully loaded dataset same arch. as Grey. Though the larger model trains quicker the loss function is rougher and there is a slight benefit. Grey was trained for 3 epochs whereas others were trained for 1 epoch. (there was as bug in IterableDataset which caused number of samples to be lower than fully loaded)](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/chess-lm-3.webp)
 
 ### Validatation
 

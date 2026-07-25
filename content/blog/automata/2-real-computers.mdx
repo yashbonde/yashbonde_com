@@ -1,6 +1,6 @@
 --- 
 title: 'Neural Automata #2: How to build a computer'
-ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-2.jpeg'
+ogImage: 'https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/comic-automata-2.webp'
 date: '2026-02-14'
 tags:
 - Notes
@@ -33,7 +33,7 @@ Our main constraint is memory size, IRL it will be a constant (not $\infty$) but
 
 Remember it is $1960$, computers are considered calculators, to be a useful language this automaton should be able to do some arithmetic and let me go around the program i.e. control flow. Based on the different ways to program and store it we get three machines.
 
-![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/register-machines.jpeg)
+![](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/register-machines.webp)
 
 ***Counter machine (CM)*** → A register machine that contains a super minimal instruction set, one with only $3$ commands. $INC (r)$ increments value in register by $1$, $DEC (r)$ reduces value by $1$ or stays at $0$ and, $JZ (r, z)$ which is a control statement telling the computer to jump to instruction $Z$ if $r$ is $0$\. As you can see, each operation requires the precise register ID; there is no way to refer to a register i.e. no indirect addressing. One more instruction Halt ($H$) was added in $1967$\.
 

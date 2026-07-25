@@ -31,7 +31,7 @@ references:
 - title: paper
   url: https://arxiv.org/pdf/1805.04874.pdf
 - title: Results from the paper
-  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/ganql.png
+  url: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/ganql.webp
 - title: this particular paper
   url: https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf
 - title: REINFORCE
@@ -84,7 +84,7 @@ The first part in this problem is generating the trajectory database on 11 good 
 
 In a very interesting [paper](https://arxiv.org/pdf/1805.04874.pdf), the researchers describe how they combined the Generative Adversarial Network and Q-Learning. I wanted to do something similar but never understood what the input to generator network should be. In classical approach to the GAN the input was a noise latent vector while in their model they feed the Q-value Q(s,a) as the input to the generator. This resulted in scores that were considerably higher in a few games than the DQN Algorithm.
 
-![Results from the paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/ganql.png)
+![Results from the paper](https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/old/ganql.webp)
 
 The problem statement approaches this problem by stating that it needs to fit a generative model like the transformer. With this the authors are actually discussing about [this particular paper](https://s3-us-west-2.amazonaws.com/openai-assets/research-covers/language-unsupervised/language_understanding_paper.pdf), in which the transformer network was trained in two different ways such that it had higher understanding due to **unsupervised pre-training** (fancy words, meaning MLE) followed by supervised fine-tuning.
 
