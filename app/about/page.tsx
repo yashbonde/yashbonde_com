@@ -92,20 +92,50 @@ export default function AboutPage() {
             {/* Work Experience */}
             <div id="work-experience" className="mb-8">
 
+                {/* Razorpay */}
+                <div className="mb-8 ">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                        <div className="mb-2 sm:mb-0">
+                            <p className="text-lg font-serif font-semibold position-text">AI Engineer, Founder&apos;s Office</p>
+                            <p className="text-base text-ink font-medium">
+                                <a href="https://razorpay.com" target="_blank" rel="noopener noreferrer" className="underline inline-flex items-center gap-2 ">
+                                    <code>Razorpay</code>
+                                </a>
+                            </p>
+                        </div>
+                        <div className="text-left sm:text-right text-ink">
+                            <p>May 2026 —, Bengaluru</p>
+                        </div>
+                    </div>
+                    <p className="text-ink mb-3">Directly reporting to Shashank (MD, co-founder). Working closely with Harshil (CEO, co-founder) as part of the strategy team.</p>
+                    <ul className="text-ink space-y-1 mb-2">
+                        <li className="flex gap-2 text-justify">
+                            <span>•</span>
+                            <span>Accelerating agentic adoption in SDLC, Talent Recruitment, Operations and other projects in the company.</span>
+                        </li>
+                    </ul>
+                </div>
+
                 {/* Consulting */}
                 <div className="mb-8 ">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">Consulting, AI Engineering</p>
+                            <p className="text-lg font-serif font-semibold position-text">Self Employed</p>
                         </div>
                         <div className="text-left sm:text-right text-ink">
-                            <p>December 2025 —</p>
+                            <p>December 2025 — May 2026</p>
                         </div>
                     </div>
                     <ul className="text-ink space-y-1 mb-2">
                         <li className="flex gap-2 text-justify">
                             <span>•</span>
                             <span>Building AI products for small enterprises. Autonomous agents for research, development and sales.</span>
+                        </li>
+                        <li className="flex gap-2 text-justify">
+                            <span>•</span>
+                            <p className="text-ink">AI research into building neural automata, neural networks that can operate like a computer.{" "}
+                                <a href="/blogs/automata/0-prologue-start" className="underline">Read the blog series</a>.
+                            </p>
                         </li>
                     </ul>
                 </div>
