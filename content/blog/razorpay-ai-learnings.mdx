@@ -22,11 +22,11 @@ references:
 
 I was invited to take an hour long session to the engineering leadership at Razorpay. I work as the "AI Builder" profile where I am basically brains and extra fingers for my boss [Shashank (SHK)](https://shashankkr.com/). Armed with unlimited tokens of the strategy team, we play with frontier ideas that are not yet mature to be handed to Eng + Product teams.
 
-In less than 3 months I've worked on delivered over 3 projects and tells you about the speed at which the company operates. A single project can be over 50 agents, 1 Billion tokens, 500+ test cases. And with all the token burning I've come to understand a few things that work well. Here's my story that maybe helps in getting you up to speed on the agentic development.
+In less than 3 months I've delivered over 3 projects and this tells you about the speed at which the company operates. A single project can be over 50 agents, 1 Billion tokens, 500+ test cases. And with all the token burning I've come to understand a few things that work well. Here's my story that maybe helps in getting you up to speed on the agentic development.
 
 > "When predicting future, it's easier if you know things which will not change." - Jeff Bezos
 
-If you are completely new to this then start with handrolling your own agentic loop to understand new fundamentals like caching, tool call loops, structured generation, event hooks, CLIs vs. SDK. Feel free to use `claude` to build something on top of open weight models from [OpenRouter](https://openrouter.ai/) and understand how the tool you use everyday actually works.
+If you are completely new to this then start with handrolling your own agentic loop to understand new fundamentals like caching, tool call loops, structured generation, event hooks, CLIs vs. SDK. Feel free to use `claude` to build something on top of open weight models from [OpenRouter](https://openrouter.ai/) and understand how the tool you use every day actually works.
 
 First let me tell you about **my setup**. I use Claude code (20x) which is my daily driver, OpenAI codex (20x) and toroid-kernel. Preferred models are `opus` (planning + general chat), `gpt-5.6-sol` (coding) and `kimi`/`glm`/`haiku` (workflows). I am not an AI maximalist, the only multiagent setup I use is offloading tasks from `claude` to `codex` using the `/codex` skill from [gstack](https://github.com/garrytan/gstack). I use `python` for scripting and `Go + HTMX` for backend.
 
@@ -34,11 +34,11 @@ So here goes the learnings and I'll spend a minute explaining all of them.
 
 ### Lesson 1: Write your own README
 
-The easiest thing is to pick a `md` file that only you write, not an AI. This is not the `CLAUDE.md` file which is a pointer file for your agent. Your `md` file contains the goals you want with the project. Not 40 APIs, the 12 that actually matter. Inside Razorpay we use our internal documentation system called `aidocs` to generate detailed HTML documents (why limit yourself to markdown). This `md` file contains the pointers so important things like deferred ideas, open questions are always present for you to read. **At some point you have to write your own thoughts.**
+The easiest thing is to pick a `md` file that only you write, not an AI. This is not the `CLAUDE.md` file which is a pointer file for your agent. Your `md` file contains the goals you want with the project. Not 40 APIs, the 12 that actually matter. Inside Razorpay we use our internal documentation system called `aidocs` to generate detailed HTML documents (why limit yourself to markdown). This `md` file contains the pointers so that important things like deferred ideas, open questions are always present for you to read. **At some point you have to write your own thoughts.**
 
 ### Lesson 2: AI maxxing actually works
 
-Claude 20x and Codex 20x plans given you enough tokens. According to [SemiAnalysis](https://www.linkedin.com/posts/semianalysis_whats-the-better-business-model-for-an-ai-activity-7470580821247016962-HR2Q/) spending \$400 (exc. taxes) you get about \$22,000 of API tokens. This is enough for you to make your biggest projects come to life. And I don't mean start `ultracode` and see 100s of subagents, but some care can take you places. Open weight models like `glm-5p2` have replaced `sonnet` because of cheaper but effective token quality.
+Claude 20x and Codex 20x plans give you enough tokens. According to [SemiAnalysis](https://www.linkedin.com/posts/semianalysis_whats-the-better-business-model-for-an-ai-activity-7470580821247016962-HR2Q/) spending \$400 (exc. taxes) you get about \$22,000 of API tokens. This is enough for you to make your biggest projects come to life. And I don't mean start `ultracode` and see 100s of subagents, but some care can take you places. Open weight models like `glm-5p2` have replaced `sonnet` because of cheaper but effective token quality.
 
 ### Lesson 3: Go the extra mile, use AI for craftsmanship
 
@@ -46,13 +46,13 @@ Talking about care, in general SDEs are not empaths, they are given a task from 
 
 ### Lesson 4: Don't ship shitty software
 
-Talking about no more excuses. With agents is so easy to push slop. But that still doesn't justify why SDEs push software that does not work. For one of the projects we had to simulate network traffic and I did not want to configure `locust`. Claude was able to create test accounts, understand traffic pattern from real world logs, mock clients and finally clean up artifacts in the DB & S3. Agents are connected to CI/CD, automatically deploy on dev and do blue/green till all the tests are passing.
+Talking about no more excuses. With agents it is so easy to push slop. But that still doesn't justify why SDEs push software that does not work. For one of the projects we had to simulate network traffic and I did not want to configure `locust`. Claude was able to create test accounts, understand traffic pattern from real world logs, mock clients and finally clean up artifacts in the DB & S3. Agents are connected to CI/CD, automatically deploy on dev and do blue/green till all the tests are passing.
 
 ### Lesson 5: Source of truths and autoloops
 
 I said before that writing is the most important thing you can do. With `kubectl` you apply the final state that you want, and the system figures out how to reach that state. Working with AI agents is pretty much the same. Except now your state resides in detailed tech and product specs. You work (with your team) to make your destination clear, what kind of governance modules are required, what does the queue architecture look like. As people deploy bigger applications, **system design is more important than ever**.
 
-Once you get to a spec you are happy with, setup loops to achieve that goal. Tell AI not stop till it reaches that, keep pushing it do adversarial review using another LLM + harness and refine the approach.
+Once you get to a spec you are happy with, setup loops to achieve that goal. Tell AI not to stop till it reaches that, keep pushing it to do adversarial review using another LLM + harness and refine the approach.
 
 Truth is LLMs already contain the intelligence, it is about figuring out how to get it out. [Karpathy's Autoresearch](https://github.com/karpathy/autoresearch) is a good hello world into how to build loops. Based on how you frame it, it can be used in software, marketing, supply chain, etc. Here's the setup in brief:
 
