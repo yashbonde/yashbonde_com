@@ -35,7 +35,8 @@ export type Post = {
 // When you add a new post, add an entry here.
 const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[]; group?: string }[] = [
     // 2026
-    { slug: "toroid-agentic-kernels", title: "Toroid: Agentic Micro-Kernels", date: "2026-04-20", tags: ["Swarm Buddy", "Toroid", "AI Agents"] },
+    { slug: "razorpay-ai-learnings", title: "8 lessons working in Agentic Era", date: "2026-07-31", tags: ["Razorpay", "Agent Engineering"] },
+    { slug: "toroid-agentic-kernels", title: "Toroid: Agentic Micro-Kernels", date: "2026-04-20", tags: ["Toroid Kernel", "Agent Engineering"] },
     // { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
 
@@ -46,18 +47,18 @@ const POST_INDEX: { slug: string; url?: string; title: string; date: string; tag
     { group: "Neural Automata: Supplementary", slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Research"] },
     { slug: "automata/4a-code-review-neural-automata", title: "Neural Automata #4a: Technical Overview", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
-    { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-15", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
-    { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Neural Automata", "Research"] },
-    { slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Neural Automata", "Research"] },
-    { slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
+    { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-15", tags: ["Notes", "Neural Automata", "Neural Networks"] },
+    { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Automata Theory"] },
+    { slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Automata Theory", "Neural Networks"] },
     { slug: "open-square-prism", url: "https://github.com/yashbonde/open-square-prism", title: "Open<sup>2</sup>Prism: A clone of OpenAI Prism for personal notes", date: "2026-02-04", tags: ["Code"] },
 
     // 2025
     { slug: "panchayati-raj", title: "Did India's Constitution makers really care about local democracy?", date: "2025-11-30", tags: ["Bharat (India)"] },
     { slug: "software-of-making", title: "The software of making", date: "2025-06-21", tags: ["Shorts"] },
     { slug: "on-rag-system-basics", title: "On RAG system basics", date: "2025-02-22", tags: ["Agent Engineering"] },
-    { slug: "artha/project-arth-ui-design-and-implementation", title: "Project Arth: UI Design and Implementation", date: "2025-01-20", tags: ["Project Artha", "Bharat (India)"] },
-    { slug: "artha/project-arth-introduction", title: "Project Arth: Introduction", date: "2025-01-15", tags: ["Project Artha", "Bharat (India)"] },
+    { slug: "artha/project-arth-ui-design-and-implementation", title: "Project Arth: UI Design and Implementation", date: "2025-01-20", tags: ["Project Artha"] },
+    { slug: "artha/project-arth-introduction", title: "Project Arth: Introduction", date: "2025-01-15", tags: ["Project Artha"] },
 
     // 2024
     { slug: "every-diwali-i-do-something-just-for-my-personal-growth", title: "Third in the series of musings", date: "2024-10-31", tags: ["Shorts"] },
@@ -92,8 +93,8 @@ const POST_INDEX: { slug: string; url?: string; title: string; date: string; tag
     { slug: "lets-go-over-few-things-freeciv", title: "Let's go over a few things freeciv!", date: "2018-11-19", tags: ["Freeciv"] },
     { slug: "call-for-army-of-beasts", title: "Call for an Army of Be(a)sts!", date: "2018-11-09", tags: ["Freeciv"] },
     { slug: "the-mathematical-probability-of-failure", title: "The mathematical probability of failure", date: "2018-10-04", tags: ["Shorts"] },
-    { slug: "lets-build-attention-is-all-you-need-2-2", title: "Let's build 'Attention is all you need' — 2/2", date: "2018-09-21", tags: ["Transformer", "Code"] },
-    { slug: "lets-build-attention-is-all-you-need-1-2", title: "Let's build 'Attention is all you need' — 1/2", date: "2018-08-27", tags: ["Transformer", "Code"] },
+    { slug: "lets-build-attention-is-all-you-need-2-2", title: "Let's build 'Attention is all you need' — 2/2", date: "2018-09-21", tags: ["Transformer", "Neural Networks"] },
+    { slug: "lets-build-attention-is-all-you-need-1-2", title: "Let's build 'Attention is all you need' — 1/2", date: "2018-08-27", tags: ["Transformer", "Neural Networks", "Notes"] },
     { slug: "first-series-musings", title: "First in the series of musings", date: "2018-08-15", tags: ["Shorts"] },
 
     // typesetting
