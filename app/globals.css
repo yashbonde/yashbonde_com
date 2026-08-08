@@ -37,8 +37,9 @@ body {
   color: var(--ink);
   font-family: var(--font-source-sans);
   font-size: 16px;
-  /* slightly bigger overall scale */
-  line-height: 1.5;
+  line-height: 1.58;
+  letter-spacing: -0.006em;
+  text-rendering: optimizeLegibility;
 }
 
 /* Book-inspired typography */
@@ -50,7 +51,9 @@ h5,
 h6 {
   font-family: var(--font-source-sans);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.18;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
   margin-bottom: 1rem;
 }
 
@@ -83,10 +86,11 @@ pre {
 /* Links/buttons*/
 a {
   color: var(--link);
-  transition: color 0.3s ease;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
   text-decoration: underline;
-  text-underline-offset: 0.25rem;
-  text-decoration-color: var(--link);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 0.06em;
+  text-decoration-color: color-mix(in srgb, var(--link) 65%, transparent);
 }
 
 a:hover,
@@ -191,8 +195,8 @@ a:hover * {
 
 .prose p {
   color: var(--ink);
-  line-height: 1.45;
-  margin-bottom: 1rem;
+  line-height: 1.62;
+  margin-bottom: 1.15rem;
 }
 
 .prose a {
