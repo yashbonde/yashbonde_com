@@ -3,9 +3,9 @@ import { ArrowDown } from "lucide-react";
 
 export default function AboutPage() {
     return (
-        <section className="max-w-3xl mx-auto">
+        <section className="work-page max-w-4xl mx-auto">
             {/* Mobile Layout: Image full width, text below */}
-            <div className="flex flex-col sm:hidden mb-10">
+            <div className="work-hero flex flex-col sm:hidden mb-10">
                 <div className="mb-6 w-full">
                     <Image
                         src="https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/photos/IMG_5522.webp"
@@ -18,8 +18,8 @@ export default function AboutPage() {
                     />
                 </div>
                 <div className="flex-1">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
-                    <div className="text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
+                    <div className="work-title text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
+                    <div className="work-intro text-base text-ink mb-4">7+ years of work experience as builder of AI products that drive
                         real business value. Designed and deployed and scaled agentic systems, led product development. Lived a 0 → 1 devtool
                         startup journey. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
@@ -53,7 +53,7 @@ export default function AboutPage() {
             </div>
 
             {/* Desktop Layout: Image and text side by side */}
-            <div className="hidden sm:flex sm:flex-row items-start sm:items-end gap-8 mb-10">
+            <div className="work-hero hidden sm:flex sm:flex-row items-start sm:items-end gap-10 mb-10">
                 {/* Image on the left */}
                 <div className="flex-shrink-0 w-full sm:w-auto">
                     <Image
@@ -69,8 +69,8 @@ export default function AboutPage() {
 
                 {/* Text content on the right */}
                 <div className="flex-1 flex flex-col justify-end">
-                    <div className="text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
-                    <div className="text-base text-ink mb-4">Builder of AI products that drive
+                    <div className="work-title text-3xl font-serif font-bold text-ink mb-2">Yash's Work</div>
+                    <div className="work-intro text-base text-ink mb-4">Builder of AI products that drive
                         real business value. Designed, deployed and scaled agentic systems. Lived a 0 → 1 devtool
                         startup journey, led product development. Open for consulting roles.<br /><br />
                         Currently focusing on AI research in neural networks and automata theory.
@@ -90,7 +90,8 @@ export default function AboutPage() {
             </div>
 
             {/* Work Experience */}
-            <div id="work-experience" className="mb-8">
+            <div id="work-experience" className="work-experience mb-8">
+                <h2 className="work-section-title">Experience</h2>
 
                 {/* Razorpay */}
                 <div className="mb-8 ">
@@ -386,7 +387,7 @@ export default function AboutPage() {
             </div>
 
             {/* Education */}
-            <div id="education">
+            <div id="education" className="work-education">
                 <span className="text-2xl font-serif font-bold text-ink mb-8">Education</span>
 
                 <div className="mb-6">

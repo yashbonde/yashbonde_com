@@ -326,3 +326,111 @@ button:focus-visible {
   overflow-y: hidden;
   padding: 0.5rem 0;
 }
+
+/* Work page: restrained resume layout */
+.work-page {
+  padding-bottom: 2rem;
+}
+
+.work-hero {
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.work-hero img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.work-title {
+  letter-spacing: -0.035em;
+}
+
+.work-intro {
+  max-width: 35rem;
+  line-height: 1.62;
+}
+
+.work-section-title {
+  margin: 0;
+  padding: 0 0 0.8rem;
+  font-family: var(--font-source-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.work-experience {
+  scroll-margin-top: 2rem;
+}
+
+.work-experience > div {
+  margin-bottom: 0;
+  padding: 1.75rem 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.work-experience > div:first-of-type {
+  border-top-color: #d1d5db;
+}
+
+.work-experience .position-text {
+  margin-bottom: 0.1rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.work-experience code,
+.work-education code {
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+.work-experience > div > .flex:first-child > .text-left,
+.work-education .text-left {
+  color: #6b7280;
+  font-size: 0.84rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.work-experience p,
+.work-experience li,
+.work-education p {
+  line-height: 1.58;
+}
+
+.work-experience .text-justify,
+.work-education .text-justify {
+  text-align: left;
+}
+
+.work-experience ul {
+  max-width: 46rem;
+}
+
+.work-education {
+  padding-top: 2rem;
+  border-top: 1px solid #d1d5db;
+}
+
+@media (max-width: 639px) {
+  .work-hero {
+    padding-bottom: 2rem;
+  }
+
+  .work-section-title {
+    padding-top: 0.25rem;
+  }
+
+  .work-experience > div {
+    padding: 1.4rem 0;
+  }
+
+  .work-experience > div > .flex:first-child > .text-left,
+  .work-education .text-left {
+    margin-top: 0.25rem;
+  }
+}
