@@ -1,4 +1,5 @@
 import fs from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 
@@ -20,6 +21,10 @@ export type FrontMatter = {
     tags?: string[];
     disclaimer?: string;
     ogImage?: string;
+    generated?: boolean;
+    hide?: boolean;
+    eyebrow?: string;
+    generator?: string;
     references: Reference[];
     [key: string]: unknown;
 };
@@ -31,12 +36,14 @@ export type Post = {
     frontMatter: FrontMatter;
 };
 
-// Hardcoded post index — no disk reads needed for listing.
-// When you add a new post, add an entry here.
-const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[]; group?: string }[] = [
+// The index controls ordering and includes non-post artifacts. For internal posts,
+// metadata comes from MDX frontmatter so titles, tags, and visibility have one
+// source of truth.
+const POST_INDEX: { slug: string; url?: string; title: string; date: string; tags: string[]; group?: string; generated?: boolean; eyebrow?: string; generator?: string; ogImage?: string }[] = [
     // 2026
-    { slug: "razorpay-ai-learnings", title: "8 lessons working in Agentic Era", date: "2026-07-31", tags: ["Razorpay", "Agent Engineering"] },
-    { slug: "toroid-agentic-kernels", title: "Toroid: Agentic Micro-Kernels", date: "2026-04-20", tags: ["Toroid Kernel", "Agent Engineering"] },
+    { slug: "artha-bench", title: "Can a model build the library?", date: "2026-08-09", tags: ["Project Artha"], ogImage: "https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/artha-bench-temple.webp" },
+    { slug: "razorpay-ai-learnings", title: "8 lessons working in Agentic Era", date: "2026-07-31", tags: ["Razorpay", "Agent Engineering"], ogImage: "https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/red-mountain-viaduct.webp" },
+    { slug: "toroid-agentic-kernels", title: "Toroid: Agentic Micro-Kernels", date: "2026-04-20", tags: ["Toroid Kernel", "Agent Engineering"], ogImage: "https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/toroid-OG-image.og.jpg" },
     // { slug: "automata/6-anna-nueral-model", title: "Neural Automata #6: ANNA", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/5-i-mean-why", title: "Neural Automata #5: I mean, why?", date: "2026-02-12", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
 
@@ -45,12 +52,12 @@ const POST_INDEX: { slug: string; url?: string; title: string; date: string; tag
     { group: "Neural Automata: Supplementary", slug: "neural-automata-matrix-memory", url: "/pages/neural-automata-matrix-memory.html", title: "Neural Automata: Matrix (Random Access) Memory", date: "2026-02-17", tags: ["Notes", "Neural Automata"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-stack-rnn-comparison", url: "/pages/neural-automata-stack-rnn-comparison.html", title: "Neural Automata: Stack Memory Models", date: "2026-02-17", tags: ["Notes", "Neural Automata", "Research"] },
     { group: "Neural Automata: Supplementary", slug: "neural-automata-task-visualizer", url: "/pages/neural-automata-task-visualizer.html", title: "Neural Automata Task Visualizer", date: "2026-02-13", tags: ["Notes", "Neural Automata", "Research"] },
-    { slug: "automata/4a-code-review-neural-automata", title: "Neural Automata #4a: Technical Overview", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
+    { group: "Neural Automata", slug: "automata/4a-code-review-neural-automata", title: "Neural Automata #4a: Technical Overview", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
     // { slug: "automata/4-literature-review-neural-automata", title: "Neural Automata #4: Literature review", date: "2026-02-11", tags: ["Notes", "Neural Automata", "Neural Networks", "Research"] },
-    { slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-15", tags: ["Notes", "Neural Automata", "Neural Networks"] },
-    { slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Automata Theory", "Neural Networks"] },
-    { slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Automata Theory"] },
-    { slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { group: "Neural Automata", slug: "automata/3-types-of-automata", title: "Neural Automata #3: The species of computers", date: "2026-02-15", tags: ["Notes", "Neural Automata", "Neural Networks"] },
+    { group: "Neural Automata", slug: "automata/2-real-computers", title: "Neural Automata #2: How to build a computer", date: "2026-02-14", tags: ["Notes", "Automata Theory", "Neural Networks"] },
+    { group: "Neural Automata", slug: "automata/1-automata-history", title: "Neural Automata #1: Theoretical computers", date: "2026-02-06", tags: ["Notes", "Automata Theory"] },
+    { group: "Neural Automata", slug: "automata/0-prologue-start", title: "Neural Automata #0: Hitchhiker's Guide", date: "2026-02-05", tags: ["Notes", "Automata Theory", "Neural Networks"] },
     { slug: "open-square-prism", url: "https://github.com/yashbonde/open-square-prism", title: "Open<sup>2</sup>Prism: A clone of OpenAI Prism for personal notes", date: "2026-02-04", tags: ["Code"] },
 
     // 2025
@@ -101,18 +108,44 @@ const POST_INDEX: { slug: string; url?: string; title: string; date: string; tag
     { slug: "typesetting", title: "Typesetting and the Software of Making", date: "2018-08-14", tags: ["Notes"] },
 ];
 
-export function getAllPosts(): Post[] {
-    return POST_INDEX.map(p => ({
-        slug: p.slug,
-        url: p.url,
-        group: p.group,
-        frontMatter: {
-            title: p.title,
-            date: p.date,
-            tags: p.tags,
-            references: [],
-        } as FrontMatter,
-    }));
+function getIndexedPosts(): Post[] {
+    return POST_INDEX.map(p => {
+        let fileFrontMatter: Record<string, unknown> = {};
+
+        if (!p.url) {
+            for (const extension of ["mdx", "md"]) {
+                try {
+                    const raw = readFileSync(path.join(CONTENT_DIRS[0], `${p.slug}.${extension}`), "utf8");
+                    fileFrontMatter = matter(raw).data;
+                    break;
+                } catch {
+                    // Try the next extension; index metadata remains the fallback.
+                }
+            }
+        }
+
+        return {
+            slug: p.slug,
+            url: p.url,
+            group: p.group,
+            frontMatter: {
+                title: p.title,
+                date: p.date,
+                tags: p.tags,
+                generated: p.generated,
+                eyebrow: p.eyebrow,
+                generator: p.generator,
+                ogImage: p.ogImage,
+                ...fileFrontMatter,
+                references: (fileFrontMatter.references as Reference[] | undefined) || [],
+            } as FrontMatter,
+        };
+    });
+}
+
+export function getAllPosts(options: { includeHidden?: boolean } = {}): Post[] {
+    const posts = getIndexedPosts();
+    return options.includeHidden ? posts : posts.filter(p => p.frontMatter.hide !== true);
 }
 
 export function getCombinedPosts(): Post[] {

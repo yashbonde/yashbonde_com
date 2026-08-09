@@ -57,7 +57,7 @@ export default function TagsDisplay({ tags }: TagsDisplayProps) {
     }
 
     return (
-        <div className="flex flex-wrap justify-center gap-2 font-mono text-xs mb-8">
+        <div className="flex flex-wrap justify-start gap-2 font-mono text-xs mb-8">
             {tags.map(tag => {
                 const colors = tagColors[tag];
                 return (
@@ -85,7 +85,6 @@ export default function TagsDisplay({ tags }: TagsDisplayProps) {
         </div>
     );
 }
-
 
 
 

@@ -1,0 +1,75 @@
+---
+title: /DRAFT/ Artha Bench - The Best Sanskrit AI
+subtitle: Artha Bench tests whether an AI coding harness can turn a complete 1000+ irregular Sanskrit books into a useful, verifiable and standaridised database.
+date: "2026-08-09"
+hide: true
+tags:
+  - Project Artha
+ogImage: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/artha-bench-temple.webp
+---
+
+The aim of Project Artha is to build the most comprehensive AI for Ancient Bhāratiya literature particularly for Sanskrit. Every once in a while, when motivated I pick up [Project Artha](https://yashbonde.com/blogs/artha/project-arth-ui-design-and-implementation) and try to give it a better direction. On the lastest:
+1. Build a [website](https://artha-pearl.vercel.app) with over 100K+ shlokas, transliterated, translated with permalinks to make it easily shareable.
+2. Manually build python pipeline to standardise over 20 books into a queryable corpus. Wrote 35+ rules to provide code level guarantees on extraction. **Ultimately this is a unstructured to structured generation task.**
+3. Created a dataset on huggingface: [Indic GRETIL dump](https://huggingface.co/datasets/yashnbx/indic-gretil-dump), which is the complete raw input into the system.
+
+Its been many years I've been hammering this problem, and today we have `claude`, `codex`. Coding harnesses convert any task that remotely has a structure to be optimized. I decided to throw this problem to the agents and see the results. Here's what 6 hours of agents were able to build: [status board](/pages/artha-bench-1.html)
+
+It is very satisfying to see that AI was able to solve this in a faster way, though bootstrapped with some of my previous work. I also feel a little guilty that I did not spend time and solve this before. Could've been more diligent, but nothing beats a computers autoloop.
+
+**Then the realisation** this can be converted into a benchmark for agentic harness to make the best Sanskrit AI in the world. We give agent this prompt and then measure its performance:
+
+This is 
+
+```
+You are given the task of standardising the input dataset: https://data.yashbonde.com/artha-bench/v1/yashbonde-artha-bench.tar.zst, checksum at .sha256)
+by extenting the SQLite database containing a unique ID
+for each śloka, commentary, and other textual block.
+```
+
+This is the complete assignment. The harness must determine the implementation.
+
+## What Agents are expected to do
+
+Gretil's books preserve many editorial histories. A verse may live in one paragraph, span several paragraphs, or share a paragraph with dozens of citations. Commentary and root text can be visually adjacent but structurally indistinguishable.
+
+> Success means building the system, not merely extracting a sample.
+
+```text
+1,035 books
+HTML from multiple editorial conventions
+śloka · prose · commentary · apparatus
+references · sections · speakers · fragments
+```
+
+```text
+books
+textual_units
+  id · book_id · type · text · reference
+  section · speaker · sequence · metadata
+validation reports · reproducible pipeline
+```
+
+The required artifact is a queryable SQLite database produced by a reusable Python pipeline.
+
+## What it measures
+
+The unit under test is the model and its harness together. It must acquire the dataset, explore it, choose a schema, implement a Python pipeline, reason about Sanskrit conventions, create stable identifiers, run checks, and revise its approach when a plausible rule fails elsewhere in the corpus.
+
+1. **System building.** Deliver runnable Python code that downloads or loads the dataset, processes all books, and creates the SQLite database reproducibly.
+2. **Pattern discovery.** Infer whether a work is tagged verse, citation-delimited verse, prose, commentary, manuscript fragment, or another recurring shape.
+3. **Sanskrit-aware segmentation.** Use daṇḍas, pāda labels, sigla, recensions, speakers, and editorial apparatus without mistaking any one of them for a universal delimiter.
+4. **Database design.** Give every śloka, commentary, prose passage, heading, and other retained block a unique, stable ID with its book and source provenance.
+5. **Losslessness.** Account for source text character by character, including text intentionally moved into fields such as `section` and `speaker`.
+6. **Boundary correctness.** Avoid the subtler failure: achieving high character coverage while joining commentary to a verse or merging one verse into its neighbour.
+7. **Generalization.** Turn local discoveries into reusable parser shapes, then know when not to apply them.
+
+### Why coverage alone is not enough
+
+A parser can retain nearly every character while attaching commentary to the wrong verse. It can even report 100% after ignoring loose text nodes when its denominator ignores them too. Artha Bench therefore treats conservation of text as a floor, not proof of understanding.
+
+## A benchmark of judgement
+
+There is no single parser to guess. The strongest system should survey the corpus, form hypotheses, implement reusable strategies, detect what it dropped, and preserve exceptions without collapsing into one-off code. That makes Artha Bench a test of software architecture, code generation, tool use, iterative verification, and Sanskrit understanding in one task.
+
+Evaluation should cover whether the system runs end to end, processes the complete dataset, produces a valid and queryable SQLite database, assigns stable unique IDs, accounts for the source text, preserves unit boundaries, handles apparatus correctly, and records enough provenance to audit every row.

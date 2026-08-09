@@ -3,7 +3,7 @@ import { ArrowDown } from "lucide-react";
 
 export default function AboutPage() {
     return (
-        <section className="work-page max-w-4xl mx-auto">
+        <section className="work-page max-w-3xl mx-auto">
             {/* Mobile Layout: Image full width, text below */}
             <div className="work-hero flex flex-col sm:hidden mb-10">
                 <div className="mb-6 w-full">
@@ -89,12 +89,13 @@ export default function AboutPage() {
                 </div>
             </div>
 
-            {/* Work Experience */}
-            <div id="work-experience" className="work-experience mb-8">
-                <h2 className="work-section-title">Experience</h2>
+            <section id="work-experience" className="work-experience mb-8" aria-labelledby="work-experience-heading">
+                <h2 id="work-experience-heading" className="work-section-title">Work Experience</h2>
 
                 {/* Razorpay */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">May 2026 — Present <small>Bengaluru</small></span><span>AI Engineer, Founder&apos;s Office <small><a href="https://razorpay.com" target="_blank" rel="noopener noreferrer">Razorpay ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">AI Engineer, Founder&apos;s Office</p>
@@ -116,33 +117,12 @@ export default function AboutPage() {
                         </li>
                     </ul>
                 </div>
-
-                {/* Consulting */}
-                <div className="mb-8 ">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                        <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">Self Employed</p>
-                        </div>
-                        <div className="text-left sm:text-right text-ink">
-                            <p>December 2025 — May 2026</p>
-                        </div>
-                    </div>
-                    <ul className="text-ink space-y-1 mb-2">
-                        <li className="flex gap-2 text-justify">
-                            <span>•</span>
-                            <span>Building AI products for small enterprises. Autonomous agents for research, development and sales.</span>
-                        </li>
-                        <li className="flex gap-2 text-justify">
-                            <span>•</span>
-                            <p className="text-ink">AI research into building neural automata, neural networks that can operate like a computer.{" "}
-                                <a href="/blogs/automata/0-prologue-start" className="underline">Read the blog series</a>.
-                            </p>
-                        </li>
-                    </ul>
-                </div>
+                </details>
 
                 {/* Ema Unlimited */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">Mar. — Dec. 2025 <small>Bangalore</small></span><span>Software Engineer, CVE Lead <small><a href="https://ema.co" target="_blank" rel="noopener noreferrer">Ema Unlimited ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Software Engineer, CVE Lead</p>
@@ -171,9 +151,12 @@ export default function AboutPage() {
                         Led building CVE-One AI for post sales team to automate project management. Used by multiple teams to track updates
                         for a project.</p>
                 </div>
+                </details>
 
                 {/* Tune AI */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">Dec. 2020 — Feb. 2025 <small>Chennai · Bangalore · San Francisco</small></span><span>Head of Research <small><a href="https://github.com/NimbleBoxAI" target="_blank" rel="noopener noreferrer">Tune AI ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">Head of Research</p>
@@ -250,23 +233,12 @@ export default function AboutPage() {
                         </ul>
                     </div>
                 </div>
-
-                {/* NPAW */}
-                <div className="mb-8 ">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                        <div className="mb-2 sm:mb-0">
-                            <p className="text-lg font-serif font-semibold position-text">AI Consultant</p>
-                            <p className="text-base text-ink font-medium"><code>NPAW, Spain</code></p>
-                        </div>
-                        <div className="text-left sm:text-right text-ink">
-                            <p>Dec. 2020 — March 2021, Remote</p>
-                        </div>
-                    </div>
-                    <p className="text-ink">Research and develop a Grafana plugin agent that converts user input in natural langauge to charts. The novel solution used a decision tree to parse the query parameters based on prompting. Deployed <span className="font-bold">model sharded GPT-2 1Bn</span> on <span className="font-bold">2 Nvidia-3090 GPUs</span> to maximise the context length for each input query.</p>
-                </div>
+                </details>
 
                 {/* Shipmnts */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">July 2019 — Nov. 2020 <small>Ahmedabad</small></span><span>ML Engineer <small><a href="https://shipmnts.com/" target="_blank" rel="noopener noreferrer">Shipmnts ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">ML Engineer</p>
@@ -299,9 +271,12 @@ export default function AboutPage() {
                         </li>
                     </ul>
                 </div>
+                </details>
 
                 {/* Internships Section */}
-                <div className="mb-8">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">2016 — 2018 <small>Bangalore · Pune · Nagpur</small></span><span>Internships <small>Kaaenaat · <a href="https://connecticus.in/" target="_blank" rel="noopener noreferrer">Connecticus ↗</a> · <a href="https://www.mastersoft.ai/" target="_blank" rel="noopener noreferrer">MasterSoft ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <span className="text-lg font-serif font-bold mb-6">Internships</span>
 
                     <div className="space-y-8">
@@ -334,9 +309,64 @@ export default function AboutPage() {
 
                     </div>
                 </div>
+                </details>
+            </section>
+
+            <section id="consulting" className="work-experience mb-8" aria-labelledby="consulting-heading">
+                <h2 id="consulting-heading" className="work-section-title">Consulting</h2>
+
+                {/* Consulting */}
+                <details className="work-archive-item">
+                    <summary><span className="work-date">Dec. 2025 — May 2026</span><span>Self Employed <small>AI products &amp; research</small></span></summary>
+                <div className="work-archive-content">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                        <div className="mb-2 sm:mb-0">
+                            <p className="text-lg font-serif font-semibold position-text">Self Employed</p>
+                        </div>
+                        <div className="text-left sm:text-right text-ink">
+                            <p>December 2025 — May 2026</p>
+                        </div>
+                    </div>
+                    <ul className="text-ink space-y-1 mb-2">
+                        <li className="flex gap-2 text-justify">
+                            <span>•</span>
+                            <span>Building AI products for small enterprises. Autonomous agents for research, development and sales.</span>
+                        </li>
+                        <li className="flex gap-2 text-justify">
+                            <span>•</span>
+                            <p className="text-ink">AI research into building neural automata, neural networks that can operate like a computer.{" "}
+                                <a href="/blogs/automata/0-prologue-start" className="underline">Read the blog series</a>.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+                </details>
+
+                {/* NPAW */}
+                <details className="work-archive-item">
+                    <summary><span className="work-date">Dec. 2020 — Mar. 2021 <small>Remote</small></span><span>AI Consultant <small>NPAW · Spain</small></span></summary>
+                <div className="work-archive-content">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
+                        <div className="mb-2 sm:mb-0">
+                            <p className="text-lg font-serif font-semibold position-text">AI Consultant</p>
+                            <p className="text-base text-ink font-medium"><code>NPAW, Spain</code></p>
+                        </div>
+                        <div className="text-left sm:text-right text-ink">
+                            <p>Dec. 2020 — March 2021, Remote</p>
+                        </div>
+                    </div>
+                    <p className="text-ink">Research and develop a Grafana plugin agent that converts user input in natural langauge to charts. The novel solution used a decision tree to parse the query parameters based on prompting. Deployed <span className="font-bold">model sharded GPT-2 1Bn</span> on <span className="font-bold">2 Nvidia-3090 GPUs</span> to maximise the context length for each input query.</p>
+                </div>
+                </details>
+            </section>
+
+            <section id="research" className="work-experience mb-8" aria-labelledby="research-heading">
+                <h2 id="research-heading" className="work-section-title">Research</h2>
 
                 {/* Project Artha */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">2018 — Present</span><span>Developer <small><a href="https://artha-pearl.vercel.app" target="_blank" rel="noopener noreferrer">Project अर्थ (Artha) ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">
@@ -353,9 +383,12 @@ export default function AboutPage() {
                         </a> and contribute.
                     </p>
                 </div>
+                </details>
 
                 {/* KS2 Labs */}
-                <div className="mb-8 ">
+                <details className="work-archive-item">
+                    <summary><span className="work-date">2019 — Present</span><span>AI Researcher <small><a href="https://github.com/yashbonde" target="_blank" rel="noopener noreferrer">Independent research ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">AI Researcher</p>
@@ -381,16 +414,15 @@ export default function AboutPage() {
                         </ul>
                     </div>
                 </div>
-            </div>
-
-            <div id="projects" className="mb-8">
-            </div>
+                </details>
+            </section>
 
             {/* Education */}
             <div id="education" className="work-education">
-                <span className="text-2xl font-serif font-bold text-ink mb-8">Education</span>
-
-                <div className="mb-6">
+                <h2 className="work-section-title">Education</h2>
+                <details className="work-archive-item">
+                    <summary><span className="work-date">May 2015 — May 2019 <small>Raipur</small></span><span>B. Tech., Electronics &amp; Telecommunication <small><a href="https://www.nitrr.ac.in/" target="_blank" rel="noopener noreferrer">NIT Raipur ↗</a></small></span></summary>
+                <div className="work-archive-content">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
                         <div className="mb-2 sm:mb-0">
                             <p className="text-lg font-serif font-semibold position-text">B. Tech. in Electronics and Telecommunication</p>
@@ -407,6 +439,7 @@ export default function AboutPage() {
                             <span className="font-semibold ml-1">GitHub</span>
                         </a></p>
                 </div>
+                </details>
             </div>
         </section>
     );

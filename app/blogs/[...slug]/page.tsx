@@ -15,7 +15,8 @@ import type { Metadata } from "next";
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-    const posts = getAllPosts();
+    // Hidden posts remain available to readers who have their direct URL.
+    const posts = getAllPosts({ includeHidden: true });
     return posts
         .filter((p) => !p.url) // Only generate pages for internal blog posts
         .map((p) => {
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             siteName: 'Yash Bonde',
             type: 'article',
             publishedTime: post.frontMatter.date,
-            authors: ['Yash Bonde'],
+            authors: post.frontMatter.generated ? undefined : ['Yash Bonde'],
             ...(image && {
                 images: [
                     {
@@ -76,6 +77,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     const slugString = slug.join('/');
     const post = await getPostBySlug(slugString);
     if (!post) return notFound();
+
+    const isGenerated = post.frontMatter.generated === true;
 
     if (post.frontMatter.url && typeof post.frontMatter.url === 'string') {
         redirect(post.frontMatter.url);
@@ -251,25 +254,34 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
 
     return (
-        <article>
+        <article className={isGenerated ? "generated-page" : "authored-page"}>
             <div className="prose py-4 mt-4 px-8">
                 <div className="mx-auto" style={{ maxWidth: '48rem', width: '100%' }}>
                     {post.frontMatter.ogImage && (
-                        <div className="mb-12 overflow-hidden rounded-lg aspect-video">
+                        <div className="article-cover overflow-hidden rounded-lg">
                             <img
                                 src={post.frontMatter.ogImage}
                                 alt={post.frontMatter.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-auto"
                             />
                         </div>
                     )}
-                    <div className="text-4xl font-serif font-bold text-ink text-center mb-2">{post.frontMatter.title}</div>
+                    <div className={isGenerated ? "generated-header" : "authored-header"}>
+                    {isGenerated && post.frontMatter.eyebrow && (
+                        <div className="generated-eyebrow">{post.frontMatter.eyebrow}</div>
+                    )}
+                    {!isGenerated && (
+                        <div className="authored-eyebrow">
+                            Yash&apos;s Notes{post.frontMatter.tags?.[0] ? ` / ${post.frontMatter.tags[0]}` : ""}
+                        </div>
+                    )}
+                    <div className={isGenerated ? "generated-title" : "authored-title"}>{post.frontMatter.title}</div>
                     {post.frontMatter.subtitle && (
-                        <div className="text-lg text-center text-ink mb-2">{post.frontMatter.subtitle}</div>
+                        <div className={isGenerated ? "generated-dek" : "authored-dek"}>{post.frontMatter.subtitle}</div>
                     )}
                     {post.frontMatter.date && (
-                        <div className="text-sm font-mono text-center text-ink mb-8">
-                            Yash Bonde . {post.frontMatter.date}
+                        <div className={isGenerated ? "generated-meta" : "authored-meta"}>
+                            {isGenerated ? (post.frontMatter.generator || "AI-generated") : "Yash Bonde"} · {post.frontMatter.date}
                         </div>
                     )}
                     {post.frontMatter.tags && post.frontMatter.tags.length > 0 && (
@@ -290,6 +302,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                             </div>
                         </div>
                     )}
+                    </div>
                 </div>
             </div>
             <div className="prose px-8">
@@ -337,7 +350,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
                 <div className="mt-4 border-t border-gray-200 pt-8 mx-auto" style={{ maxWidth: '48rem', width: '100%' }}>
                     <p className="text-gray-500 italic text-sm">
-                        The opinions expressed herein are solely those of the author in their individual capacity and do not necessarily reflect the official policy or position of any current or former employer, client, or affiliated organization.
+                        {isGenerated
+                            ? "This page was generated with AI under human direction and review. It is presented as an artifact, not as writing authored by Yash Bonde."
+                            : "The opinions expressed herein are solely those of the author in their individual capacity and do not necessarily reflect the official policy or position of any current or former employer, client, or affiliated organization."}
                         {" "}
                         <a
                             href={`https://github.com/yashbonde/yashbonde_com/issues/new?title=${encodeURIComponent(`Request changes in ${slugString}`)}`}
@@ -353,5 +368,3 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </article>
     );
 }
-
-

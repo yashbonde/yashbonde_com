@@ -38,6 +38,11 @@ const nextConfig: NextConfig = {
         destination: '/',
         permanent: true,
       },
+      {
+        source: '/artha-bench-landing',
+        destination: '/artha-bench-landing/index.html',
+        permanent: false,
+      },
     ];
   },
 };

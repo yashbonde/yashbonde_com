@@ -13,6 +13,8 @@ type Post = {
         subtitle?: string;
         date?: string;
         tags?: string[];
+        generated?: boolean;
+        ogImage?: string;
     };
 };
 
@@ -122,6 +124,17 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
         });
     }, [selectedFilter, initialPosts]);
 
+    const featuredPosts = useMemo(() => {
+        const featuredSlugs = [
+            "artha-bench",
+            "toroid-agentic-kernels",
+            "automata/0-prologue-start",
+        ];
+        return featuredSlugs
+            .map(slug => initialPosts.find(post => post.slug === slug))
+            .filter((post): post is Post => !!post);
+    }, [initialPosts]);
+
     const groupCounts = useMemo(() => {
         const counts: Record<string, number> = {};
         filteredPosts.forEach(post => {
@@ -144,11 +157,18 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
     };
 
     const renderPostLink = (post: Post) => {
+        const isArtifact = !!post.url || !!post.frontMatter.generated;
         const content = (
             <span
                 className="text-link group-hover:text-link-hover transition-colors"
                 dangerouslySetInnerHTML={{ __html: post.frontMatter.title }}
             />
+        );
+
+        const artifactLabel = isArtifact && (
+            <span className="archive-artifact-label">
+                {post.url ? "external ↗" : "AI artifact"}
+            </span>
         );
 
         if (post.url) {
@@ -157,35 +177,127 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-1.5"
+                    className="group archive-post-link archive-artifact-link"
                 >
-                    <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-link group-hover:text-link-hover transition-colors"
-                    >
-                        <path d="M7 17l9.2-9.2M17 17V7H7" />
-                    </svg>
                     {content}
+                    {artifactLabel}
                 </a>
             );
         }
 
         return (
-            <Link href={`/blogs/${post.slug}`} className="group" prefetch={false}>
+            <Link
+                href={`/blogs/${post.slug}`}
+                className={`group archive-post-link ${isArtifact ? "archive-artifact-link" : ""}`}
+                prefetch={false}
+            >
                 {content}
+                {artifactLabel}
             </Link>
         );
     };
 
+    const renderPostItems = (posts: Post[]) => {
+        const renderedGroups = new Set<string>();
+
+        return posts.map((post, index) => {
+            const year = post.frontMatter.date ? post.frontMatter.date.split('-')[0] : '';
+            const prevYear = index > 0
+                ? posts[index - 1].frontMatter.date?.split('-')[0] ?? ''
+                : '';
+            const showYear = year && year !== prevYear;
+
+            if (post.group && groupCounts[post.group] > 1) {
+                if (renderedGroups.has(post.group)) {
+                    if (expandedGroups[post.group]) {
+                        return (
+                            <li key={post.slug} className="flex items-baseline ml-6">
+                                <span className="archive-year" aria-hidden="true" />
+                                {renderPostLink(post)}
+                            </li>
+                        );
+                    }
+                    return null;
+                }
+
+                renderedGroups.add(post.group);
+                const isExpanded = !!expandedGroups[post.group];
+                return (
+                    <li key={`group-${post.group}`} className="flex flex-col">
+                        <div className="flex items-baseline">
+                            <span className="archive-year">{showYear ? year : ''}</span>
+                            <button
+                                onClick={() => toggleGroup(post.group!)}
+                                className="text-link hover:text-link-hover transition-colors text-left cursor-pointer flex items-center gap-1.5 group"
+                                style={{ textDecoration: 'none' }}
+                            >
+                                <svg
+                                    width="12"
+                                    height="12"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                                >
+                                    <polyline points="6 9 12 15 18 9" />
+                                </svg>
+                                <span>{post.group}</span>
+                            </button>
+                        </div>
+                        {isExpanded && (
+                            <div className="flex items-baseline ml-6 mt-1">
+                                <span className="archive-year" aria-hidden="true" />
+                                {renderPostLink(post)}
+                            </div>
+                        )}
+                    </li>
+                );
+            }
+
+            return (
+                <li key={post.slug} className="flex items-baseline">
+                    <span className="archive-year">{showYear ? year : ''}</span>
+                    {renderPostLink(post)}
+                </li>
+            );
+        });
+    };
+
     return (
         <div className="mt-12">
+            <section className="featured-posts" aria-labelledby="featured-heading">
+                <div className="featured-posts-heading">
+                    <h2 id="featured-heading">Featured</h2>
+                    <span>Recent work and larger projects</span>
+                </div>
+                <div className="featured-posts-grid">
+                    {featuredPosts.map(post => (
+                        <Link
+                            key={post.slug}
+                            href={`/blogs/${post.slug}`}
+                            className="featured-post group"
+                            prefetch={false}
+                        >
+                            {post.frontMatter.ogImage && (
+                                <div className="featured-post-image">
+                                    <img src={post.frontMatter.ogImage} alt="" />
+                                </div>
+                            )}
+                            <div className="featured-post-copy">
+                                <span className="featured-post-meta">
+                                    {post.frontMatter.tags?.[0]} · {post.frontMatter.date?.slice(0, 4)}
+                                </span>
+                                <h3 dangerouslySetInnerHTML={{ __html: post.frontMatter.title }} />
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
+            <h2 id="archive-heading" className="archive-heading">Writing, artifacts &amp; links</h2>
             <div className="mb-8">
                 {/* Filters */}
                 {(initialTags.length > 0 || availableYears.length > 0) && (
@@ -259,84 +371,11 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
                 )}
             </div>
 
-            {/* Posts List */}
-            <ul className="space-y-1">
-                {(() => {
-                    const renderedGroups = new Set<string>();
-                    return filteredPosts.map((post, index) => {
-                        const year = post.frontMatter.date ? post.frontMatter.date.split('-')[0] : '';
-                        const prevYear = index > 0
-                            ? filteredPosts[index - 1].frontMatter.date?.split('-')[0] ?? ''
-                            : '';
-                        const showYear = year && year !== prevYear;
+            <div className="landing-archive-grid">
+                <section className="archive-column" aria-labelledby="archive-heading">
+                    <ul className="archive-list">{renderPostItems(filteredPosts)}</ul>
+                </section>
 
-                        // Check if post belongs to a group AND there's more than one matching item
-                        if (post.group && groupCounts[post.group] > 1) {
-                            if (renderedGroups.has(post.group)) {
-                                // If group is expanded, render the post as part of the group
-                                if (expandedGroups[post.group]) {
-                                    return (
-                                        <li key={post.slug} className="flex items-baseline ml-6">
-                                            <span className="text-gray-400 font-mono text-xs shrink-0" style={{ width: '2.5rem', display: 'inline-block' }}>
-                                                {/* No year for grouped items to keep it clean, or could show small version */}
-                                            </span>
-                                            {renderPostLink(post)}
-                                        </li>
-                                    );
-                                }
-                                return null; // Already rendered the group header and this item is hidden
-                            } else {
-                                renderedGroups.add(post.group);
-                                const isExpanded = !!expandedGroups[post.group];
-                                return (
-                                    <li key={`group-${post.group}`} className="flex flex-col">
-                                        <div className="flex items-baseline">
-                                            <span className="text-gray-500 font-mono text-sm shrink-0" style={{ width: '2.5rem', display: 'inline-block' }}>
-                                                {showYear ? year : ''}
-                                            </span>
-                                            <button
-                                                onClick={() => toggleGroup(post.group!)}
-                                                className="text-link hover:text-link-hover transition-colors text-left cursor-pointer flex items-center gap-1.5 group"
-                                                style={{ textDecoration: 'none' }}
-                                            >
-                                                <svg
-                                                    width="12"
-                                                    height="12"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2.5"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    className={`transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-                                                >
-                                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                                </svg>
-                                                <span>{post.group}</span>
-                                            </button>
-                                        </div>
-                                        {isExpanded && (
-                                            <div className="flex items-baseline ml-6 mt-1">
-                                                <span className="text-gray-400 font-mono text-xs shrink-0" style={{ width: '2.5rem', display: 'inline-block' }}>
-                                                </span>
-                                                {renderPostLink(post)}
-                                            </div>
-                                        )}
-                                    </li>
-                                );
-                            }
-                        }
-
-                        return (
-                            <li key={post.slug} className="flex items-baseline">
-                                <span className="text-gray-500 font-mono text-sm shrink-0" style={{ width: '2.5rem', display: 'inline-block' }}>
-                                    {showYear ? year : ''}
-                                </span>
-                                {renderPostLink(post)}
-                            </li>
-                        );
-                    });
-                })()}
                 {filteredPosts.length === 0 && selectedFilter && (
                     <EmptyFilterState
                         tag={selectedFilter}
@@ -349,7 +388,7 @@ export default function LandingBlogList({ initialPosts, initialTags }: LandingBl
                 {filteredPosts.length === 0 && !selectedFilter && (
                     <p className="text-gray-500 italic">No posts found.</p>
                 )}
-            </ul>
+            </div>
         </div>
     );
 }

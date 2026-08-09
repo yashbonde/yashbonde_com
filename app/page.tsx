@@ -26,7 +26,7 @@ export default function Home() {
           </div>
           <div className="flex-1">
             <p className="text-3xl font-serif font-bold text-ink  mb-2">Yash's Notes</p>
-            <p className="text-base text-ink mb-6">AI Researcher. Lived a 0 → 1 Devtool Startup. Product Builder. Developing{' '}
+            <p className="text-base text-ink mb-6">AI Engineer, Founder&apos;s Office • Razorpay. AI Researcher. Lived a 0 → 1 Devtool Startup. Product Builder. Developing{' '}
               <a href="https://artha-pearl.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"

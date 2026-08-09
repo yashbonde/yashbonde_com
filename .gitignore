@@ -39,3 +39,4 @@ future
 false/
 content/blog/automata/*
 .images/
+.gstack/
