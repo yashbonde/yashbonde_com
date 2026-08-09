@@ -6,18 +6,31 @@ hide: true
 tags:
   - Project Artha
 ogImage: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashbonde/images/artha-bench-temple.webp
+references:
+- title: GRETIL Official Website
+  url: https://gretil.sub.uni-goettingen.de/gretil.html
 ---
 
 The aim of Project Artha is to build the most comprehensive AI for Ancient Bhāratiya literature particularly for Sanskrit. Every once in a while, when motivated I pick up [Project Artha](https://yashbonde.com/blogs/artha/project-arth-ui-design-and-implementation) and try to give it a better direction. On the lastest:
 1. Build a [website](https://artha-pearl.vercel.app) with over 100K+ shlokas, transliterated, translated with permalinks to make it easily shareable.
-2. Manually build python pipeline to standardise over 20 books into a queryable corpus. Wrote 35+ rules to provide code level guarantees on extraction. **Ultimately this is a unstructured to structured generation task.**
+2. Manually build python pipeline to standardise over 20 books into a queryable corpus. Wrote 35+ rules to provide code level guarantees on extraction.
 3. Created a dataset on huggingface: [Indic GRETIL dump](https://huggingface.co/datasets/yashnbx/indic-gretil-dump), which is the complete raw input into the system.
 
-Its been many years I've been hammering this problem, and today we have `claude`, `codex`. Coding harnesses convert any task that remotely has a structure to be optimized. I decided to throw this problem to the agents and see the results. Here's what 6 hours of agents were able to build: [status board](/pages/artha-bench-1.html)
+Its been many years I've been hammering this problem, and today we have `claude`, `codex`. Coding harnesses convert any task that remotely has a structure to be optimized. I decided to throw this problem to the agents and see the results.
 
-It is very satisfying to see that AI was able to solve this in a faster way, though bootstrapped with some of my previous work. I also feel a little guilty that I did not spend time and solve this before. Could've been more diligent, but nothing beats a computers autoloop.
+> It is very satisfying to see that AI was able to do in 5 hours what would've taken me years. I also feel a little guilty that I could've been more diligent.
 
-**Then the realisation** this can be converted into a benchmark for agentic harness to make the best Sanskrit AI in the world. We give agent this prompt and then measure its performance:
+### Manually in 5.4 hours
+
+If you are not aware, the above mentioned 3 points are what are inputs to an `agentic-loop`. These "loops" convert any set of sequences into an ever improving path. This is the **crux of automation, agents doing 50x more "work" overnight**.
+
+It took about \$30 by subscription cost or \$1650 by API costs ([semianalysis](https://x.com/SemiAnalysis_/status/2064815045767213400?s=20)). See the complete at [status board](/pages/artha-bench-1.html). 
+
+_how-it-was-built-component to be added here._
+
+The approach is pretty straightforward. I started with `claude` for framing the problem and `codex` to do all the coding. The inputs were 794 sanskrit books / 1000+ total books.
+
+**Then the realisation** what if I convert this to a benchmark for agentic harness to make the best Sanskrit AI in the world. We give agent this prompt and then measure its performance:
 
 This is 
 
@@ -28,7 +41,7 @@ for each śloka, commentary, and other textual block.
 ```
 
 This is the complete assignment. The harness must determine the implementation.
-
+**
 ## What Agents are expected to do
 
 Gretil's books preserve many editorial histories. A verse may live in one paragraph, span several paragraphs, or share a paragraph with dozens of citations. Commentary and root text can be visually adjacent but structurally indistinguishable.
