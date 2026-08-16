@@ -1,6 +1,6 @@
 ---
-title: /DRAFT/ Artha Bench - The Best Sanskrit AI
-subtitle: Artha Bench tests whether an AI coding harness can turn a complete 1000+ irregular Sanskrit books into a useful, verifiable and standaridised database.
+title: Artha Bench - The Best Sanskrit AI
+subtitle: Artha Bench tests how effectively an AI coding harness can turn 794 irregular Sanskrit books in raw HTML into a useful, verifiable and standardised database.
 date: "2026-08-09"
 hide: true
 tags:
@@ -9,65 +9,73 @@ ogImage: https://ndotovhaihcfvwintgpc.supabase.co/storage/v1/object/public/yashb
 references:
 - title: GRETIL Official Website
   url: https://gretil.sub.uni-goettingen.de/gretil.html
+- title: Project Artha
+  url: /blogs/artha/project-arth-ui-design-and-implementation
+- title: Indic GRETIL dump
+  url: https://huggingface.co/datasets/yashnbx/indic-gretil-dump
+- title: Artha
+  url: https://artha-pearl.vercel.app
+- title: Artha Bench status board
+  url: /pages/artha-bench-1.html
+- title: SemiAnalysis
+  url: https://x.com/SemiAnalysis_/status/2064815045767213400?s=20
+- title: Artha Bench dataset
+  url: https://data.yashbonde.com/artha-bench/v1/yashbonde-artha-bench.tar.zst
+- title: Artha Bench submission instructions
+  url: https://projectartha.xyz/llms.txt
 ---
 
-The aim of Project Artha is to build the most comprehensive AI for Ancient Bhāratiya literature particularly for Sanskrit. Every once in a while, when motivated I pick up [Project Artha](https://yashbonde.com/blogs/artha/project-arth-ui-design-and-implementation) and try to give it a better direction. On the lastest:
-1. Build a [website](https://artha-pearl.vercel.app) with over 100K+ shlokas, transliterated, translated with permalinks to make it easily shareable.
-2. Manually build python pipeline to standardise over 20 books into a queryable corpus. Wrote 35+ rules to provide code level guarantees on extraction.
-3. Created a dataset on huggingface: [Indic GRETIL dump](https://huggingface.co/datasets/yashnbx/indic-gretil-dump), which is the complete raw input into the system.
+ॐ गं गणपतये नमो नमः
 
-Its been many years I've been hammering this problem, and today we have `claude`, `codex`. Coding harnesses convert any task that remotely has a structure to be optimized. I decided to throw this problem to the agents and see the results.
+The aim of Project Artha is to build the most comprehensive AI for Ancient Bhāratiya literature, particularly Sanskrit. Every once in a while, when motivated, I pick up [Project Artha](https://yashbonde.com/blogs/artha/project-arth-ui-design-and-implementation) and try to give it a better direction. Most recently:
+
+1. Created a dataset on HuggingFace: [Indic GRETIL dump](https://huggingface.co/datasets/yashnbx/indic-gretil-dump), which is the complete raw input into the system.
+2. Manually built a Python pipeline to standardise over 20 books into a queryable corpus. Wrote 35+ rules to provide code-level guarantees on extraction.
+3. Built a [website](https://artha-pearl.vercel.app) containing over 100K shlokas, with transliterations, translations, and permalinks to make sharing easy.
+
+I've been hammering away at this problem for many years, and today we have Claude and Codex. Coding harnesses use loops to optimize any task with even a remote semblance of structure. I decided to throw this problem to the agents and see the results.
 
 > It is very satisfying to see that AI was able to do in 5 hours what would've taken me years. I also feel a little guilty that I could've been more diligent.
 
-### Manually in 5.4 hours
+## Autoloop does it in 5.4 hours
 
-If you are not aware, the above mentioned 3 points are what are inputs to an `agentic-loop`. These "loops" convert any set of sequences into an ever improving path. This is the **crux of automation, agents doing 50x more "work" overnight**.
+If you are not aware, the above-mentioned three points are the inputs to an `agentic-loop`. These "loops" convert any set of sequences into an ever-improving path. This is the **crux of automation: agents doing 50x more "work" overnight**.
 
-It took about \$30 by subscription cost or \$1650 by API costs ([semianalysis](https://x.com/SemiAnalysis_/status/2064815045767213400?s=20)). See the complete at [status board](/pages/artha-bench-1.html). 
+The approach is pretty straightforward. I started with Claude for framing the problem and Codex to do all the coding. The inputs were 794 Sanskrit books (out of 1,095 total books). The new pipeline retained only one thing from my code: a registry pattern such that each book gets its own set of rules.
+
+1. I started with five books of different lengths and guided it on the repo structure I wanted. Claude created the first version with the working CLI to rerun from scratch.
+2. Once I was confident, I asked it to run coding changes using the `codex exec` command in the Bash tool. At each step, Claude would evaluate the results. The idea was to complete this in a single session.
+3. I ran it on 50 new files and checked whether there were actual improvements. Confident that this approach worked, I needed to scale it for all remaining books.
+4. I created a `program.md` explaining the loop to follow until completion and had Claude write it with a clear aim.
+
+```
+**Aim: convert ALL 794 Sanskrit GRETIL HTML pages into structured JSONL. Not done until 794/794.**
+```
+
+5. I left the whole thing running and came back a few hours later to find the entire batch processed with high accuracy.
+
+See the complete results at [status board](/pages/artha-bench-1.html). 
 
 _how-it-was-built-component to be added here._
 
-The approach is pretty straightforward. I started with `claude` for framing the problem and `codex` to do all the coding. The inputs were 794 sanskrit books / 1000+ total books.
+## Benchmarking harnesses
 
-**Then the realisation** what if I convert this to a benchmark for agentic harness to make the best Sanskrit AI in the world. We give agent this prompt and then measure its performance:
+It took about \$30 in subscription costs or \$1,650 in API costs ([SemiAnalysis](https://x.com/SemiAnalysis_/status/2064815045767213400?s=20)). It's not that expensive, to be honest.
 
-This is 
+Can we make a trajectory from three months (human) $\rightarrow$ 5:24 hrs (Claude + Codex) $\rightarrow$ 40 mins (new algorithms) $\rightarrow$ 60 seconds (models trained on Sanskrit)?
+
+**And then the realisation:** what if I convert this into a benchmark for an agentic harness to make the best Sanskrit AI in the world? In a long list of benchmarks, this might as well be one more.
+
+We give an agent a prompt like this and then measure its performance:
 
 ```
-You are given the task of standardising the input dataset: https://data.yashbonde.com/artha-bench/v1/yashbonde-artha-bench.tar.zst, checksum at .sha256)
-by extenting the SQLite database containing a unique ID
+You are given the task of standardising the input dataset: https://data.yashbonde.com/artha-bench/v1/yashbonde-artha-bench.tar.zst (checksum at https://data.yashbonde.com/artha-bench/v1/yashbonde-artha-bench.tar.zst.sha256)
+by extending the SQLite database containing a unique ID
 for each śloka, commentary, and other textual block.
+Once complete, fill the form at projectartha.xyz/llms.txt.
 ```
 
-This is the complete assignment. The harness must determine the implementation.
-**
-## What Agents are expected to do
-
-Gretil's books preserve many editorial histories. A verse may live in one paragraph, span several paragraphs, or share a paragraph with dozens of citations. Commentary and root text can be visually adjacent but structurally indistinguishable.
-
-> Success means building the system, not merely extracting a sample.
-
-```text
-1,035 books
-HTML from multiple editorial conventions
-śloka · prose · commentary · apparatus
-references · sections · speakers · fragments
-```
-
-```text
-books
-textual_units
-  id · book_id · type · text · reference
-  section · speaker · sequence · metadata
-validation reports · reproducible pipeline
-```
-
-The required artifact is a queryable SQLite database produced by a reusable Python pipeline.
-
-## What it measures
-
-The unit under test is the model and its harness together. It must acquire the dataset, explore it, choose a schema, implement a Python pipeline, reason about Sanskrit conventions, create stable identifiers, run checks, and revise its approach when a plausible rule fails elsewhere in the corpus.
+This is the complete assignment. The harness must determine the implementation. Here's what Codex has to say about the learnings:
 
 1. **System building.** Deliver runnable Python code that downloads or loads the dataset, processes all books, and creates the SQLite database reproducibly.
 2. **Pattern discovery.** Infer whether a work is tagged verse, citation-delimited verse, prose, commentary, manuscript fragment, or another recurring shape.
@@ -77,12 +85,17 @@ The unit under test is the model and its harness together. It must acquire the d
 6. **Boundary correctness.** Avoid the subtler failure: achieving high character coverage while joining commentary to a verse or merging one verse into its neighbour.
 7. **Generalization.** Turn local discoveries into reusable parser shapes, then know when not to apply them.
 
-### Why coverage alone is not enough
+## Future: Best Sanskrit AI
 
-A parser can retain nearly every character while attaching commentary to the wrong verse. It can even report 100% after ignoring loose text nodes when its denominator ignores them too. Artha Bench therefore treats conservation of text as a floor, not proof of understanding.
+Project Artha started with a question: "Can AI write the fifth Veda?" There are many problems that AI can help solve using autoloops.
 
-## A benchmark of judgement
+1. **Translations**: given a corpus of words and possible meanings, find the best fundamental meanings from root sounds.
+2. **Ontology**: create a web of information with many axes for navigating this view. "War" should cover even the most obscure event mentioned in the texts.
+3. **Comprehensions**: go beyond individual word meanings and try to explain what is in the literature. Connect the dots across sources.
+4. **Commentary**: expand any piece, from a single shloka to entire chapters, into detailed explanations with rich sources connected across hundreds of other books.
 
-There is no single parser to guess. The strongest system should survey the corpus, form hypotheses, implement reusable strategies, detect what it dropped, and preserve exceptions without collapsing into one-off code. That makes Artha Bench a test of software architecture, code generation, tool use, iterative verification, and Sanskrit understanding in one task.
+Even after the above, there's a lot of work to do to become the go-to place for Ancient Bhāratiya texts. This requires expanding the number of books and supporting content generation and personalisation. The endeavour is long.
 
-Evaluation should cover whether the system runs end to end, processes the complete dataset, produces a valid and queryable SQLite database, assigns stable unique IDs, accounts for the source text, preserves unit boundaries, handles apparatus correctly, and records enough provenance to audit every row.
+I am also just trying to run my autoloop to make a difference.
+
+ॐ नमः शिवाय
